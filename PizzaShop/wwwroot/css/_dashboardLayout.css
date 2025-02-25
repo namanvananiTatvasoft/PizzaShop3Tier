@@ -1,0 +1,168 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+
+
+
+/*************************** navbar *********************/
+.navbar{
+    height: 70px;
+    background-color: #0066A7;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.company-logo{
+    background-color: white;
+    height: 100%;
+    width: 250px;
+    padding: 15px;
+
+    @media screen and (max-width: 992px){
+        background-color: #0066A7;  
+    }
+}
+
+#sidebar-logo{
+    height: 35px;
+}
+
+#company-logo-img{
+    height: 50px;
+}
+
+#company-name{
+    color: #0066A7;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+}
+
+#profile-pic{
+    height: 45px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.profile-items{
+    text-decoration: none;
+    color : black;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0px 0px;
+    margin-bottom: 15px;
+    font-size: 15px;
+    gap: 10px;
+    margin-left: 15px;
+}
+
+
+#User-Profile{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid black;
+    font-size: 16px;
+    padding: 10px 0px;
+    padding-left: 10px;
+    margin-bottom: 20px;
+    gap: 8px;
+}
+
+#profile-pic-drop{
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+
+
+/* below lg-sidebar */
+
+
+/* lg-sidebar */
+/* .sidebar{
+    width: 250px;
+    height: 100vh;
+    font-weight: 500;
+    letter-spacing: 1.10px;
+} */
+/*************************** Sidebar *********************/
+
+.sidebar {
+    position: fixed;
+    top: 70px;
+    bottom: 0;
+    width: 250px;
+    overflow-y: auto;
+    font-weight: 500;
+    letter-spacing: 1.10px;
+}
+
+.sidebar-box{
+    height: 40px;
+}
+
+.active-sidebar{
+    background-color: #f5f5f5;
+}
+
+.sidebar-icons{
+    height: 30px;
+}
+
+.active-icon{
+    filter: invert(27%) sepia(100%) saturate(500%) hue-rotate(160deg) brightness(90%) contrast(90%);
+}
+
+.sidebar-names{
+    color: #6C757D;
+}
+
+.active-name{
+    color: #0066A7;
+    font-weight: 600;
+}
+
+/* off canvas sidebar  */
+.off-sidebar{
+    height: 100vh;
+    font-weight: 500;
+    letter-spacing: 1.10px;
+}
+
+#off-company-logo-img{
+    height: 80px;
+}
+
+
+/* main content  */
+/* .main-content{
+    flex-grow: 1;
+    height: 100vh;
+} */
+
+.main-content {
+    margin-left: 250px;
+    overflow-y: auto;
+    height: 150vh;
+    flex-grow: 1;
+
+    
+    @media screen and (max-width: 992px){
+        margin-left: 0;
+    }
+}
+
+
+/* This is going to be Main content so in each page change just this CSS */

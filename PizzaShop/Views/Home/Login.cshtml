@@ -1,0 +1,92 @@
+@{
+    Layout = null;
+    ViewData["Title"] = "Login Page";
+
+}
+@model DAL.ViewModel.LoginViewModel
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <title>Pizza Shop</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row main-content">
+            
+            <!-- dominoz main Picture -->
+            <div class="col-md-3 col-lg-4 col-xl-5 bg-img-container p-0 d-none d-md-flex">
+                <img src="~/images/dominos_background.jpg" id="background-img">
+            </div>
+
+            <!-- Login Form -->
+            <div class="col-12 col-md-9 col-lg-8 col-xl-7 d-flex flex-column justify-content-center align-items-center" id="Login-Form-Container">
+
+                <div class="d-flex flex-row justify-content-center align-items-center mb-5">
+                    <img src="~/images/logos/pizzashop_logo.png" alt="company-logo" id="company-logo">
+                    <div class="fs-1 ps-4" id="company-name">PIZZASHOP</div>
+                </div>
+                
+                <div class="d-flex flex-column container-fluid" id="input-form-container" style="max-width: 700px;">
+                    <div class="row fs-3 ps-3 fw-semibold mb-3">
+                        Welcome
+                    </div>
+
+                    <div class="row">
+                        <form id="Login-Form" method="post">
+
+                            <div class="mb-3">
+                                <div class="form-control p-0 d-flex align-items-center position-relative">
+                                    <input type="email" class="form-control" id="LoginEmail" aria-describedby="emailHelp" placeholder="Email*" asp-for="Email">
+                                    <i class="bi bi-person position-absolute h4" style="right: 20px; top: 5px;"></i>
+                                </div>
+                                <div  id="email-error-msg" class="error-msg"></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-control p-0 d-flex align-items-center position-relative">
+                                    <input type="password" class="form-control" id="LoginPassword" placeholder="Password*" asp-for="Password">
+                                    <i class="bi bi-eye-slash position-absolute h4" style="right: 20px; top: 5px;"  onclick="showPassword()" id="eye"></i>
+                                </div>
+                                <div id="password-error-msg" class="error-msg" asp-validation-for ="Password"></div>
+                            </div>
+
+                            <div asp-validation-summary="All" class="bg-danger text-white w-50 border-danger rounded"></div>
+
+
+                            <div class="mb-3 form-check d-flex justify-content-between align-items-center">
+                                <div>
+                                    <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe" asp-for="RememberMe">
+                                    <label class="form-check-label" for="RememberMe">Remember me</label>
+                                </div>
+                                <div id="forget-pswd">
+                                    <a asp-controller="Home" asp-action="ForgotPassword" asp-route-Email="@Model?.Email" id="forgotPasswordLink">Forget Password?</a>
+                                </div>
+                            </div>  
+                            <button type="submit" class="btn btn-primary w-100" id="LoginBtn">Login</button>
+                        </form>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/login.js" asp-append-version="true"></script>
+    <script>
+        document.getElementById('forgotPasswordLink').addEventListener('click', function() {
+            var email = document.getElementById("LoginEmail").value;
+            this.href = '@Url.Action("ForgotPassword", "Home")' + '?Email=' + encodeURIComponent(email);
+        });
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+.user-list-container{
+    /* border: 1px solid black; */
+    background-color: #F2F2F2;
+    padding: 20px 40px;
+    height: 100%;
+}
+
+.special-color{
+    color: #0066A7;
+}   
+
+
+
+/* search bar row */
+.search-box{
+    border-radius: 4px;
+}
+
+#search-input{
+    outline: none;
+    border: none;
+}
+
+#search-img{
+    height: 20px;
+}
+
+#add-user-btn{
+    background-color: #0066A7;
+    color: white;
+    border-radius: 4px;
+}
+
+/* user table  */
+
+.user-list-table{
+    padding: 10px 15px;
+    margin: 0px 0px !important;
+    /* height: 80vh; */
+}
+
+.table td{
+    font-size: 14px;
+}
+
+.active-user{
+    width: fit-content;
+    border-radius: 8px;
+    padding: 0px 5px;
+    font-size: 17px;
+    background-color: #99D363;
+    color: white;
+    font-weight: 600;
+    height: 20px;
+}
+
+.inactive-user{
+    width: fit-content;
+    border-radius: 8px;
+    padding: 0px 5px;
+    font-size: 17px;
+    background-color: red;
+    color: white;
+    font-weight: 600;
+    height: 20px;
+}
+
+.user-table-pic{
+    height: 30px; 
+    margin-right: 10px;
+}
+
+.edit-delete-pic{
+    height: 20px;
+    margin-right: 20px;
+}

@@ -1,0 +1,15 @@
+C:\Projects\PizzaShopMain\BAL\bin\Debug\net7.0\BAL.deps.json
+C:\Projects\PizzaShopMain\BAL\bin\Debug\net7.0\BAL.dll
+C:\Projects\PizzaShopMain\BAL\bin\Debug\net7.0\BAL.pdb
+C:\Projects\PizzaShopMain\BAL\bin\Debug\net7.0\DAL.dll
+C:\Projects\PizzaShopMain\BAL\bin\Debug\net7.0\DAL.pdb
+C:\Projects\PizzaShopMain\BAL\obj\Debug\net7.0\BAL.csproj.AssemblyReference.cache
+C:\Projects\PizzaShopMain\BAL\obj\Debug\net7.0\BAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\PizzaShopMain\BAL\obj\Debug\net7.0\BAL.AssemblyInfoInputs.cache
+C:\Projects\PizzaShopMain\BAL\obj\Debug\net7.0\BAL.AssemblyInfo.cs
+C:\Projects\PizzaShopMain\BAL\obj\Debug\net7.0\BAL.csproj.CoreCompileInputs.cache
+C:\Projects\PizzaShopMain\BAL\obj\Debug\net7.0\BAL.csproj.CopyComplete
+C:\Projects\PizzaShopMain\BAL\obj\Debug\net7.0\BAL.dll
+C:\Projects\PizzaShopMain\BAL\obj\Debug\net7.0\refint\BAL.dll
+C:\Projects\PizzaShopMain\BAL\obj\Debug\net7.0\BAL.pdb
+C:\Projects\PizzaShopMain\BAL\obj\Debug\net7.0\ref\BAL.dll

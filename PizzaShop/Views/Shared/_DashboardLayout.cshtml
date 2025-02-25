@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Dashboard</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/_dashboardLayout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/myProfile.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/changePassword.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PizzaShop.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/UserList.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/AddUser.css" asp-append-version="true" />
+
+</head>
+<body>
+
+    <nav class="d-flex justify-content-between align-items-center px-2 ps-lg-0 py-lg-0 m-0 navbar position-sticky">
+        <!-- sidebar logo  -->
+        <img src="~/images/sidebar-logo.png" alt="" id="sidebar-logo" class="bg-white border rounded d-flex d-lg-none" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+        <!-- company logo -->
+        <div class="d-flex company-logo justify-content-center align-items-center m-0 border-lg-rounded">
+            <img src="~/images/logos/pizzashop_logo.png" alt="company-logo" id="company-logo-img">
+            <div class="fs-5 ps-3 d-none d-lg-flex" id="company-name">PIZZASHOP</div>
+        </div>
+        <!-- profile pic -->
+        @* <img src="~/images/Default_pfp.svg.png" alt="" id="profile-pic"> *@
+
+        @* workspace *@
+        <div class="dropdown">
+            <img src="~/images/Default_pfp.svg.png" alt="" id="profile-pic" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="dropdownMenuButton1" style="z-index: 1000000;">
+                <li>
+                    <div id="User-Profile">
+                        <img src="~/images/Default_pfp.svg.png" alt="" id="profile-pic-drop">
+                        @ViewData["UserName"]
+                    </div>
+                </li>
+                <li>
+                    <a class="profile-items" asp-controller="Dashboard" asp-action="MyProfile">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                        </svg>
+                        My Profile
+                    </a>
+                </li>
+                <li>
+                    <a class="profile-items" asp-controller="Dashboard" asp-action="ChangePassword">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                        </svg>
+
+                        Change Password
+                    </a>
+                </li>
+                <li>
+                    <a class="profile-items" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                        </svg>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+
+    <!-- offcanvas sidebar -->
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" style="z-index: 10000000000000;">
+        <div class="offcanvas-header">
+            <div class="d-flex justify-content-center align-items-center m-0 border-lg-rounded">
+                <img src="~/images/logos/pizzashop_logo.png" alt="company-logo" id="off-company-logo-img">
+                <div class="fs-3 fs-lg-5 ps-3 d-flex" id="company-name">PIZZASHOP</div>
+            </div>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body px-0">
+            <div class="d-flex flex-column off-sidebar pt-4 fw-semibold">
+                <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box active-sidebar">
+                    <img src="~/images/sidebar icons/dashboard.png" alt="" class="sidebar-icons ps-3 active-icon">
+                    <div class="sidebar-names ps-3 active-name">Dashboard</div>
+                </div>
+                <a asp-controller="AdminUsers" asp-action="UserListAll" style="text-decoration: none;">
+                    <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
+                        <img src="~/images/sidebar icons/users.png" alt="" class="sidebar-icons ps-3">
+                        <div class="sidebar-names ps-3">Users</div>
+                    </div>
+                </a>
+                <a href="roles.html" style="text-decoration: none;">
+                    <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
+                        <img src="~/images/sidebar icons/roles_permission.png" alt="" class="sidebar-icons ps-3">
+                        <div class="sidebar-names ps-3">Role and Permission</div>
+                    </div>
+                </a>
+                <a href="menu.html" style="text-decoration: none;">
+                    <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
+                        <img src="~/images/sidebar icons/menu.png" alt="" class="sidebar-icons ps-3">
+                        <div class="sidebar-names ps-3">Menu</div>
+                    </div>
+                </a>
+                <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
+                    <img src="~/images/sidebar icons/tables.svg" alt="" class="sidebar-icons ps-3">
+                    <div class="sidebar-names ps-3">Table and Section</div>
+                </div>
+                <div class="d-flex mb-3  justify-content-start align-items-center sidebar-box">
+                    <img src="~/images/sidebar icons/taxes.svg" alt="" class="sidebar-icons ps-3">
+                    <div class="sidebar-names ps-3">Taxes and Fees</div>
+                </div>
+                <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
+                    <img src="~/images/sidebar icons/orders.svg" alt="" class="sidebar-icons ps-3">
+                    <div class="sidebar-names ps-3">Orders</div>
+                </div>
+                <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
+                    <img src="~/images/sidebar icons/customers.svg" alt="" class="sidebar-icons ps-3">
+                    <div class="sidebar-names ps-3">Customers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Content and Sidebar -->
+    <div class="d-flex">
+        <!-- sidebar -->
+        <div class="d-none d-lg-flex flex-column sidebar pt-4 fw-semibold">
+            <a asp-controller="Dashboard" asp-action="Dash" style="text-decoration: none;">
+                <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box @(ViewBag.Active == "Dashboard"? "active-sidebar" :" ")">
+                    <img src="~/images/sidebar icons/dashboard.png" alt="" class="sidebar-icons @(ViewBag.Active == "Dashboard"? "active-icon" :" ") ps-3">
+                    <div class="sidebar-names ps-3 @(ViewBag.Active == "Dashboard"? "active-name" :" ")">Dashboard</div>
+                </div>
+            </a>
+            <a asp-controller="AdminUsers" asp-action="UserListAll" style="text-decoration: none;">
+                <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box @(ViewBag.Active == "Users"? "active-sidebar" :" ")">
+                    <img src="~/images/sidebar icons/users.png" alt="" class="sidebar-icons ps-3 @(ViewBag.Active == "Users"? "active-icon" :" ")">
+                    <div class="sidebar-names ps-3 @(ViewBag.Active == "Users"? "active-name" :" ")">Users</div>
+                </div>
+            </a>
+            <a href="roles.html" style="text-decoration: none;">
+                <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
+                    <img src="~/images/sidebar icons/roles_permission.png" alt="" class="sidebar-icons ps-3">
+                    <div class="sidebar-names ps-3">Role and Permission</div>
+                </div>
+            </a>
+            <a href="menu.html" style="text-decoration: none;">
+                <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
+                    <img src="~/images/sidebar icons/menu.png" alt="" class="sidebar-icons ps-3">
+                    <div class="sidebar-names ps-3">Menu</div>
+                </div>
+            </a>
+            <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
+                <img src="~/images/sidebar icons/tables.svg" alt="" class="sidebar-icons ps-3">
+                <div class="sidebar-names ps-3">Table and Section</div>
+            </div>
+            <div class="d-flex mb-3  justify-content-start align-items-center sidebar-box">
+                <img src="~/images/sidebar icons/taxes.svg" alt="" class="sidebar-icons ps-3">
+                <div class="sidebar-names ps-3">Taxes and Fees</div>
+            </div>
+            <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
+                <img src="~/images/sidebar icons/orders.svg" alt="" class="sidebar-icons ps-3">
+                <div class="sidebar-names ps-3">Orders</div>
+            </div>
+            <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
+                <img src="~/images/sidebar icons/customers.svg" alt="" class="sidebar-icons ps-3">
+                <div class="sidebar-names ps-3">Customers</div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <form class="modal-content" method="post" asp-controller="Dashboard" asp-action="LogOut">
+                    @* <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div> *@
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-center mb-2"><img src="~/images/warning.png" alt="" style="height: 40px;"></div>
+                        <div class="d-flex justify-content-center mb-2">Are You Sure you want to Logout?</div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button type="submit" class="btn btn-primary me-3 fs-semibold" style="background-color: #0066A7;">Yes</button>
+                            <button type="button" class="btn btn-secondary fs-semibold" data-bs-dismiss="modal" style="background-color: white; color: #0066A7; border: 2px solid #0066A7;">No</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main content  Only Change this Part for each page-->
+        <div class="main-content">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/_dashboardLayout.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+
+@* 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select all sidebar items that have the .sidebar-box class
+        const sidebarItems = document.querySelectorAll('.sidebar .sidebar-box');
+        
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function () {
+
+                event.preventDefault(); 
+
+                sidebarItems.forEach(item => 
+                {
+                    item.classList.remove('active-sidebar');
+                    const icon = item.querySelector('.active-icon');
+                    if (icon) {
+                        icon.classList.remove('active-icon');
+                    }
+
+                    const sname = item.querySelector('.active-name');
+                    if (sname) {
+                        sname.classList.remove('active-name');
+                    }
+                });
+                
+                item.classList.add('active-sidebar');
+
+                const icon = item.querySelector('.sidebar-icons');
+                if (icon) {
+                    icon.classList.add('active-icon');
+                }
+
+                const sname = item.querySelector('.sidebar-names');
+                if(sname) {
+                    sname.classList.add('active-name');
+                }
+
+                event.preventDefault();
+            });
+        });
+    });
+</script> *@
+
+
+
+
+</html>
+
+
+
+
+

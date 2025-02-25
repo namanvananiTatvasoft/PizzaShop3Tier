@@ -1,0 +1,60 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.main-content{
+    height: 100vh;
+    width: 100vw;
+}
+
+
+/* Background Image */
+#background-img{
+    object-fit: cover; height: 100%; width: 100%;
+}
+
+/* Login form */
+#Login-Form-Container{
+    background-color: #D8EFF8;
+}
+
+#company-logo{
+    height: 100px;
+}
+
+#company-name{
+    color: rgb(0, 99, 156);
+}
+
+#input-form-container{
+    width: 85%;
+    /* border: 1px solid black !important; */
+    background-color: transparent;
+}
+
+#LoginBtn{
+    background-color: #0066A7;
+}
+
+#remember-me{
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+#forget-pswd{
+    color: #0D6EFC;
+    font-size: 15px;
+}
+
+.error-msg{
+    color: red;
+    font-size: 12px;
+    padding-left: 3px;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}

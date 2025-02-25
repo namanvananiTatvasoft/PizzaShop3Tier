@@ -1,0 +1,207 @@
+@model DAL.ViewModel.UpdateUserDetails;
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "My Profile";
+}
+@* 
+    @{
+        Console.WriteLine(@Model.StateId);
+        Console.WriteLine(@Model.CityId);
+    } *@
+
+
+
+
+
+
+<div class="user-list-container">
+
+    @* <h1>@Model.Email</h1> *@
+
+    <!-- name row -->
+    <div class="row px-0 d-flex justify-content-between mb-3">
+        <div class="col fs-3 fs-sm-2 fw-bold special-color">My Profile</div>
+    </div>
+
+    <!-- user input files -->
+    <form method="post" asp-action = "MyProfile">
+        
+            <input type="text" asp-for = "Email" hidden>
+            <div  style="height:50px; background-image: url('@Url.Content("~/images/profile_div_bg.jpg")');background-size: cover;"></div>
+        <div class="add-user-field border rounded">
+
+
+            <div class="d-flex justify-content-between w-100 px-4 pt-2 flex-wrap">
+                <div class="d-flex">
+                    <img src="~/images/default_pfp.svg.png" alt="" style="height: 120px; position: relative; top: -40px; margin-right: 10px;" >
+                    <div class="d-flex flex-column">
+                        <div class="mb-1 fs-4">@Model.Firstname @Model.Lastname</div>
+                        <div class="text-success fs-6">@ViewData["Role"]</div>
+                    </div>
+                </div>
+
+                <div class="text-black">
+                    <div>@Model.Email</div>
+                </div>
+            </div>
+            <div class="d-flex flex-column flex-md-row ">
+                <div class="col form-floating input-class">
+                    <input type="text" class="form-control" id="firstName" placeholder="John" asp-for = "Firstname">
+                    <label for="floatingInput">First Name</label>
+                </div>
+                <div class="col form-floating input-class">
+                    <input type="text" class="form-control" id="lastName" placeholder="Doe" asp-for = "Lastname">
+                    <label for="floatingInput">Last Name</label>
+                </div>
+            </div>
+            <div class="d-flex flex-column flex-md-row ">
+                <div class="col form-floating input-class">
+                    <input type="text" class="form-control" id="username" placeholder="johndoe" asp-for = "Username">
+                    <label for="username">Username</label>
+                </div>
+                <div class="col form-floating input-class">
+                    <input type="text" class="form-control" id="username" placeholder="johndoe" asp-for = "Phone">
+                    <label for="inputPhone">Phone</label>
+                </div>
+            </div>
+
+            <!-- address select  -->
+            <div class="d-flex flex-column flex-md-row ">
+                <div class="col form-floating input-class">
+                    <select class="form-select" id="inputCountry" aria-label="Floating label select example" onchange="loadStates()" asp-for = "CountryId">
+                        @foreach (var country in Model.CountryList)
+                        {
+                            <!-- Ensure that the country ID is selected based on the model's CountryId -->
+                            {
+                                var isSelected = country.CountryId == @Model.CountryId ? true : false;
+                                <option value="@country.CountryId" selected="@isSelected">@country.CountryName</option>
+                            }
+                        }
+                    </select>
+                    <label for="inputCountry">Country</label>
+                </div>
+                <div class="col form-floating input-class">
+                    <select class="form-select" id="inputState" aria-label="Floating label select example" onchange="loadCities()" asp-for = "StateId">
+                        @foreach (var state in Model.StateList)
+                        { 
+                            if(state.CountryId == @Model.CountryId)
+                            {
+                                if(@Model.StateId!=0){
+                                    var isSelected = state.StateId == @Model.StateId ? true : false;
+                                    <option value="@state.StateId" selected="@isSelected">@state.StateName</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <label for="inputState">State</label>
+                </div>
+                <div class="col form-floating input-class">
+                    <select class="form-select" id="inputCity" aria-label="Floating label select example" asp-for = "CityId">
+                        @foreach (var city in Model.CityList)
+                        { 
+                            if(city.StateId == @Model.StateId)
+                            {
+                                if(@Model.CityId!=0){
+                                    var isSelected = city.CityId == @Model.CityId ? true : false;
+                                    <option value="@city.CityId" selected="@isSelected">@city.CityName</option>
+                                }else{
+                                    <option value="" selected">Select City</option>
+                                }
+
+                            }
+                        }
+                    </select>
+                    <label for="inputCity">City</label>
+                </div>
+            </div>
+
+
+            <div class="d-flex flex-column flex-md-row">
+                <div class="flex" style="flex: 3;">
+                    <div class="form-floating input-class">
+                        <input type="text" class="form-control" id="username" placeholder="Bilimora" asp-for = "Address1">
+                        <label for="inputPhone">Address</label>
+                    </div>
+                </div>
+                <div class="flex" style="flex: 1;">
+                    <div class="form-floating input-class">
+                        <input type="text" class="form-control" id="username" placeholder="Zipcode" asp-for="Zipcode">
+                        <label for="inputZip">Zipcode</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Update Cancel  -->
+            <div class="d-flex justify-content-end align-items-center">
+                <button class="update-cancel-btn text-white" id="updateInput" type="submit">Update User</button>
+                <a asp-action="Dash" asp-controller="Dashboard" style="text-decoration: none;">
+                    <button class="update-cancel-btn bg-white" id="cancelInput" type="button">Cancel</button>
+                </a>
+            </div>
+        </div>
+    </form>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadStates() {
+
+        var countrySelect = $('#inputCountry');
+        var stateSelect = $('#inputState');
+        var citySelect = $('#inputCity');
+
+        stateSelect.empty();
+        citySelect.empty();
+
+        var countryID = countrySelect.val();
+
+        stateSelect.append('<option selected>Select State</option>');
+        citySelect.append('<option selected>Select City</option>');
+
+        $.ajax({
+            url: '@Url.Action("GetStates", "Dashboard")',  // Use your action method here
+            data: { countryId: countryID },
+            type: 'GET',
+            success: function(data) {
+                // Loop through the returned states and append them to the state dropdown
+                $.each(data, function(index, state) {
+                    stateSelect.append('<option value="' + state.stateId + '">' + state.stateName + '</option>');
+                });
+            }
+        });
+    }
+
+    function loadCities() {
+
+        var stateSelect = $('#inputState');
+        var citySelect = $('#inputCity');
+
+        citySelect.empty();
+
+        var stateId = stateSelect.val();
+
+        citySelect.append('<option selected>Select City</option>');
+
+        $.ajax({
+            url: '@Url.Action("GetCities", "Dashboard")',  // Use your action method here
+            data: { stateId: stateId },
+            type: 'GET',
+            success: function(data) {
+                // Loop through the returned states and append them to the state dropdown
+                $.each(data, function(index, city) {
+                    citySelect.append('<option value="' + city.cityId + '">' + city.cityName + '</option>');
+                });
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        if(@Model.StateId == 0)
+            loadStates();
+    });
+
+
+</script>
