@@ -13,9 +13,12 @@ public interface IAuthServices
     public List<Country> getCountries();
     public List<State> getStates(int countryId);
     public List<City> getCities(int stateId);
+    public List<Role> getRoles();
 
     public Role getRole(int roleid);
     public Task UpdatePassword(string email, string password);
     public bool checkPassword(string password, string hashPassword);
     public Task SendResetPasswordEmail(string Email, string uriii);
+    public Task<(string, bool)> checkUsernameEmailPhone(string email, string phone, string username, bool isEdit = false);
+
 }

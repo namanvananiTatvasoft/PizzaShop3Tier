@@ -46,18 +46,28 @@ public class AdminUsersController : BaseDashboardController
     {
         if (ModelState.IsValid)
         {
+            // check if username/email/phonenumber already exists return message and show it to the user
+            var (message, status) = await _auth.checkUsernameEmailPhone(user.Email, user.Phone, user.Username);
+            if (status)
+            {
+                TempData["Error"] = message;
+                return View("AddUser", user);
+            }
+            
             await _auth.AddUserToDB(user, GetUserName());
 
             var subject = "Welcome to Pizza Shop";
             // var message = "Welcome to Pizza Shop. Your account has been created successfully. Your username is " + user.Username + " and password is " + user.Password + ". Please login to your account and change your password.";
 
-
             await _adminUsersServices.SendEmailToNewUser(user.Email, subject, user.Username, user.Password);
+
+
             
-            
+            TempData["Success"] = "User added successfully";
             return RedirectToAction("UserListAll");
         }
 
+        TempData["Error"] = "User not added";
         return View();
     }
 
@@ -90,18 +100,27 @@ public class AdminUsersController : BaseDashboardController
         return View(model);
     }
 
-    // Edit Page ********** Post Method *********
+    // Edit Page ***************** Post Method ***************
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditUser(EditUserModel model)
     {
+        var (message, status) = await _auth.checkUsernameEmailPhone(model.Email, model.Phone, model.Username, true);
+        if (status)
+        {
+            TempData["error"] = message;
+            return RedirectToAction("EditUser", new {email = model.Email});
+        }
+        
         await _auth.UpdateUserToDB(model, GetUserName());
 
         ViewData["Username"] = GetUserName();
+        TempData["success"] = "User updated successfully";
         return RedirectToAction("EditUser", new {email = model.Email});
     }
 
     
+    // Delete Page *******************************************
     public async Task<IActionResult> DeleteUser(string email)
     {
         await _auth.DeleteUser(email);

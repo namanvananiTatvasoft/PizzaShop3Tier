@@ -1,7 +1,9 @@
+using System.Net.Http.Headers;
 using BAL.Interfaces;
 using DAL.Database;
 using DAL.Models;
 using DAL.ViewModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace BAL.Services;
 
@@ -19,6 +21,7 @@ public class AuthServices: IAuthServices
         _emailServices = emailServices;
     }
 
+    #region get table values
     public User getUser(string email)
     {
         return _db.Users.Where(a => a.Email == email).FirstOrDefault() ?? new User();
@@ -28,6 +31,77 @@ public class AuthServices: IAuthServices
     {
         return _db.Userdetails.Where(a => a.Email == email).FirstOrDefault() ?? new Userdetail();
     }
+
+
+    public List<Country> getCountries()
+    {
+        return _db.Countries.ToList();
+    }
+
+    public List<State> getStates(int countryId = -1)
+    {
+        if(countryId == -1)
+        {
+            return _db.States.ToList();
+        }
+        return _db.States.Where(a => a.CountryId == countryId).ToList();
+    }
+
+    public List<City> getCities(int stateId = -1)
+    {   
+        if(stateId == -1)
+        {
+            return _db.Cities.ToList();
+        }
+        return _db.Cities.Where(a => a.StateId == stateId).ToList();
+    }
+
+    public List<Role> getRoles()
+    {
+        return _db.Roles.ToList();
+    }
+
+    public Role getRole(int roleid)
+    {
+        return _db.Roles.Where(a => a.Roleid == roleid).FirstOrDefault() ?? new Role();
+    }
+    #endregion
+
+
+
+    #region check values
+    public bool checkPassword(string password, string hashPassword)
+    {
+        if(string.IsNullOrEmpty(password))
+        {
+            return false;
+        }
+        return hashPassword == _hashServices.HashPassword(password);
+    }
+
+    public async Task<(string, bool)> checkUsernameEmailPhone(string email, string phone, string username, bool isEdit = false)
+    {
+        Userdetail user;
+        
+        if(isEdit) user = await _db.Userdetails.Where(a =>  a.Email != email && (a.Phone == phone || a.Username == username)).FirstOrDefaultAsync();
+        else user = await _db.Userdetails.Where(a => a.Email == email || a.Phone == phone || a.Username == username).FirstOrDefaultAsync();
+        
+
+        if(user != null)
+        {
+            if(!isEdit && user.Email == email) return ("Email already Exist", true);
+            
+            if(user.Phone == phone) return ("Phone already Exist", true);
+            
+            if(user.Username == username) return ("Username already Exist", true);
+            
+        }
+        return ("All are Unique", false);
+    }
+
+
+    #endregion
+
 
     public async Task AddUserToDB(AddUserModel model, string createdByEmail)
     {
@@ -104,37 +178,7 @@ public class AuthServices: IAuthServices
 
         return;
     }
-
-
-
-    public List<Country> getCountries()
-    {
-        return _db.Countries.ToList();
-    }
-
-    public List<State> getStates(int countryId = -1)
-    {
-        if(countryId == -1)
-        {
-            return _db.States.ToList();
-        }
-        return _db.States.Where(a => a.CountryId == countryId).ToList();
-    }
-
-    public List<City> getCities(int stateId = -1)
-    {   
-        if(stateId == -1)
-        {
-            return _db.Cities.ToList();
-        }
-        return _db.Cities.Where(a => a.StateId == stateId).ToList();
-    }
-
-    public Role getRole(int roleid)
-    {
-        return _db.Roles.Where(a => a.Roleid == roleid).FirstOrDefault() ?? new Role();
-    }
-
+    
     public async Task UpdatePassword(string email, string newPassword)
     {
         var user = getUser(email);
@@ -143,17 +187,9 @@ public class AuthServices: IAuthServices
         await _db.SaveChangesAsync();
     }
 
-    public bool checkPassword(string password, string hashPassword)
-    {
-        if(string.IsNullOrEmpty(password))
-        {
-            return false;
-        }
-        return hashPassword == _hashServices.HashPassword(password);
-    }
-
     public async Task SendResetPasswordEmail(string Email, string uriii)
     {
+
         string sendString = @$"
             <div style='height: 80px; display: flex; justify-content: center; align-items: center; font-size: 30px; background-color: rgb(45, 134, 134); color: white;'>
                     PIZZASHOP
@@ -171,6 +207,8 @@ public class AuthServices: IAuthServices
         ";
         string subject = "Reset Password";
         await _emailServices.SendEmailAsync(Email, subject, sendString);
+        
+
 
         return;
     }

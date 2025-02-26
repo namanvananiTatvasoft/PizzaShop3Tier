@@ -9,6 +9,7 @@ public class DashboardController : BaseDashboardController
     protected readonly IDashServices _dash;
     protected readonly IAuthServices _auth;
 
+
     public DashboardController(IJwtservices jwtservices, IDashServices dash, IAuthServices auth) : base(jwtservices)
     {
         _dash = dash;
@@ -42,10 +43,11 @@ public class DashboardController : BaseDashboardController
     {
         _dash.UpdateDB(objPass);
         ViewBag.Active = "Dashboard";
+        TempData["success"] = "Profile Updated Successfully !";
         return RedirectToAction("MyProfile");
     }
 
-        // Change Password **************************************** get Method ******************
+    // Change Password **************************************** get Method ******************
     [HttpGet]
     public IActionResult ChangePassword()
     {
@@ -65,10 +67,12 @@ public class DashboardController : BaseDashboardController
 
             if(_auth.checkPassword(model.OldPassword, obj.Hashpassword)){
                 await _auth.UpdatePassword(email, model.NewPassword);
-                ModelState.AddModelError("Wrong Password", "Successfully Change Password");
+                // ModelState.AddModelError("Wrong Password", "Successfully Change Password");
+                TempData["success"] = "Password Changed Succesfully!";
                 return View();
             }else{
-                ModelState.AddModelError("Wrong Password", "Invalid Old Password");
+                // ModelState.AddModelError("Wrong Password", "Invalid Old Password");
+                TempData["error"] = "Invalid Old Password";
             }
         }
         ViewBag.Active = "Dashboard";
@@ -84,6 +88,12 @@ public class DashboardController : BaseDashboardController
         ViewBag.Active = "Dashboard";
         return RedirectToAction("Login", "Home");
     }
+
+
+
+
+
+    
 
 
     [HttpGet]

@@ -220,72 +220,75 @@
 
 
 
-        $('#addUserForm').submit(function (event) {
-            event.preventDefault();
-            let isValid = true;
+    $('#addUserForm').submit(function (event) {
+        event.preventDefault();
+        let isValid = true;
 
-            console.log("Hi");
+        console.log("Hi");
 
 
-            //Required Field Validation (Except Image)
-            $("#addUserForm input[type='text'], #addUserForm select,  #addUserForm input[type='email']").each(function () {
-                let inputValue = $(this).val() ? $(this).val().trim() : "";
+        //Required Field Validation (Except Image)
+        $("#addUserForm input[type='text'],  #addUserForm input[type='email'], #addUserForm select").each(function () {
+            let inputValue = $(this).val() ? $(this).val().trim() : "";
 
-                if (!inputValue || inputValue === "0") {
-                    $(this).addClass("is-invalid"); // Add error styling
-                    $(this).next(".invalid-feedback").remove(); // Remove old message
-                    $(this).after('<div class="invalid-feedback">This field is required</div>');
-                    isValid = false;
-                } else {
-                    $(this).removeClass("is-invalid");
-                    $(this).next(".invalid-feedback").remove();
-                }
-            })
-
-            let phoneNumber = $("#inputPhone").val().trim();
-            if (!/^\d{10}$/.test(phoneNumber)) {
-                $("#inputPhone").addClass("is-invalid");
-                $("#inputPhone").next(".invalid-feedback").remove();
-                $("#inputPhone").after('<div class="invalid-feedback">Phone number must be exactly 10 digits</div>');
+            if (!inputValue || inputValue === "0") {
+                $(this).addClass("is-invalid"); // Add error styling
+                $(this).next(".invalid-feedback").remove(); // Remove old message
+                $(this).after('<div class="invalid-feedback">This field is required</div>');
                 isValid = false;
             } else {
-                $("#inputPhone").removeClass("is-invalid");
-                $("#inputPhone").next(".invalid-feedback").remove();
+                $(this).removeClass("is-invalid");
+                $(this).next(".invalid-feedback").remove();
             }
-
-
-            let zipcode = $("#zipcode").val().trim();
-            let zipcodeRegex = /^\d{6}$/; // US ZIP code format (5 digits or 5+4 digits)
-
-            if (zipcode === "" || zipcode === "0" || !zipcodeRegex.test(zipcode)) {
-                $("#zipcode").addClass("is-invalid");
-                $("#zipcode").next(".invalid-feedback").remove();
-                $("#zipcode").after('<div class="invalid-feedback">Please enter a valid ZIP code</div>');
-                isValid = false;
-            } else {
-                $("#zipcode").removeClass("is-invalid");
-                $("#zipcode").next(".invalid-feedback").remove();
-            }
-
-
-            
-            
-
-            console.log(isValid);
-
-            if (isValid) {
-                $('#addUserForm').unbind('submit').submit();
-            }
-
-
-        });
-
-        $("#addUserForm input[type='text'], #addUserForm select,  #addUserForm input[type='email']").on('input change', function () {
-
-            $(this).removeClass("is-invalid");
-            $(this).next(".invalid-feedback").remove();
-                
         })
+
+
+        
+
+        let phoneNumber = $("#inputPhone").val().trim();
+        if (!/^\d{10}$/.test(phoneNumber)) {
+            $("#inputPhone").addClass("is-invalid");
+            $("#inputPhone").next(".invalid-feedback").remove();
+            $("#inputPhone").after('<div class="invalid-feedback">Phone number must be exactly 10 digits</div>');
+            isValid = false;
+        } else {
+            $("#inputPhone").removeClass("is-invalid");
+            $("#inputPhone").next(".invalid-feedback").remove();
+        }
+
+
+        let zipcode = $("#zipcode").val().trim();
+        let zipcodeRegex = /^\d{6}$/; // US ZIP code format (5 digits or 5+4 digits)
+
+        if (zipcode === "" || zipcode === "0" || !zipcodeRegex.test(zipcode)) {
+            $("#zipcode").addClass("is-invalid");
+            $("#zipcode").next(".invalid-feedback").remove();
+            $("#zipcode").after('<div class="invalid-feedback">Please enter a valid ZIP code</div>');
+            isValid = false;
+        } else {
+            $("#zipcode").removeClass("is-invalid");
+            $("#zipcode").next(".invalid-feedback").remove();
+        }
+
+
+        
+        
+
+        console.log(isValid);
+
+        if (isValid) {
+            $('#addUserForm').unbind('submit').submit();
+        }
+
+
+    });
+
+    $("#addUserForm input[type='text'], #addUserForm select,  #addUserForm input[type='email']").on('input change', function () {
+
+        $(this).removeClass("is-invalid");
+        $(this).next(".invalid-feedback").remove();
+            
+    })
 
 
     </script>

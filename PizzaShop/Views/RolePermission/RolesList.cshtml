@@ -1,0 +1,65 @@
+@model IEnumerable<DAL.Models.Role>
+
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Roles";
+    ViewBag.Active = "RolePermission";
+}
+<head>
+    <link rel="stylesheet" href="~/css/RoleList.css" asp-append-version="true" />
+</head>
+<!-- User List Table -->
+
+<div class="roles-list-container">
+    <div class="row border bg-white roles-box px-5">
+        <table class="table table-responsive ">
+            <thead>
+                <tr>
+                    <th scope="col">RoleName</th>
+                    <th scope="col" class="custome-text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Rolename</td>
+                    <td class="custome-text-right">
+                        <a asp-action="Permissions">
+                            <img src="~/images/pen.svg" alt="">
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+            @* <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td><a href="permissions.html"><img src="~/images/pen.svg" alt=""></a></td>
+                </tr>
+            </tbody> *@
+        </table>
+        @* <div class="d-flex justify-content-between fs-5 fw-bold mb-3">
+            <div>Role</div>
+            <div>Action</div>
+        </div>
+        <hr class="mb-3">
+        <div class="d-flex justify-content-between mb-3">
+            <div>Admin</div>
+            <a href="permissions.html"><img src="~/images/pen.svg" alt=""></a>
+        </div>
+        <hr class="mb-3">
+        <div class="d-flex justify-content-between mb-3">
+            <div>Account Manager</div>
+            <a href="permissions.html"><img src="~/images/pen.svg" alt=""></a>
+        </div>
+        <hr class="mb-3">
+        <div class="d-flex justify-content-between mb-3">
+            <div>Chef</div>                    
+            <a href="permissions.html"><img src="~/images/pen.svg" alt=""></a>
+        </div>
+        <hr> *@
+    </div>
+</div>

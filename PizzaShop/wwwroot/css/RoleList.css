@@ -1,0 +1,41 @@
+.roles-list-container{
+    /* border: 1px solid black; */
+    background-color: #F2F2F2;
+    padding: 30px 50px;
+}
+
+.special-color{
+    color: #0066A7;
+}
+
+.roles-box{
+    max-width: 1000px;
+    padding: 30px 30px;
+    font-size: 14px;
+}
+
+.custome-text-right {
+    text-align: right;
+}
+
+table th{
+    font-size: 20px;
+}
+
+table td{
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    table th {
+        font-size: 15px;
+    }
+
+    table td{
+        font-size: 13px;
+    }
+}
+
+table td {
+    padding: 15px 7px !important;
+}

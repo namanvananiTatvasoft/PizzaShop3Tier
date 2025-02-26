@@ -2,6 +2,7 @@
 @{
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
     ViewData["Title"] = "My Profile";
+    @* var successMessage = TempData["SuccessMessage"] as string; *@
 }
 @* 
     @{
@@ -21,15 +22,21 @@
     <!-- name row -->
     <div class="row px-0 d-flex justify-content-between mb-3">
         <div class="col fs-3 fs-sm-2 fw-bold special-color">My Profile</div>
+        @if(TempData["success"] is not null)
+        {
+            <div class="alert alert-success mb-0" role="alert" style="width: fit-content;">
+                    @TempData["success"]
+            </div>
+        }
     </div>
 
     <!-- user input files -->
     <form method="post" asp-action = "MyProfile">
         
-            <input type="text" asp-for = "Email" hidden>
-            <div  style="height:50px; background-image: url('@Url.Content("~/images/profile_div_bg.jpg")');background-size: cover;"></div>
-        <div class="add-user-field border rounded">
+        <input type="text" asp-for = "Email" hidden>
+        <div  style="height:50px; background-image: url('@Url.Content("~/images/profile_div_bg.jpg")');background-size: cover;"></div>
 
+        <div class="add-user-field border rounded">
 
             <div class="d-flex justify-content-between w-100 px-4 pt-2 flex-wrap">
                 <div class="d-flex">
@@ -46,21 +53,21 @@
             </div>
             <div class="d-flex flex-column flex-md-row ">
                 <div class="col form-floating input-class">
-                    <input type="text" class="form-control" id="firstName" placeholder="John" asp-for = "Firstname">
+                    <input type="text" class="form-control" id="firstName" placeholder="John" asp-for = "Firstname" required>
                     <label for="floatingInput">First Name</label>
                 </div>
                 <div class="col form-floating input-class">
-                    <input type="text" class="form-control" id="lastName" placeholder="Doe" asp-for = "Lastname">
+                    <input type="text" class="form-control" id="lastName" placeholder="Doe" asp-for = "Lastname"  required>
                     <label for="floatingInput">Last Name</label>
                 </div>
             </div>
             <div class="d-flex flex-column flex-md-row ">
                 <div class="col form-floating input-class">
-                    <input type="text" class="form-control" id="username" placeholder="johndoe" asp-for = "Username">
+                    <input type="text" class="form-control" id="username" placeholder="johndoe" asp-for = "Username" required>
                     <label for="username">Username</label>
                 </div>
                 <div class="col form-floating input-class">
-                    <input type="text" class="form-control" id="username" placeholder="johndoe" asp-for = "Phone">
+                    <input type="text" class="form-control" id="inputPhone" placeholder="johndoe" asp-for = "Phone" maxlength="10" minlength="10" pattern="^\d{10}$" required>
                     <label for="inputPhone">Phone</label>
                 </div>
             </div>
@@ -81,7 +88,7 @@
                     <label for="inputCountry">Country</label>
                 </div>
                 <div class="col form-floating input-class">
-                    <select class="form-select" id="inputState" aria-label="Floating label select example" onchange="loadCities()" asp-for = "StateId">
+                    <select class="form-select" id="inputState" aria-label="Floating label select example" onchange="loadCities()" asp-for = "StateId" required>
                         @foreach (var state in Model.StateList)
                         { 
                             if(state.CountryId == @Model.CountryId)
@@ -119,13 +126,13 @@
             <div class="d-flex flex-column flex-md-row">
                 <div class="flex" style="flex: 3;">
                     <div class="form-floating input-class">
-                        <input type="text" class="form-control" id="username" placeholder="Bilimora" asp-for = "Address1">
-                        <label for="inputPhone">Address</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="Bilimora" asp-for = "Address1" required>
+                        <label for="inputAddress">Address</label>
                     </div>
                 </div>
                 <div class="flex" style="flex: 1;">
                     <div class="form-floating input-class">
-                        <input type="text" class="form-control" id="username" placeholder="Zipcode" asp-for="Zipcode">
+                        <input type="text" class="form-control" id="inputZip" placeholder="Zipcode" asp-for="Zipcode" required>
                         <label for="inputZip">Zipcode</label>
                     </div>
                 </div>
@@ -133,12 +140,18 @@
 
 
             <!-- Update Cancel  -->
+
             <div class="d-flex justify-content-end align-items-center">
+
                 <button class="update-cancel-btn text-white" id="updateInput" type="submit">Update User</button>
                 <a asp-action="Dash" asp-controller="Dashboard" style="text-decoration: none;">
                     <button class="update-cancel-btn bg-white" id="cancelInput" type="button">Cancel</button>
                 </a>
             </div>
+
+            
+        
+
         </div>
     </form>
 

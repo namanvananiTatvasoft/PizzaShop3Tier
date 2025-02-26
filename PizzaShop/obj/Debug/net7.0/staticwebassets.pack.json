@@ -9,6 +9,14 @@
       "PackagePath": "staticwebassets\\css\\AddUser.css"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\css\\Permissions.css",
+      "PackagePath": "staticwebassets\\css\\Permissions.css"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\css\\RoleList.css",
+      "PackagePath": "staticwebassets\\css\\RoleList.css"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\css\\UserList.css",
       "PackagePath": "staticwebassets\\css\\UserList.css"
     },
@@ -207,6 +215,10 @@
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\js\\login.js",
       "PackagePath": "staticwebassets\\js\\login.js"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\js\\permissions.js",
+      "PackagePath": "staticwebassets\\js\\permissions.js"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\js\\resetPassword.js",

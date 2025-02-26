@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "z/FxTFdvKq3PAHE4J/dCpowyDJ7ehkgSy2Bm3OSwMJA=",
+  "Hash": "9VbPuC6qJgR9+UqmafJF0mVd+EI+fg0fkfUOwBsZwQI=",
   "Source": "PizzaShop",
   "BasePath": "_content/PizzaShop",
   "Mode": "Default",
@@ -153,6 +153,23 @@
       "OriginalItemSpec": "wwwroot\\css\\myProfile.css"
     },
     {
+      "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\css\\Permissions.css",
+      "SourceId": "PizzaShop",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\",
+      "BasePath": "_content/PizzaShop",
+      "RelativePath": "css/Permissions.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\Permissions.css"
+    },
+    {
       "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\css\\resetPassword.css",
       "SourceId": "PizzaShop",
       "SourceType": "Discovered",
@@ -168,6 +185,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\resetPassword.css"
+    },
+    {
+      "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\css\\RoleList.css",
+      "SourceId": "PizzaShop",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\",
+      "BasePath": "_content/PizzaShop",
+      "RelativePath": "css/RoleList.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\RoleList.css"
     },
     {
       "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\css\\site.css",
@@ -916,6 +950,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\login.js"
+    },
+    {
+      "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\js\\permissions.js",
+      "SourceId": "PizzaShop",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\",
+      "BasePath": "_content/PizzaShop",
+      "RelativePath": "js/permissions.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\permissions.js"
     },
     {
       "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\js\\resetPassword.js",

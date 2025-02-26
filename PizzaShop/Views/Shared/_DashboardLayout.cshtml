@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="~/PizzaShop.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/UserList.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/AddUser.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Permissions.css" asp-append-version="true" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
 </head>
 <body>
@@ -138,10 +141,10 @@
                     <div class="sidebar-names ps-3 @(ViewBag.Active == "Users"? "active-name" :" ")">Users</div>
                 </div>
             </a>
-            <a href="roles.html" style="text-decoration: none;">
-                <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
-                    <img src="~/images/sidebar icons/roles_permission.png" alt="" class="sidebar-icons ps-3">
-                    <div class="sidebar-names ps-3">Role and Permission</div>
+            <a asp-controller="RolePermission" asp-action="RolesList" style="text-decoration: none;">
+                <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box @(ViewBag.Active == "RolePermission"? "active-sidebar" :" ")">
+                    <img src="~/images/sidebar icons/roles_permission.png" alt="" class="sidebar-icons ps-3 @(ViewBag.Active == "RolePermission"? "active-icon" :" ")">
+                    <div class="sidebar-names ps-3 @(ViewBag.Active == "RolePermission"? "active-name" :" ")">Role and Permission</div>
                 </div>
             </a>
             <a href="menu.html" style="text-decoration: none;">
@@ -189,6 +192,7 @@
 
         <!-- Main content  Only Change this Part for each page-->
         <div class="main-content">
+            <partial name="_Notification" />
             @RenderBody()
         </div>
     </div>
@@ -196,6 +200,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/_dashboardLayout.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

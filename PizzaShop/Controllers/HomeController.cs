@@ -25,7 +25,6 @@ public class HomeController : Controller
         _emailServices = emailServices;
     }
 
-    [Authorize]
     public IActionResult Index()
     {    
         if(string.IsNullOrEmpty(Request.Cookies["AuthToken"])){
@@ -66,7 +65,24 @@ public class HomeController : Controller
                 var roleObj =  _auth.getRole(obj.Roleid);
                 var token = _jwtServices.GenerateJwtToken(obj.Email, roleObj.Rolename);
 
-                // if(objUser.RememberMe)
+                if(objUser.RememberMe)
+                {
+                    Response.Cookies.Append("AuthToken", token, new CookieOptions
+                    {
+                        Expires = DateTime.UtcNow.AddDays(7),
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict
+                    });
+                }else{
+                    Response.Cookies.Append("AuthToken", token, new CookieOptions
+                    {
+                        Expires = DateTime.UtcNow.AddHours(1),
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict
+                    });
+                }
                 
                 Response.Cookies.Append("UserName", objUser.Email, new CookieOptions
                 {
@@ -77,14 +93,6 @@ public class HomeController : Controller
 
                 });
                 
-                Response.Cookies.Append("AuthToken", token, new CookieOptions
-                {
-                    Expires = DateTime.UtcNow.AddHours(1),
-                    HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.Strict
-                });
-                // return RedirectToAction("Dash", "Dashboard");
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -132,7 +140,7 @@ public class HomeController : Controller
             ViewData["Message"] = "Email does not exist";
         }
 
-        return View();
+        return View(obj);
     }
 
     //************************************************************** Reset Page ************************************************************
@@ -140,6 +148,7 @@ public class HomeController : Controller
     public IActionResult ResetPassword(string Email)
     {
         ViewData["Email"] = Email;
+        ViewData["Message"] = null;
         Console.WriteLine(Email);
         return View();
     }
@@ -149,17 +158,17 @@ public class HomeController : Controller
     public async Task<IActionResult> ResetPassword(ResetPasswordModel obj)
     {
 
-        if(obj.NewPassword == obj.ConfirmNewPassword)
+        if(ModelState.IsValid)
         {
             await _auth.UpdatePassword(obj.Email, obj.NewPassword);
             ViewData["Message"] = "Password Updated Succesfully";
-        }else
-        {
-            ViewData["mismatch"] =  "Passwords are not matched";
+            ViewData["Email"] = obj.Email;
+            return View();
         }
+
         
         ViewData["Email"] = obj.Email;
-        return View("ResetPassword");
+        return View("ResetPassword", obj);
     }
 
 

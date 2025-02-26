@@ -104,7 +104,7 @@
                 <label for="zipcode">Zipcode</label>
             </div>
             <div class="col form-floating input-class">
-                <input type="text" class="form-control" id="address" placeholder="" asp-for="Address1">
+                <input type="text" class="form-control" id="address" placeholder="" asp-for="Address1"> 
                 <label for="address">Address</label>
             </div>
             <div class="col form-floating input-class">
@@ -208,7 +208,21 @@
 
 
             //Required Field Validation (Except Image)
-            $("#addUserForm input[type='text'], #addUserForm select,  #addUserForm input[type='email'],  #addUserForm input[type='password']").each(function () {
+            $("#addUserForm input[type='text'], #addUserForm input[type='email'],  #addUserForm input[type='password']").each(function () {
+                let inputValue = $(this).val().trim();
+
+                if (!inputValue || inputValue === "0") {
+                    $(this).addClass("is-invalid"); // Add error styling
+                    $(this).next(".invalid-feedback").remove(); // Remove old message
+                    $(this).after('<div class="invalid-feedback">This field is required</div>');
+                    isValid = false;
+                } else {
+                    $(this).removeClass("is-invalid");
+                    $(this).next(".invalid-feedback").remove();
+                }
+            })
+
+            $("#addUserForm select").each(function () {
                 let inputValue = $(this).val().trim();
 
                 if (!inputValue || inputValue === "0") {
