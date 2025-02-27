@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj": {}
+    "c:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj": {
+    "c:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
+        "projectUniqueName": "c:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
         "projectName": "BAL",
-        "projectPath": "C:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
+        "projectPath": "c:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
         "packagesPath": "C:\\Users\\pct106\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\PizzaShopMain\\BAL\\obj\\",
+        "outputPath": "c:\\Projects\\PizzaShopMain\\BAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pct106\\AppData\\Roaming\\NuGet\\NuGet.Config"

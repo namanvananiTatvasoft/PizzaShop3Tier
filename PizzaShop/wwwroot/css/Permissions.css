@@ -19,7 +19,6 @@
 /* add user field  */
 .permission-toggles{
     background-color: #F8F9FA;
-
     margin: 0px 0px !important;
     padding: 10px 10px;
 
@@ -32,9 +31,10 @@
 }
 
 .form-floating>.form-control-plaintext~label, .form-floating>.form-control:focus~label, .form-floating>.form-control:not(:placeholder-shown)~label, .form-floating>.form-select~label {
-    opacity: .65;
-    transform: scale(.95) translateY(-0.80rem) translateX(1.32rem) !important;
+    opacity: 0.85;
+    transform: scale(.75) translateY(-0.80rem) translateX(1.55rem) !important;
     background-color: #F8F9FA;
+    /* background: linear-gradient(to bottom, #ffffff, #e9ecef); */
     width: fit-content !important;
     height: fit-content !important;
     padding: 0px 10px!important;

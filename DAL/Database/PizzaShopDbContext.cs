@@ -2,23 +2,30 @@
 using System.Collections.Generic;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace DAL.Database;
 
 public partial class PizzaShopDbContext : DbContext
 {
-    public PizzaShopDbContext()
+    private readonly IConfiguration _config;
+    public PizzaShopDbContext(IConfiguration config)
     {
+        _config = config;
     }
 
-    public PizzaShopDbContext(DbContextOptions<PizzaShopDbContext> options)
-        : base(options)
+    public PizzaShopDbContext(DbContextOptions<PizzaShopDbContext> options, IConfiguration config): base(options)
     {
+        _config = config;
     }
 
     public virtual DbSet<City> Cities { get; set; }
 
     public virtual DbSet<Country> Countries { get; set; }
+
+    public virtual DbSet<Permission> Permissions { get; set; }
+
+    public virtual DbSet<Permissionlist> Permissionlists { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
@@ -29,8 +36,10 @@ public partial class PizzaShopDbContext : DbContext
     public virtual DbSet<Userdetail> Userdetails { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost:5432;Database=PizzaShopDemo;Username=postgres;Password=Tatva@123");
+    {
+        var connectionString = _config.GetConnectionString("DefaultConnection");
+        optionsBuilder.UseNpgsql(connectionString);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -76,6 +85,55 @@ public partial class PizzaShopDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("created_at");
+        });
+
+        modelBuilder.Entity<Permission>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("permissions_pkey");
+
+            entity.ToTable("permissions");
+
+            entity.HasIndex(e => new { e.Roleid, e.Permissionid }, "permissions_roleid_permissionid_key").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Canaddedit).HasColumnName("canaddedit");
+            entity.Property(e => e.Candelete).HasColumnName("candelete");
+            entity.Property(e => e.Canview).HasColumnName("canview");
+            entity.Property(e => e.Isenable).HasColumnName("isenable");
+            entity.Property(e => e.Modifiedby).HasColumnName("modifiedby");
+            entity.Property(e => e.Modifieddate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifieddate");
+            entity.Property(e => e.Permissionid).HasColumnName("permissionid");
+            entity.Property(e => e.Roleid).HasColumnName("roleid");
+
+            entity.HasOne(d => d.ModifiedbyNavigation).WithMany(p => p.Permissions)
+                .HasForeignKey(d => d.Modifiedby)
+                .HasConstraintName("permissions_modifiedby_fkey");
+
+            entity.HasOne(d => d.PermissionNavigation).WithMany(p => p.Permissions)
+                .HasForeignKey(d => d.Permissionid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("permissions_permissionid_fkey");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Permissions)
+                .HasForeignKey(d => d.Roleid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("permissions_roleid_fkey");
+        });
+
+        modelBuilder.Entity<Permissionlist>(entity =>
+        {
+            entity.HasKey(e => e.Permissionid).HasName("permissionlist_pkey");
+
+            entity.ToTable("permissionlist");
+
+            entity.HasIndex(e => e.Permissionname, "permissionlist_permissionname_key").IsUnique();
+
+            entity.Property(e => e.Permissionid).HasColumnName("permissionid");
+            entity.Property(e => e.Permissionname)
+                .HasMaxLength(100)
+                .HasColumnName("permissionname");
         });
 
         modelBuilder.Entity<Role>(entity =>

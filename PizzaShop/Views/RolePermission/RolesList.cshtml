@@ -24,9 +24,9 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.Rolename</td>
+                    <td>@item.Rolename</td> 
                     <td class="custome-text-right">
-                        <a asp-action="Permissions">
+                        <a asp-action="Permissions" asp-route-roleid = "@item.Roleid">
                             <img src="~/images/pen.svg" alt="">
                         </a>
                     </td>

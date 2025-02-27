@@ -39,11 +39,19 @@ public class DashboardController : BaseDashboardController
     // My Profile
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult MyProfile(UpdateUserDetails objPass)
+    public async Task<IActionResult> MyProfile(UpdateUserDetails objPass)
     {
+        var (message, status) = await _auth.checkUsernameEmailPhone(objPass.Email, objPass.Phone, objPass.Username, true);
+        if (status)
+        {
+            TempData["error"] = message;
+            return RedirectToAction("MyProfile");
+        }
+
         _dash.UpdateDB(objPass);
         ViewBag.Active = "Dashboard";
         TempData["success"] = "Profile Updated Successfully !";
+        // TempData["success"] = message;
         return RedirectToAction("MyProfile");
     }
 

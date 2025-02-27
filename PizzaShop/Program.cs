@@ -69,6 +69,7 @@ builder.Services.AddScoped<IJwtservices, JwtServices>();
 builder.Services.AddScoped<IEmailServices, EmailServices>();
 builder.Services.AddScoped<IDashServices, DashServices>();
 builder.Services.AddScoped<IAdminUsersServices, AdminUsersServices>();
+builder.Services.AddScoped<IRolePermissionServices, RolePermissionServices>();
 
 
 

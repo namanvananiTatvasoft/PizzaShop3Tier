@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DAL.Models;
 
-public partial class Role
+public partial class Permissionlist
 {
-    public int Roleid { get; set; }
+    public int Permissionid { get; set; }
 
-    public string Rolename { get; set; } = null!;
+    public string Permissionname { get; set; } = null!;
 
     public virtual ICollection<Permission> Permissions { get; } = new List<Permission>();
 }
