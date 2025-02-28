@@ -5,7 +5,6 @@
 }
 @model DAL.ViewModel.LoginViewModel
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +45,7 @@
                                     <input type="email" class="form-control" id="LoginEmail" aria-describedby="emailHelp" placeholder="Email*" asp-for="Email">
                                     <i class="bi bi-person position-absolute h4" style="right: 20px; top: 5px;"></i>
                                 </div>
-                                <div  id="email-error-msg" class="error-msg"></div>
+                                <div  id="email-error-msg" class="error-msg" ></div>
                             </div>
                             <div class="mb-3">
                                 <div class="form-control p-0 d-flex align-items-center position-relative">
@@ -57,7 +56,6 @@
                             </div>
 
                             <div asp-validation-summary="All" class="bg-danger text-white w-50 border-danger rounded"></div>
-
 
                             <div class="mb-3 form-check d-flex justify-content-between align-items-center">
                                 <div>
@@ -86,6 +84,8 @@
             this.href = '@Url.Action("ForgotPassword", "Home")' + '?Email=' + encodeURIComponent(email);
         });
     </script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 
 </body>

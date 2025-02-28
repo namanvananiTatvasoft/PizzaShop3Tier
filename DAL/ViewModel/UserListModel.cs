@@ -13,4 +13,6 @@ public class UserListModel
     public string? Role { get; set; }
 
     public bool? Status { get; set; }
+
+    public string? Photourl { get; set; }
 }

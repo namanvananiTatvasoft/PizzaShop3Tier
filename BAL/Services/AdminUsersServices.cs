@@ -32,7 +32,8 @@ public class AdminUsersServices : IAdminUsersServices
                         Firstname = user.Firstname,
                         Lastname = user.Lastname,
                         Role = role.Rolename,
-                        Status = user.Status
+                        Status = user.Status,
+                        Photourl = user.Photourl
                     };
 
         // Sorting logic based on the column and direction

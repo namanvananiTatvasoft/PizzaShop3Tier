@@ -12,7 +12,7 @@ public class JwtServices : IJwtservices
     private readonly string _issuer = "myIssuer";
     private readonly string _audience = "myAudience";
     
-    public string GenerateJwtToken(string Email, string Role){
+    public string GenerateJwtToken(string Email, string Role, int expireMinutes = 60){
         var claims = new[]
         {
             new Claim(ClaimTypes.Name, Email),
@@ -26,7 +26,7 @@ public class JwtServices : IJwtservices
             issuer: _issuer,
             audience: _audience,
             claims: claims,
-            expires: DateTime.Now.AddHours(1),
+            expires: DateTime.Now.AddMinutes(expireMinutes),
             signingCredentials: creds
         );
 
@@ -55,6 +55,20 @@ public class JwtServices : IJwtservices
 
         var role = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
         return role;
+    }
+
+    public bool isTokenExpired(string Token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        if(Token==null){
+            return true;
+        }
+        var jwtToken = handler.ReadJwtToken(Token);
+
+        if(jwtToken.ValidTo < DateTime.UtcNow){
+            return true;
+        }
+        return false;
     }
 }
 

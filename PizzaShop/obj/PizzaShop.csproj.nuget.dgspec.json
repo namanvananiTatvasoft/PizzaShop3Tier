@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Projects\\PizzaShopMain\\PizzaShop\\PizzaShop.csproj": {}
+    "C:\\Projects\\PizzaShopMain\\PizzaShop\\PizzaShop.csproj": {}
   },
   "projects": {
-    "c:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj": {
+    "C:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
+        "projectUniqueName": "C:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
         "projectName": "BAL",
-        "projectPath": "c:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
+        "projectPath": "C:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
         "packagesPath": "C:\\Users\\pct106\\.nuget\\packages\\",
-        "outputPath": "c:\\Projects\\PizzaShopMain\\BAL\\obj\\",
+        "outputPath": "C:\\Projects\\PizzaShopMain\\BAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pct106\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -109,6 +109,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -150,14 +154,14 @@
         }
       }
     },
-    "c:\\Projects\\PizzaShopMain\\PizzaShop\\PizzaShop.csproj": {
+    "C:\\Projects\\PizzaShopMain\\PizzaShop\\PizzaShop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Projects\\PizzaShopMain\\PizzaShop\\PizzaShop.csproj",
+        "projectUniqueName": "C:\\Projects\\PizzaShopMain\\PizzaShop\\PizzaShop.csproj",
         "projectName": "PizzaShop",
-        "projectPath": "c:\\Projects\\PizzaShopMain\\PizzaShop\\PizzaShop.csproj",
+        "projectPath": "C:\\Projects\\PizzaShopMain\\PizzaShop\\PizzaShop.csproj",
         "packagesPath": "C:\\Users\\pct106\\.nuget\\packages\\",
-        "outputPath": "c:\\Projects\\PizzaShopMain\\PizzaShop\\obj\\",
+        "outputPath": "C:\\Projects\\PizzaShopMain\\PizzaShop\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pct106\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -172,8 +176,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "c:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj": {
-                "projectPath": "c:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj"
+              "C:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj": {
+                "projectPath": "C:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj"
               },
               "C:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj": {
                 "projectPath": "C:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj"

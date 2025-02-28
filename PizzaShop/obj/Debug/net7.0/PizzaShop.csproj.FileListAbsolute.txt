@@ -56,3 +56,9 @@ C:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\System.Security.Cryptograph
 C:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\System.Text.Encoding.CodePages.dll
 C:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll
 C:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Text.Encoding.CodePages.dll
+c:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+c:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\Microsoft.Extensions.ObjectPool.dll
+c:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+c:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
+c:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\System.Text.Encodings.Web.dll
+c:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\runtimes\browser\lib\net7.0\System.Text.Encodings.Web.dll

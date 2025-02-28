@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace DAL.ViewModel;
 
@@ -42,4 +43,6 @@ public class AddUserModel
     [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Phone Number.")]
     public String Phone { get; set; }
     public bool? Status { get; internal set; }
+
+    public IFormFile imageFile { get; set; }
 }

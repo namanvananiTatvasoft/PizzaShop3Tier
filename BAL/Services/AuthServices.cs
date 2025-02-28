@@ -3,6 +3,7 @@ using BAL.Interfaces;
 using DAL.Database;
 using DAL.Models;
 using DAL.ViewModel;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 namespace BAL.Services;
@@ -11,14 +12,15 @@ public class AuthServices: IAuthServices
 {
     private readonly PizzaShopDbContext _db;
     private readonly IHashServices _hashServices;
-
     private readonly IEmailServices _emailServices;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public AuthServices(PizzaShopDbContext db, IHashServices hashServices, IEmailServices emailServices)
+    public AuthServices(PizzaShopDbContext db, IHashServices hashServices, IEmailServices emailServices, IWebHostEnvironment webHostEnvironment)
     {
         _db = db;
         _hashServices = hashServices;
         _emailServices = emailServices;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     #region get table values
@@ -30,6 +32,11 @@ public class AuthServices: IAuthServices
     public Userdetail getUserDetails(string email)
     {
         return _db.Userdetails.Where(a => a.Email == email).FirstOrDefault() ?? new Userdetail();
+    }
+
+    public string getImageUrl(string email)
+    {
+        return _db.Userdetails.Where(a => a.Email == email).Select(a => a.Photourl).FirstOrDefault() ?? "";
     }
 
 
@@ -119,6 +126,30 @@ public class AuthServices: IAuthServices
         var createdByUser = getUser(createdByEmail);
         var ourUser = getUser(model.Email);
 
+        string imageURL = "";
+
+        if(model.imageFile != null)
+        {
+            // Save the image
+            var customerId = user.Userid;
+            var fileExtension = Path.GetExtension(model.imageFile.FileName);
+
+            var fileName = $"{customerId}{fileExtension}";
+            var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "profilePic");
+
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            Console.WriteLine(filePath);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                model.imageFile.CopyTo(fileStream);
+            }
+
+            imageURL = "/images/profilePic/" + fileName;
+
+        }
+
         var Userdetails = new Userdetail
         {
             Userid = ourUser.Userid,
@@ -134,6 +165,7 @@ public class AuthServices: IAuthServices
             Address1 = model.Address1,
             Createdby = createdByUser.Userid,
             Roleid = (short)model.Roleid,
+            Photourl = imageURL
         };
 
         _db.Userdetails.Add(Userdetails);
@@ -146,6 +178,32 @@ public class AuthServices: IAuthServices
     {
         var user = getUserDetails(model.Email);
         var updatedByUser = getUser(updatedByEmail);
+
+        string imageURL = "";
+
+        if(model.imageFile != null)
+        {
+            // Save the image
+            var customerId = user.Userid;
+            var fileExtension = Path.GetExtension(model.imageFile.FileName);
+
+            var fileName = $"{customerId}{fileExtension}";
+            var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "profilePic");
+
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            Console.WriteLine(filePath);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                model.imageFile.CopyTo(fileStream);
+            }
+
+            imageURL = "/images/profilePic/" + fileName;
+
+        }
+
+
 
         user.Firstname = model.Firstname;
         user.Lastname = model.Lastname;
@@ -161,6 +219,9 @@ public class AuthServices: IAuthServices
         user.Roleid = (short)model.Roleid;
         user.Modifiedby = updatedByUser.Userid;
         user.Modifieddate = DateTime.Now;
+
+        if(imageURL != "")
+            user.Photourl = imageURL;
 
         _db.Userdetails.Update(user);
         await _db.SaveChangesAsync();

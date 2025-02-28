@@ -55,7 +55,9 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             var obj = _auth.getUser(objUser.Email);
-            if(obj.Email == null)
+            var objUserValid = _auth.getUserDetails(objUser.Email);
+
+            if(obj.Email == null || objUserValid.Status == false)
             {
                 ModelState.AddModelError("Email", "Email is Incorrect");
             }
@@ -93,12 +95,14 @@ public class HomeController : Controller
 
                 });
                 
+                TempData["Success"] = "Login Successfull";
                 return RedirectToAction("Index", "Home");
             }
             else
                 ModelState.AddModelError("Password", "Password is Incorrect");
         }
             
+        
         return View();
     }
 
@@ -132,7 +136,10 @@ public class HomeController : Controller
 
         if(user.Email != null){
 
-            string uriii = Url.Action("ResetPassword", "Home", new { Email = obj.Email }, Request.Scheme);
+            var emailToken = _jwtServices.GenerateJwtToken(obj.Email, "", 24 * 60);
+            string uriii = Url.Action("ResetPassword", "Home", new { Email = emailToken }, Request.Scheme);
+
+            // string uriii = Url.Action("ResetPassword", "Home", new { Email = obj.Email }, Request.Scheme);
             await _auth.SendResetPasswordEmail(obj.Email, uriii);
 
             ViewData["Message"] = "Reset Password Link is send to your Email";
@@ -145,8 +152,14 @@ public class HomeController : Controller
 
     //************************************************************** Reset Page ************************************************************
     [HttpGet]
-    public IActionResult ResetPassword(string Email)
+    public IActionResult ResetPassword(string email)
     {
+        if(_jwtServices.isTokenExpired(email)){
+            TempData["error"] = "Link is Expired";
+            return RedirectToAction("ForgotPassword", "Home");
+        }
+        var Email = _jwtServices.getEmailDetailsFromToken(email);
+
         ViewData["Email"] = Email;
         ViewData["Message"] = null;
         Console.WriteLine(Email);

@@ -10,7 +10,7 @@ public class DashboardController : BaseDashboardController
     protected readonly IAuthServices _auth;
 
 
-    public DashboardController(IJwtservices jwtservices, IDashServices dash, IAuthServices auth) : base(jwtservices)
+    public DashboardController(IJwtservices jwtservices, IDashServices dash, IAuthServices auth) : base(jwtservices, auth)
     {
         _dash = dash;
         _auth = auth;
@@ -21,6 +21,7 @@ public class DashboardController : BaseDashboardController
     {
         ViewData["UserName"] = GetUserName();
         ViewBag.Active = "Dashboard";
+        ViewBag.image = GetImgUrl();
         return View();
     }
 
@@ -31,7 +32,10 @@ public class DashboardController : BaseDashboardController
         var ojbPass = _dash.MapObject(GetUserName());
         ViewData["UserName"] = GetUserName();
         ViewData["Role"] = GetRole();
+        ViewBag.imageURL = GetImgUrl();
+
         ViewBag.Active = "Dashboard";
+        ViewBag.image = ojbPass.photoUrl;
 
         return View(ojbPass);
     }
@@ -41,6 +45,7 @@ public class DashboardController : BaseDashboardController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> MyProfile(UpdateUserDetails objPass)
     {
+        
         var (message, status) = await _auth.checkUsernameEmailPhone(objPass.Email, objPass.Phone, objPass.Username, true);
         if (status)
         {
@@ -61,6 +66,8 @@ public class DashboardController : BaseDashboardController
     {
         ViewBag.Active = "Dashboard";
         ViewData["UserName"] = GetUserName();
+        ViewBag.image = GetImgUrl();
+
 
         return View();
     }
@@ -75,16 +82,17 @@ public class DashboardController : BaseDashboardController
 
             if(_auth.checkPassword(model.OldPassword, obj.Hashpassword)){
                 await _auth.UpdatePassword(email, model.NewPassword);
-                // ModelState.AddModelError("Wrong Password", "Successfully Change Password");
                 TempData["success"] = "Password Changed Succesfully!";
                 return View();
             }else{
-                // ModelState.AddModelError("Wrong Password", "Invalid Old Password");
                 TempData["error"] = "Invalid Old Password";
             }
         }
         ViewBag.Active = "Dashboard";
         ViewData["UserName"] = GetUserName();
+        ViewBag.image = GetImgUrl();
+
+
         return View();
     }
 

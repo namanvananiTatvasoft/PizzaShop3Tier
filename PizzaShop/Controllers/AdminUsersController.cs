@@ -8,7 +8,7 @@ public class AdminUsersController : BaseDashboardController
 {
     protected readonly IAdminUsersServices _adminUsersServices;
     protected readonly IAuthServices _auth;
-    public AdminUsersController(IJwtservices jwtservices, IAdminUsersServices adminUsersServices, IAuthServices auth) : base(jwtservices)
+    public AdminUsersController(IJwtservices jwtservices, IAdminUsersServices adminUsersServices, IAuthServices auth) : base(jwtservices, auth)
     {
         _adminUsersServices = adminUsersServices;
         _auth = auth;
@@ -28,6 +28,7 @@ public class AdminUsersController : BaseDashboardController
         ViewBag.SearchKey = searchKey;
         ViewBag.Active = "Users";
         ViewData["Username"] = GetUserName();
+        ViewBag.image = GetImgUrl();
 
         return View(users);
     }
@@ -35,6 +36,7 @@ public class AdminUsersController : BaseDashboardController
     // Add User **************************************** get Method ******************
     public async Task<IActionResult> AddUser()
     {
+        ViewBag.image = GetImgUrl();
         ViewData["Username"] = GetUserName();
         return View();
     }
@@ -51,6 +53,7 @@ public class AdminUsersController : BaseDashboardController
             if (status)
             {
                 TempData["Error"] = message;
+                ViewBag.image = GetImgUrl();
                 return View("AddUser", user);
             }
             
@@ -68,6 +71,7 @@ public class AdminUsersController : BaseDashboardController
         }
 
         TempData["Error"] = "User not added";
+        ViewBag.image = GetImgUrl();
         return View();
     }
 
@@ -97,6 +101,8 @@ public class AdminUsersController : BaseDashboardController
         };
 
         ViewData["Username"] = GetUserName();
+        ViewBag.image = GetImgUrl();
+
         return View(model);
     }
 
@@ -116,6 +122,8 @@ public class AdminUsersController : BaseDashboardController
 
         ViewData["Username"] = GetUserName();
         TempData["success"] = "User updated successfully";
+        ViewBag.image = GetImgUrl();
+
         return RedirectToAction("EditUser", new {email = model.Email});
     }
 

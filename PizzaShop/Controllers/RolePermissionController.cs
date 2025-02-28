@@ -8,7 +8,7 @@ public class RolePermissionController : BaseDashboardController
 {
     protected IAuthServices _authServices;
     protected IRolePermissionServices _rolePermissionServices;
-    public RolePermissionController(IJwtservices jwtservices, IAuthServices authServices, IRolePermissionServices rolePermissionServices) : base(jwtservices)
+    public RolePermissionController(IJwtservices jwtservices, IAuthServices authServices, IRolePermissionServices rolePermissionServices) : base(jwtservices, authServices)
     {
         _authServices = authServices;
         _rolePermissionServices = rolePermissionServices;
@@ -19,6 +19,7 @@ public class RolePermissionController : BaseDashboardController
     {
         ViewData["Username"] = GetUserName();
         List<Role> roles = _authServices.getRoles();
+        ViewBag.image = GetImgUrl();
         return View(roles);
     }
 
@@ -28,6 +29,8 @@ public class RolePermissionController : BaseDashboardController
         PermissionModel model = _rolePermissionServices.GetPermissionModel(roleid);
 
         ViewData["Username"] = GetUserName();
+        ViewBag.image = GetImgUrl();
+
         return View(model);
     }
 
@@ -37,6 +40,7 @@ public class RolePermissionController : BaseDashboardController
         _rolePermissionServices.UpdatePermissions(model);
 
         ViewData["Username"] = GetUserName();
+        ViewBag.image = GetImgUrl();
         return View(model);
     }
 }

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using DAL.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace DAL.ViewModel;
 
@@ -45,5 +46,7 @@ public class EditUserModel
     public List<Country> CountryList { get; set; }
     public List<State> StateList { get; set; }
     public List<City> CityList { get; set; }
+
+    public IFormFile imageFile { get; set; }
 }
 

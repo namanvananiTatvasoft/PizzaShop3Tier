@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 // using Microsoft.AspNetCore.Mvc.Rendering;
 using DAL.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace DAL.ViewModel;
 
@@ -23,6 +24,10 @@ public class UpdateUserDetails
     public string? Address1 { get; set; } = null!;
     [Required]
     public int? Zipcode { get; set; } = null!;
+
+    public IFormFile profileImg { get; set; }
+
+    public string photoUrl { get; set; }
 
     // These properties should be added to bind country, state, and city IDs
     public int CountryId { get; set; }

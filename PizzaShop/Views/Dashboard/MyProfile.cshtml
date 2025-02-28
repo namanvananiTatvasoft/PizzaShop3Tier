@@ -22,16 +22,16 @@
     <!-- name row -->
     <div class="row px-0 d-flex justify-content-between mb-3">
         <div class="col fs-3 fs-sm-2 fw-bold special-color">My Profile</div>
-        @if(TempData["success"] is not null)
+        @* @if(TempData["success"] is not null)
         {
             <div class="alert alert-success mb-0" role="alert" style="width: fit-content;">
                     @TempData["success"]
             </div>
-        }
+        } *@
     </div>
 
     <!-- user input files -->
-    <form method="post" asp-action = "MyProfile">
+    <form method="post" asp-action = "MyProfile" enctype="multipart/form-data">
         
         <input type="text" asp-for = "Email" hidden>
         <div  style="height:50px; background-image: url('@Url.Content("~/images/profile_div_bg.jpg")');background-size: cover;"></div>
@@ -39,8 +39,15 @@
         <div class="add-user-field border rounded">
 
             <div class="d-flex justify-content-between w-100 px-4 pt-2 flex-wrap">
+
                 <div class="d-flex">
-                    <img src="~/images/default_pfp.svg.png" alt="" style="height: 120px; position: relative; top: -40px; margin-right: 10px;" >
+                    <div style="position: relative; top: -40px; margin-right: 10px;">
+                        @* <img src=@((ViewBag.image != null) ? ViewBag.image : "~/images/default_pfp.svg.png") alt="" style="height: 120px; width: 120px; border-radius: 100%;" > *@
+                        <img src=@((@Model.photoUrl != null) ? @Model.photoUrl : "~/images/default_pfp.svg.png") alt="" style="height: 120px; width: 120px; border-radius: 100%;" >
+
+                        <img src="~/images/camerainput.svg" alt="" style="height: 25px; position: absolute; bottom: 20px; right:0px; background-color: white; border-radius: 30%;">
+                        <input type="file" style="height: 20px; width:25px; position: absolute; bottom: 20px; right:0px; opacity: 0;" asp-for = "profileImg">
+                    </div>
                     <div class="d-flex flex-column">
                         <div class="mb-1 fs-4">@Model.Firstname @Model.Lastname</div>
                         <div class="text-success fs-6">@ViewData["Role"]</div>
@@ -51,6 +58,8 @@
                     <div>@Model.Email</div>
                 </div>
             </div>
+
+
             <div class="d-flex flex-column flex-md-row ">
                 <div class="col form-floating input-class">
                     <input type="text" class="form-control" id="firstName" placeholder="John" asp-for = "Firstname" required>

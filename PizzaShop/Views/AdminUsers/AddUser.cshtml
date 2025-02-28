@@ -27,7 +27,7 @@
 
     <!-- user input files -->
 
-    <form class="add-user-field border rounded" method="post" id="addUserForm" asp-action="AddUser" asp-controller="AdminUsers">
+    <form class="add-user-field border rounded" method="post" id="addUserForm" asp-action="AddUser" asp-controller="AdminUsers" enctype="multipart/form-data">
 
         <div class="d-flex flex-column flex-md-row ">
             <div class="col form-floating input-class">
@@ -74,7 +74,7 @@
 
         <!-- Browse File  -->
         <div class="d-flex flex-column justify-content-center align-items-center bg-white position-relative" id="browse-files">
-            <input type="file" class="position-absolute bg-primary opacity-0 h-100 w-100">
+            <input type="file" class="position-absolute bg-primary opacity-0 h-100 w-100" asp-for = "imageFile" id="inputImage">
             <img src="~/images/select-files.jfif" alt="" style="height: 25px;">
             <div style="font-size: 15px;">Browse Files</div>
         </div>
@@ -125,6 +125,15 @@
 
 @section Scripts{
     <script>
+
+        document.getElementById("inputImage").addEventListener("change", function () {
+            let fileLabel = document.getElementById("browse-files");
+            if (this.files.length > 0) {
+                fileLabel.style.border = "2px solid green"; // Change border color when a file is selected
+            } else {
+                fileLabel.style.border = "2px solid rgba(112, 128, 144, 0.123)"; // Reset border color
+            }
+        });
 
         function loadStates(){
             var countrySelect = $('#inputCountry');

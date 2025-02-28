@@ -7,6 +7,7 @@ public interface IAuthServices
 {
     public User getUser(string email);
     public Userdetail getUserDetails(string email);
+    public string getImageUrl(string email);
     public Task AddUserToDB(AddUserModel model, string createdByEmail);
     public Task UpdateUserToDB(EditUserModel model, string updatedByEmail);
     public Task DeleteUser(string email);

@@ -118,7 +118,12 @@
                     <tr>
                         <td>
                             <div class="d-flex justify-content-start align-items-center">
-                                <img src="~/images/Default_pfp.svg.png" alt="" class="user-table-pic">
+                                @if(user.Photourl != null){
+                                    <img src="@user.Photourl" alt="user-pic" class="user-table-pic">
+                                }
+                                else{
+                                    <img src="~/images/Default_pfp.svg.png" alt="~/images/Default_pfp.svg.png" class="user-table-pic">
+                                }
                                 <div>
                                     @user.Firstname @user.Lastname
                                 </div>
@@ -203,8 +208,16 @@
         }
 
         // Update the URL with the new sorting parameters
-        window.location.href = '@Url.Action("UserListAll")' + '?PageSize=' + @ViewBag.PageSize + '&PageNumber=' + @ViewBag.PageNumber + '&SortColumn=' + column + '&SortDirection=' + currentSortDirection + '&SearchKey=' + '@ViewBag.SearchKey';
+        window.location.href = '@Url.Action("UserListAll")' + '?PageSize=' + @ViewBag.PageSize + '&PageNumber=' + 1 + '&SortColumn=' + column + '&SortDirection=' + currentSortDirection + '&SearchKey=' + '@ViewBag.SearchKey';
     }
+
+    document.querySelector('#searchInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            var searchKey = document.getElementById("searchInput").value.toLowerCase();
+            console.log(searchKey);
+            window.location.href = '@Url.Action("UserListAll")' + '?PageSize=' + @ViewBag.PageSize + '&PageNumber=' + 1 + '&SortColumn=' + '@ViewBag.SortColumn' + '&SortDirection=' + '@ViewBag.SortDirection' + '&SearchKey=' + searchKey;
+        }
+    });
 
     function searchFunction()
     {

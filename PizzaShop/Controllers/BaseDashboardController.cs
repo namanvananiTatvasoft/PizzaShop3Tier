@@ -14,11 +14,14 @@ namespace PizzaShop.Controllers
     {
         private string _userName;
         private string _role;
+        private string _imgurl;
 
         private readonly IJwtservices _jwtservices;
+        private readonly IAuthServices _auth;
 
-        public BaseDashboardController(IJwtservices jwtservices){
+        public BaseDashboardController(IJwtservices jwtservices, IAuthServices auth){
             _jwtservices = jwtservices;
+            _auth = auth;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -28,6 +31,8 @@ namespace PizzaShop.Controllers
             var token = Request.Cookies["AuthToken"].ToString();
             _userName = _jwtservices.getEmailDetailsFromToken(token);
             _role = _jwtservices.getRoleDetailsFromToken(token);
+            _imgurl = _auth.getImageUrl(_userName);
+
         }
 
         protected string GetUserName()
@@ -38,6 +43,11 @@ namespace PizzaShop.Controllers
         protected string GetRole()
         {
             return _role;
+        }
+
+        protected string GetImgUrl()
+        {
+            return _imgurl;
         }
     }
 
