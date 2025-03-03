@@ -15,6 +15,10 @@ public partial class User
 
     public int Roleid { get; set; }
 
+    public virtual ICollection<Category> CategoryCreatedbyNavigations { get; } = new List<Category>();
+
+    public virtual ICollection<Category> CategoryModifiedbyNavigations { get; } = new List<Category>();
+
     public virtual ICollection<Permission> Permissions { get; } = new List<Permission>();
 
     public virtual ICollection<Userdetail> UserdetailCreatedbyNavigations { get; } = new List<Userdetail>();

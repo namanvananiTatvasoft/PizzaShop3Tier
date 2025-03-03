@@ -1,45 +1,105 @@
+@model DAL.ViewModel.MenuViewModel
+
 @{
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
     ViewData["Title"] = "Menu";
     ViewBag.Active = "Menu";
 }
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    @* <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"> *@
 </head>
 
 
 <div class="menu-item-container">
 
-            <!-- add category modal  -->
+    <!-- add category modal  -->
     <div class="modal fade" id="addCategoryModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <!-- <div class="modal-header"> -->
-
                 <!-- </div> -->
-                <div class="modal-body">
+                <form class="modal-body" asp-action="MenuListCategoryAdd" method="post">
                     <div class="d-flex justify-content-between mb-5">
                         <h1 class="modal-title fs-5 fw-semibold" id="exampleModalLabel">Add Category</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="form-group mb-3">
-                        <input type="text" class="form-control py-2" id="exampleFormControlInput1" placeholder="Name*">
+                        <input type="text" class="form-control py-2" id="categoryName" placeholder="Name*" asp-for="categoryAdd.Categoryname">
                     </div>
+
                     <div class="form-group mb-5">
-                        <textarea class="form-control py-2" id="exampleFormControlTextarea1" rows="2" placeholder="Description"></textarea>
+                        <textarea class="form-control py-2" id="categoryDescription" rows="2" placeholder="Description" asp-for="categoryAdd.Description"></textarea>
                     </div>
                     
 
                     <div class="d-flex justify-content-end">
-                        <button type="button" class="save-cancel-btn fw-semibold" id="save-btn">Save</button>
+                        <button type="submit" class="save-cancel-btn fw-semibold" id="save-btn">Save</button>
                         <button type="button" class="save-cancel-btn fw-semibold" id="cancel-btn" data-bs-dismiss="modal">Cancel</button>
                     </div>
 
-                </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <!-- Edit Category Modal -->
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- </div> -->
+                <form class="modal-body" asp-action="MenuListCategoryEdit" method="post">
+                    <div class="d-flex justify-content-between mb-5">
+                        <h1 class="modal-title fs-5 fw-semibold" id="exampleModalLabel">Edit Category</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <input type="text" asp-for="categoryAdd.Categoryid" id="inputcategoryId" hidden>
+
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control py-2" id="inputcategoryName" placeholder="Name*" asp-for="categoryAdd.Categoryname">
+                    </div>
+
+                    <div class="form-group mb-5">
+                        <textarea class="form-control py-2" id="inputcategoryDescription" rows="2" placeholder="Description" asp-for="categoryAdd.Description"></textarea>
+                    </div>
+                    
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="save-cancel-btn fw-semibold" id="save-btn">Save</button>
+                        <button type="button" class="save-cancel-btn fw-semibold" id="cancel-btn" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Category Modal -->
+    <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- </div> -->
+                <form class="modal-body" asp-action="MenuListCategoryDelete" method="post">
+                    <div class="d-flex justify-content-between mb-3">
+                        <h1 class="modal-title fs-5 fw-semibold special-color" id="exampleModalLabel">Delete Confirmation</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <input type="text" asp-for="categoryAdd.Categoryid" id="deletecategoryId" hidden>
+
+                    <div class="d-flex align-items-center flex-column justify-content-center mb-4">
+                        <img src="~/images/warning.png" alt="" style="height: 35px; width: 35px;">
+                        <div class="f-5">Are You Sure you want to delete Category ?</div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="save-cancel-btn fw-semibold" id="save-btn">Yes</button>
+                        <button type="button" class="save-cancel-btn fw-semibold" id="cancel-btn" data-bs-dismiss="modal">No</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Menu Display -->
     <div class="row px-0 d-flex justify-content-between mb-3">
@@ -48,7 +108,7 @@
 
     <!-- Menu Item List and Modifiers -->
     <div class="row border rounded menu-list-tab bg-white">
-        <div id="nav-tab" role="tablist" class="d-flex">
+        <div class="d-flex nav" id="nav-tab" role="tablist" >
             <button class="nav-link tab-btn active d-flex align-items-center" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
                 <img src="~/images/list-check.svg" alt="">
                 <div>Items</div>
@@ -77,38 +137,24 @@
 
                         <!-- category list  -->
                         <div class="d-flex flex-column category-list ">
-                            <div class="d-flex pb-3 active-category">
+                            @foreach(var category in Model.categoryList)
+                            {
+                                <div class="d-flex justify-content-between category-container">
+                                    <div class="d-flex pb-3 @(category.Categoryid == 1 ? "active-category" : "")">
+                                        <img src="~/images/grid-3x2-gap-fill.svg" alt="" style="transform: rotate(90deg);">
+                                        <div>@category.Categoryname</div>
+                                    </div>
+                                    <div class="text-nowrap button-container">
+                                        <img src="~/images/pen.svg" alt="" class="editButtom" id="editCategory" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-id = "@category.Categoryid" data-name = "@category.Categoryname" data-desc="@category.Description" onclick="editCategory(this)">
+                                        <img src="~/images/trash.svg" alt="" class="deleteButton" id="deleteCategory" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" data-id="@category.Categoryid" onclick="deleteCategory(this)">
+                                    </div>
+                                </div>
+                            }
+                            
+                            @* <div class="d-flex pb-3 active-category">
                                 <img src="~/images/grid-3x2-gap-fill.svg" alt="" style="transform: rotate(90deg);">
                                 <div>Sandwich</div>
-                            </div>
-                            <div class="d-flex pb-3">
-                                <img src="~/images/grid-3x2-gap-fill.svg" alt="" style="transform: rotate(90deg);">
-                                <div>Pasta</div>
-                            </div>
-                            <div class="d-flex pb-3">
-                                <img src="~/images/grid-3x2-gap-fill.svg" alt="" style="transform: rotate(90deg);">
-                                <div>Sides and Appetizers</div>
-                            </div>
-                            <div class="d-flex pb-3">
-                                <img src="~/images/grid-3x2-gap-fill.svg" alt="" style="transform: rotate(90deg);">
-                                <div>Salads</div>
-                            </div>
-                            <div class="d-flex pb-3">
-                                <img src="~/images/grid-3x2-gap-fill.svg" alt="" style="transform: rotate(90deg);">
-                                <div>Dips and Sauces</div>
-                            </div>
-                            <div class="d-flex pb-3">
-                                <img src="~/images/grid-3x2-gap-fill.svg" alt="" style="transform: rotate(90deg);">
-                                <div>Pizza</div>
-                            </div>
-                            <div class="d-flex pb-3">
-                                <img src="~/images/grid-3x2-gap-fill.svg" alt="" style="transform: rotate(90deg);">
-                                <div>Desserts</div>
-                            </div>
-                            <div class="d-flex pb-3">
-                                <img src="~/images/grid-3x2-gap-fill.svg" alt="" style="transform: rotate(90deg);">
-                                <div>Burger</div>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                     <!-- items -->
@@ -311,6 +357,27 @@
     </div>
 </div>
 
+<script>
+    function editCategory(element)
+    {
+        var catId = element.getAttribute('data-id');
+        var catName = element.getAttribute('data-name');
+        var catDesc = element.getAttribute('data-desc');
+
+        document.getElementById("inputcategoryId").value = catId;
+        document.getElementById("inputcategoryName").value = catName;
+        document.getElementById("inputcategoryDescription").value = catDesc;
+
+    }
+
+    function deleteCategory(element)
+    {
+        var catId = element.getAttribute('data-id');
+        document.getElementById("deletecategoryId").value = catId;
+    }
+
+</script>
+
 <script src="~/js/MenuList.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-FxfkB8Sb6D8ugghYzX5frzG3VfV7bDZn6zShuyFqVOTC8N5pFwQ4B8lYrsLQb7Bx" crossorigin="anonymous"></script>
+@* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-FxfkB8Sb6D8ugghYzX5frzG3VfV7bDZn6zShuyFqVOTC8N5pFwQ4B8lYrsLQb7Bx" crossorigin="anonymous"></script> *@
 

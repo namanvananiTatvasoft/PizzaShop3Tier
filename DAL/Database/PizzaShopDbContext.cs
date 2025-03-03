@@ -8,16 +8,19 @@ namespace DAL.Database;
 
 public partial class PizzaShopDbContext : DbContext
 {
-    private readonly IConfiguration _config;
+    protected IConfiguration _config;
     public PizzaShopDbContext(IConfiguration config)
     {
         _config = config;
     }
 
-    public PizzaShopDbContext(DbContextOptions<PizzaShopDbContext> options, IConfiguration config): base(options)
+    public PizzaShopDbContext(DbContextOptions<PizzaShopDbContext> options, IConfiguration config)
+        : base(options)
     {
         _config = config;
     }
+
+    public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<City> Cities { get; set; }
 
@@ -40,9 +43,44 @@ public partial class PizzaShopDbContext : DbContext
         var connectionString = _config.GetConnectionString("DefaultConnection");
         optionsBuilder.UseNpgsql(connectionString);
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.HasKey(e => e.Categoryid).HasName("category_pkey");
+
+            entity.ToTable("category");
+
+            entity.HasIndex(e => e.Categoryname, "category_categoryname_key").IsUnique();
+
+            entity.Property(e => e.Categoryid).HasColumnName("categoryid");
+            entity.Property(e => e.Categoryname)
+                .HasMaxLength(50)
+                .HasColumnName("categoryname");
+            entity.Property(e => e.Createdby).HasColumnName("createdby");
+            entity.Property(e => e.Createddate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createddate");
+            entity.Property(e => e.Description)
+                .HasMaxLength(200)
+                .HasColumnName("description");
+            entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+            entity.Property(e => e.Modifiedby).HasColumnName("modifiedby");
+            entity.Property(e => e.Modifieddate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifieddate");
+
+            entity.HasOne(d => d.CreatedbyNavigation).WithMany(p => p.CategoryCreatedbyNavigations)
+                .HasForeignKey(d => d.Createdby)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("category_createdby_fkey");
+
+            entity.HasOne(d => d.ModifiedbyNavigation).WithMany(p => p.CategoryModifiedbyNavigations)
+                .HasForeignKey(d => d.Modifiedby)
+                .HasConstraintName("category_modifiedby_fkey");
+        });
+
         modelBuilder.Entity<City>(entity =>
         {
             entity.HasKey(e => e.CityId).HasName("city_pkey");

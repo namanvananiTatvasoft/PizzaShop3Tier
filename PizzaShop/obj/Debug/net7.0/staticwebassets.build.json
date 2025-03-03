@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "6n42RE2h1cM0eiaJBeaYqrRG4uGlYYndno5geGXZv8c=",
+  "Hash": "JrNaLT+VUkJSDOezRa5hZPT6+dLfrGliiHDKC+Khxuk=",
   "Source": "PizzaShop",
   "BasePath": "_content/PizzaShop",
   "Mode": "Default",
@@ -544,6 +544,23 @@
       "OriginalItemSpec": "wwwroot\\images\\icons\\waiting-time.svg"
     },
     {
+      "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\list-check.svg",
+      "SourceId": "PizzaShop",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\",
+      "BasePath": "_content/PizzaShop",
+      "RelativePath": "images/list-check.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\list-check.svg"
+    },
+    {
       "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\logos\\icons8-facebook-48.png",
       "SourceId": "PizzaShop",
       "SourceType": "Discovered",
@@ -697,6 +714,23 @@
       "OriginalItemSpec": "wwwroot\\images\\profilePic\\1.svg"
     },
     {
+      "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\14.png",
+      "SourceId": "PizzaShop",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\",
+      "BasePath": "_content/PizzaShop",
+      "RelativePath": "images/profilePic/14.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\profilePic\\14.png"
+    },
+    {
       "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\23.png",
       "SourceId": "PizzaShop",
       "SourceType": "Discovered",
@@ -746,6 +780,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\profilePic\\31.png"
+    },
+    {
+      "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\34.png",
+      "SourceId": "PizzaShop",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\",
+      "BasePath": "_content/PizzaShop",
+      "RelativePath": "images/profilePic/34.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\profilePic\\34.png"
     },
     {
       "Identity": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\36.jpg",

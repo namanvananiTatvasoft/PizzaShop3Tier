@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using PizzashopRMS.Helpers;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace PizzaShop.Controllers
 {
-    [Authorize(Roles = "Super Admin")]// Apply Authorize at the controller level
+    [CustomAuthorise(new string[] {"Super Admin", "Chef"})]// Apply Authorize at the controller level
     public abstract class BaseDashboardController : Controller
     {
         private string _userName;

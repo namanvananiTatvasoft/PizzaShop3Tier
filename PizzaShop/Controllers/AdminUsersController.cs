@@ -33,6 +33,23 @@ public class AdminUsersController : BaseDashboardController
         return View(users);
     }
 
+    public async Task<IActionResult> UserListAllPartial(int PageSize = 5, int PageNumber = 1, string SortColumn = "Firstname", string SortDirection = "asc", string SearchKey = "")
+    {
+        var (users,count,pageSize, pageNumber, sortColumn, sortDirection, searchKey) = await _adminUsersServices.getDynamicUserList(PageSize, PageNumber, SortColumn, SortDirection, SearchKey);
+        
+        ViewBag.PageSize = pageSize;
+        ViewBag.PageNumber = pageNumber;
+        ViewBag.Count = count;
+        ViewBag.SortColumn = sortColumn;
+        ViewBag.SortDirection = sortDirection;
+        ViewBag.SearchKey = searchKey;
+        ViewBag.Active = "Users";
+        ViewData["Username"] = GetUserName();
+        ViewBag.image = GetImgUrl();
+
+        return PartialView("_UserListTable",users);
+    }
+
     // Add User **************************************** get Method ******************
     public async Task<IActionResult> AddUser()
     {

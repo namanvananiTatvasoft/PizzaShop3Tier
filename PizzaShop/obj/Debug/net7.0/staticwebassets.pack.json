@@ -125,6 +125,10 @@
       "PackagePath": "staticwebassets\\images\\icons\\waiting-time.svg"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\list-check.svg",
+      "PackagePath": "staticwebassets\\images\\list-check.svg"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\logos\\icons8-facebook-48.png",
       "PackagePath": "staticwebassets\\images\\logos\\icons8-facebook-48.png"
     },
@@ -157,6 +161,10 @@
       "PackagePath": "staticwebassets\\images\\profilePic\\1.svg"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\14.png",
+      "PackagePath": "staticwebassets\\images\\profilePic\\14.png"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\23.png",
       "PackagePath": "staticwebassets\\images\\profilePic\\23.png"
     },
@@ -167,6 +175,10 @@
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\31.png",
       "PackagePath": "staticwebassets\\images\\profilePic\\31.png"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\34.png",
+      "PackagePath": "staticwebassets\\images\\profilePic\\34.png"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\36.jpg",

@@ -41,6 +41,8 @@ public class RolePermissionController : BaseDashboardController
 
         ViewData["Username"] = GetUserName();
         ViewBag.image = GetImgUrl();
+        
+        TempData["success"] = "Permissions Updated Succesfully !";
         return View(model);
     }
 }

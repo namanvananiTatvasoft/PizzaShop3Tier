@@ -110,6 +110,17 @@
     filter: invert(27%) sepia(100%) saturate(500%) hue-rotate(160deg) brightness(90%) contrast(90%);
 }
 
+.category-container .editButtom,
+.category-container .deleteButton {
+    display: none;
+}
+
+.category-container:hover .editButtom,
+.category-container:hover .deleteButton {
+    display: inline-block; /* or block depending on your layout */
+}
+
+
 /* item list */
 
 .category-item-list-container{
