@@ -19,6 +19,10 @@ public partial class User
 
     public virtual ICollection<Category> CategoryModifiedbyNavigations { get; } = new List<Category>();
 
+    public virtual ICollection<Item> ItemCreatedbyNavigations { get; } = new List<Item>();
+
+    public virtual ICollection<Item> ItemModifiedbyNavigations { get; } = new List<Item>();
+
     public virtual ICollection<Permission> Permissions { get; } = new List<Permission>();
 
     public virtual ICollection<Userdetail> UserdetailCreatedbyNavigations { get; } = new List<Userdetail>();

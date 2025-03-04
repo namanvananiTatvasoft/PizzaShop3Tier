@@ -1,0 +1,293 @@
+<div class="row special-color fw-bold fs-6">
+            Items pageNumber = @Model.items.pageNumber  pagesize = @Model.items.pageSize count = @Model.items.count category-id = @Model.items.Categoryid searchKey = @Model.items.searchKey
+        </div>
+
+        <div class="row d-flex justify-content-end category-item-list-container">
+            <div class="search-box d-flex align-items-center bg-white ms-2">
+                <input type="text" placeholder="Search" id="search-input" class="text-bark d-none d-md-block items-search-input" value="@Model.items.searchKey" onkeydown="handleKeyPress(event)">
+                <img src="~/images/search.png" alt="" class="search-img" onclick="itemSearch()">
+            </div>
+            <div style="width: fit-content;" class="d-flex justify-content-center align-items-center border ms-2"><img src="~/images/trash.svg" alt="" class="search-img"></div>
+            <div class="d-flex align-items-center justify-content-center fs-3 ms-2" id="add-user-btn">
+                + <span class="ms-2 fs-6 d-lg-flex d-none">New Item</span>
+            </div>
+        </div>
+
+        <div class="row table-responsive item-table-conatainer">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th scope="col" class="d-flex">
+                            <div class="form-check me-2">
+                                <input class="form-check-input outer-check" type="checkbox" value="" id="flexCheckDefault">
+                            </div>
+                            <div>
+                                Name
+                            </div>
+                        </th>
+                        <th scope="col" style="text-wrap: nowrap;">Item Type</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Available</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model.items.itemList)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex justify-content-start">
+                                    <div class="form-check me-2">
+                                        <input class="form-check-input inner-check" type="checkbox" value="" id="flexCheckDefault">
+                                    </div>
+                                    <img src="~/images/dining-menu.png" alt="" class="me-2" style="height: 25px;">
+                                    <div>
+                                        @item.ItemName
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center"><img src="@Url.Content(item.ItemType ? "~/images/icons/veg-icon.svg" : "~/images/icons/non-veg-icon.svg")" alt="" style="height: 20px;"></td>
+                            <td>@item.Rate</td>
+                            <td>@item.Quantity</td>
+                            <td>
+                                <div class="form-check form-switch d-flex justify-content-center">
+                                    <input class="form-check-input toggle-size" type="checkbox" role="switch" id="flexSwitchCheckDefault" @((item.Isavailable) ? "checked": "") disabled>
+                                </div>
+                            </td>       
+                            <td>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <a href="edit_user.html" style="text-decoration: none;">
+                                        <img src="~/images/pen.svg" alt="" class="edit-delete-pic">
+                                    </a>
+                                    <img src="~/images/trash.svg" alt="" class="edit-delete-pic">
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-end align-items-end align-items-md-center flex-column flex-md-row bg-white pe-2 pt-3 mb-6" style="">
+            <div class="d-flex align-items-center mt-6 mb-3 mb-md-0">
+                <label for="itemsPerPage" class="form-label me-3 text-center">Items per page:</label>
+                <select id="itemsPerPageItemList" class="form-select me-3" style="width: 68px; height: 85%; font-size: 15px;" onchange="updateItemListPerPage()">
+                    @if (Model.items.pageSize != null)
+                    {
+                        <option value="1" selected="@(Model.items.pageSize == 1 ? true : false)">1</option>
+                        <option value="2" selected="@(Model.items.pageSize == 2 ? true : false)">2</option>
+                        <option value="5" selected="@(Model.items.pageSize == 5 ? true : false)">5</option>
+                        <option value="10" selected="@(Model.items.pageSize == 10 ? true : false)">10</option>
+                        <option value="25" selected="@(Model.items.pageSize == 25 ? true : false)">25</option>
+                    }
+                </select>
+            </div>
+            <div class="d-flex align-items-center me-3">
+                <div class="me-2">
+                    Showing 
+                    @{
+                        var startRecord = (Model.items.pageNumber - 1) * Model.items.pageSize + 1;
+                        var endRecord = Model.items.pageNumber *  Model.items.pageSize;
+                        if (endRecord > Model.items.count) 
+                            endRecord = Model.items.count;
+                        
+                        if(Model.items.count==0){
+                            startRecord = 0;
+                            endRecord = 0;
+                        }
+                    }
+                    <span style="color: green;" class="me-1">@startRecord  -  @endRecord</span>  of  <span style="color: red;" class="ms-1">@Model.items.count</span>
+                </div>
+                <div style="height: 100%">
+                    @* <a href="@Url.Action("UserListAll")?PageSize=@ViewBag.PageSize&PageNumber=@(ViewBag.PageNumber-1)&SortColumn=@ViewBag.SortColumn&SortDirection=@ViewBag.SortDirection&SearchKey=@ViewBag.SearchKey" style="text-decoration: none;"> *@
+                        <button style="width:38px; height: 40px; background-color: white; border: 1px solid black; border-radius: 3px;" onclick="updateListPage('back')">&lt;</button>
+                    @* </a> *@
+                    @* <a href="@Url.Action("UserListAll")?PageSize=@ViewBag.PageSize&PageNumber=@(ViewBag.PageNumber+1)&SortColumn=@ViewBag.SortColumn&SortDirection=@ViewBag.SortDirection&SearchKey=@ViewBag.SearchKey"> *@
+                        <button style="width:38px; height: 40px; background-color: white; border: 1px solid black; border-radius: 3px;" onclick="updateListPage('next')">&gt;</button>
+                    @* </a> *@
+                </div>
+            </div>
+        </div>
+
+
+<script>
+    
+var mainCheck = document.querySelector('.outer-check');
+var innerCheck = document.querySelectorAll('.inner-check');
+
+mainCheck.addEventListener('change', function () {
+    if(this.checked){
+        innerCheck.forEach(function (ie){
+            ie.checked = true;
+        });
+    }else{
+        innerCheck.forEach(function (ie){
+            ie.checked = false;
+        });
+    }
+
+    innerCheck.forEach(function (ic) {
+        var row = $(ic).closest("tr");  // Use `ic` here, not `this`
+
+        // If isEnable is unchecked, uncheck other checkboxes
+        if (!$(ic).prop("checked")) {
+            row.find(".can-view input, .can-add-edit input, .can-delete input").prop("checked", false);
+        }
+
+        // If any checkbox is checked, check the `mainCheck` box
+        // if ($(ic).prop("checked") && !mainCheck.checked) {
+        //     mainCheck.checked = true;
+        // }
+    });
+});
+
+innerCheck.forEach(function (ic) {
+    ic.addEventListener('change', function() {
+        if (!this.checked) {
+            mainCheck.checked = false;
+        }else{
+            var mc = true;
+            innerCheck.forEach(function(ie) {
+                if(!ie.checked){
+                    mc = false;
+                }
+            });
+            
+            if(mc){
+                mainCheck.checked = true;
+            }
+        }
+    })
+})
+
+
+$(".inner-check").change(function () {
+    // Get the row this checkbox belongs to
+    var row = $(this).closest("tr");
+
+    // If isEnable is unchecked, uncheck other checkboxes
+    if (!$(this).prop("checked")) {
+        row.find(".can-view input, .can-add-edit input, .can-delete input").prop("checked", false);
+    }
+});
+
+$(".form-check-input").change(function () {
+    // Get the row this checkbox belongs to
+    var row = $(this).closest("tr");
+
+    // If isEnable is unchecked and one of the others is checked, check isEnable
+    if (row.find(".inner-check").prop("checked") === false) {
+        if (row.find(".can-view input:checked, .can-add-edit input:checked, .can-delete input:checked").length > 0) {
+            row.find(".inner-check").prop("checked", true);
+        }
+    }
+
+    var eo = true;
+
+    innerCheck.forEach(function (ic) {
+        if (!ic.checked) {
+            eo = false;
+            console.log("Hi");
+        }
+    });
+
+    if (eo) {
+        mainCheck.checked = true;
+    }
+
+
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var mainCheck = document.querySelector('.outer-check');
+    var innerCheck = document.querySelectorAll('.inner-check');
+    var eo = true;
+
+    innerCheck.forEach(function (ic) {
+        if (!ic.checked) {
+            eo = false;
+            console.log("Hi");
+        }
+    });
+
+    if (eo) {
+        mainCheck.checked = true;
+    }
+});
+
+
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        itemSearch();  // Call the itemSearch function when Enter is pressed
+    }
+}
+
+
+function itemSearch() {
+    console.log(@Model.items.Categoryid);
+    $.ajax({
+        url: "/Menu/MenuListTable", // The server-side action
+        type: "GET",
+        data: {
+            categoryId: @Model.items.Categoryid,
+            searchKey: $('#search-input').val(),
+            pageSize: @Model.items.pageSize
+        },
+        success: function (data) {
+            $("#menuListTable").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+
+function updateItemListPerPage()
+{
+    console.log($("#itemsPerPageItemList").val());
+
+    $.ajax({
+        url: "/Menu/MenuListTable", 
+        type: "GET",
+        data: {
+            categoryId: @Model.items.Categoryid,
+            searchKey: $('#search-input').val(),
+            pageSize: $("#itemsPerPageItemList").val()
+        },
+        success: function (data) {
+            $("#menuListTable").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+
+function updateListPage(direction)
+{
+    var pageNum = @Model.items.pageNumber;
+    if(direction=='back') pageNum--;
+    if(direction=='next') pageNum++;
+
+    $.ajax({
+        url: "/Menu/MenuListTable", 
+        type: "GET",
+        data: {
+            categoryId: @Model.items.Categoryid,
+            searchKey: $('#search-input').val(),
+            pageSize: @Model.items.pageSize,
+            pageNumber: pageNum
+        },
+        success: function (data) {
+            $("#menuListTable").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+</script>

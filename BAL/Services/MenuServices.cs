@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using BAL.Interfaces;
 using DAL.Database;
 using DAL.Models;
@@ -28,6 +29,47 @@ public class MenuServices : IMenuServices
                                         };
 
         return await query.ToListAsync();
+    }
+
+    public async Task<ItemsViewMenuModel> getItems(int categoryId,int pageNumber,int pageSize,string searchKey)
+    {
+        ItemsViewMenuModel model = new ItemsViewMenuModel();
+
+
+        
+        var query = from itemstable in _db.Items
+                    where itemstable.Categoryid == categoryId && (itemstable.Itemname.ToLower().Contains(searchKey.ToLower()) || itemstable.Description.ToLower().Contains(searchKey.ToLower()))
+                    select new SingleItem
+                    {
+                        ItemId = itemstable.Itemid,
+                        ItemName = itemstable.Itemname,
+                        ItemType = (bool)itemstable.Itemtype,
+                        Rate = itemstable.Rate,
+                        Quantity = itemstable.Quantity,
+                        Isavailable = itemstable.Isavailable,
+
+                    };
+        
+        var count = await query.CountAsync();
+
+
+        if (pageNumber < 1) pageNumber = 1;
+        
+        var totalPages = (int)Math.Ceiling((double)count / pageSize);
+
+        if (pageNumber > totalPages) pageNumber = totalPages;
+        if (pageNumber < 1) pageNumber = 1;
+
+
+        
+        model.Categoryid = categoryId;
+        model.pageNumber = pageNumber;
+        model.pageSize = pageSize;
+        model.searchKey = searchKey;
+        model.count = count;
+        model.itemList = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return model;
     }
 
     public void addCategory(AddEditDeleteCategory model)

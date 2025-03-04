@@ -15,14 +15,33 @@ public class MenuController : BaseDashboardController
     }
 
     [HttpGet]
-    public async Task<IActionResult> MenuList()
+    public async Task<IActionResult> MenuList(int categoryId = 1, int pageNumber = 1, int pageSize = 5, string searchKey = "")
     {
         MenuViewModel model = new MenuViewModel();
         model.categoryList = await _menuServices.getCategories();
+        model.items = await _menuServices.getItems(categoryId, pageNumber, pageSize, searchKey);
 
         ViewData["Username"] = GetUserName();
         ViewBag.image = GetImgUrl();
+
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            return PartialView("_MenuListItems", model); // Return partial view for AJAX
+        }
         return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> MenuListTable(int categoryId = 1, int pageNumber = 1, int pageSize = 5, string searchKey = "")
+    {
+        MenuViewModel model = new MenuViewModel();
+        model.categoryList = await _menuServices.getCategories();
+        model.items = await _menuServices.getItems(categoryId, pageNumber, pageSize, searchKey);
+
+        ViewData["Username"] = GetUserName();
+        ViewBag.image = GetImgUrl();
+
+        return PartialView("_MenuListItemsTable", model); // Return partial view for AJAX
     }
 
 

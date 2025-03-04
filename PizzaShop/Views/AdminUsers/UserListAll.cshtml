@@ -86,17 +86,20 @@
     let currentSortColumn = '@ViewBag.SortColumn';  // Set this based on the current sort column
     let currentSortDirection = '@ViewBag.SortDirection';  // Set this based on the current sort direction
 
+
+
+
     function updateItemsPerPage() {
         console.log("Hi");
         var pageSize = document.getElementById("itemsPerPage").value; // Get the selected page size
         var pageNumber = '@ViewBag.PageNumber';
         var sortColumn = '@ViewBag.SortColumn';
         var sortDirection = '@ViewBag.SortDirection';
-        var searchKey = '@ViewBag.SearchKey';
+        var searchKey = $("#searchInput").val();
 
         
         $.ajax({
-            url: "/AdminUsers/UserListAllPartial",
+            url: "/AdminUsers/UserListAll",
             type: "GET",
             data: {
                 PageSize: pageSize,
@@ -131,22 +134,85 @@
         }
 
         // Update the URL with the new sorting parameters
-        window.location.href = '@Url.Action("UserListAll")' + '?PageSize=' + @ViewBag.PageSize + '&PageNumber=' + 1 + '&SortColumn=' + column + '&SortDirection=' + currentSortDirection + '&SearchKey=' + '@ViewBag.SearchKey';
+        @* window.location.href = '@Url.Action("UserListAll")' + '?PageSize=' + @ViewBag.PageSize + '&PageNumber=' + 1 + '&SortColumn=' + column + '&SortDirection=' + currentSortDirection + '&SearchKey=' + '@ViewBag.SearchKey'; *@
+
+        $.ajax({
+            url: "/AdminUsers/UserListAll",
+            type: "GET",
+            data: {
+                PageSize: $("#itemsPerPage").val(),
+                PageNumber: 1,
+                SortColumn: column,
+                SortDirection: currentSortDirection,
+                SearchKey: $("#searchInput").val()
+            },
+            success: function (data) {
+                $("#userListContainer").html(data); // Update only the partial view
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
+            }
+        });
     }
 
-    document.querySelector('#searchInput').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            var searchKey = document.getElementById("searchInput").value.toLowerCase();
+    $(document).ready(function () {
+        // Listen for 'change' event on search input
+        $('#searchInput').on('input', function () {
+            var searchKey = $('#searchInput').val().toLowerCase();
             console.log(searchKey);
-            window.location.href = '@Url.Action("UserListAll")' + '?PageSize=' + @ViewBag.PageSize + '&PageNumber=' + 1 + '&SortColumn=' + '@ViewBag.SortColumn' + '&SortDirection=' + '@ViewBag.SortDirection' + '&SearchKey=' + searchKey;
-        }
+
+            // Get the current page size, sort column, and sort direction from the view bag
+            var pageSize = $("#itemsPerPage").val(); // Get page size from dropdown
+            var sortColumn = '@ViewBag.SortColumn'; // Razor will inject value from ViewBag
+            var sortDirection = '@ViewBag.SortDirection'; // Razor will inject value from ViewBag
+
+            // Make the AJAX request to update the user list based on search input
+            $.ajax({
+                url: "/AdminUsers/UserListAll",  // The URL of your action
+                type: "GET",
+                data: {
+                    PageSize: pageSize,
+                    PageNumber: 1,  // Set to page 1 since you're doing a new search
+                    SortColumn: sortColumn,
+                    SortDirection: sortDirection,
+                    SearchKey: searchKey
+                },
+                success: function (data) {
+                    // Replace the user list content in the partial view container
+                    $("#userListContainer").html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+        });
     });
+
 
     function searchFunction()
     {
         var searchKey = document.getElementById("searchInput").value.toLowerCase();
         console.log(searchKey);
-        window.location.href = '@Url.Action("UserListAll")' + '?PageSize=' + @ViewBag.PageSize + '&PageNumber=' + @ViewBag.PageNumber + '&SortColumn=' + '@ViewBag.SortColumn' + '&SortDirection=' + '@ViewBag.SortDirection' + '&SearchKey=' + searchKey;
+        @* window.location.href = '@Url.Action("UserListAll")' + '?PageSize=' + @ViewBag.PageSize + '&PageNumber=' + @ViewBag.PageNumber + '&SortColumn=' + '@ViewBag.SortColumn' + '&SortDirection=' + '@ViewBag.SortDirection' + '&SearchKey=' + searchKey; *@
+    
+        $.ajax({
+            url: "/AdminUsers/UserListAll",
+            type: "GET",
+            data: {
+                PageSize: $("#itemsPerPage").val(),
+                PageNumber: 1,
+                SortColumn: '@ViewBag.SortColumn',
+                SortDirection: '@ViewBag.SortDirection',
+                SearchKey: searchKey
+            },
+            success: function (data) {
+                $("#userListContainer").html(data); 
+                console.log("Hi");// Update only the partial view
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
+            }
+        });
     }
 
     function deleteUser(element) {
@@ -154,6 +220,37 @@
         var deleteUserBtn = document.getElementById("deleteUserBtn");
         deleteUserBtn.href = '@Url.Action("DeleteUser", "AdminUsers")' + '?email=' + email;
     }
+
+
+    $(document).on("click", ".pagination-btn", function (event) {
+        event.preventDefault(); // Prevent full page reload
+
+        var pageNumber = $(this).data("page"); // Get the new page number
+        var pageSize = $("#itemsPerPage").val();
+        var sortColumn = '@ViewBag.SortColumn';
+        var sortDirection = '@ViewBag.SortDirection';
+        var searchKey = $("#searchInput").val();
+
+        $.ajax({
+            url: "/AdminUsers/UserListAll",
+            type: "GET",
+            data: {
+                PageSize: pageSize,
+                PageNumber: pageNumber,
+                SortColumn: sortColumn,
+                SortDirection: sortDirection,
+                SearchKey: searchKey
+            },
+            success: function (data) {
+                $("#userListContainer").html(data); // Update only the partial view
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    }); 
+
+
 </script>
 
 

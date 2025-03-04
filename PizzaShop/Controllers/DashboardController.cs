@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PizzaShop.Controllers;
 
+
 public class DashboardController : BaseDashboardController
 {
     protected readonly IDashServices _dash;

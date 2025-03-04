@@ -23,5 +23,7 @@ public partial class Category
 
     public virtual User CreatedbyNavigation { get; set; } = null!;
 
+    public virtual ICollection<Item> Items { get; } = new List<Item>();
+
     public virtual User? ModifiedbyNavigation { get; set; }
 }

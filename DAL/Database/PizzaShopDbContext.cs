@@ -8,16 +8,16 @@ namespace DAL.Database;
 
 public partial class PizzaShopDbContext : DbContext
 {
-    protected IConfiguration _config;
-    public PizzaShopDbContext(IConfiguration config)
+    protected readonly IConfiguration _config;
+    public PizzaShopDbContext(IConfiguration configuration)
     {
-        _config = config;
+        _config = configuration;
     }
 
-    public PizzaShopDbContext(DbContextOptions<PizzaShopDbContext> options, IConfiguration config)
+    public PizzaShopDbContext(DbContextOptions<PizzaShopDbContext> options, IConfiguration configuration)
         : base(options)
     {
-        _config = config;
+        _config = configuration;
     }
 
     public virtual DbSet<Category> Categories { get; set; }
@@ -25,6 +25,8 @@ public partial class PizzaShopDbContext : DbContext
     public virtual DbSet<City> Cities { get; set; }
 
     public virtual DbSet<Country> Countries { get; set; }
+
+    public virtual DbSet<Item> Items { get; set; }
 
     public virtual DbSet<Permission> Permissions { get; set; }
 
@@ -43,6 +45,7 @@ public partial class PizzaShopDbContext : DbContext
         var connectionString = _config.GetConnectionString("DefaultConnection");
         optionsBuilder.UseNpgsql(connectionString);
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
@@ -123,6 +126,68 @@ public partial class PizzaShopDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("created_at");
+        });
+
+        modelBuilder.Entity<Item>(entity =>
+        {
+            entity.HasKey(e => e.Itemid).HasName("items_pkey");
+
+            entity.ToTable("items");
+
+            entity.HasIndex(e => e.Itemname, "items_itemname_key").IsUnique();
+
+            entity.Property(e => e.Itemid).HasColumnName("itemid");
+            entity.Property(e => e.Categoryid).HasColumnName("categoryid");
+            entity.Property(e => e.Createdby).HasColumnName("createdby");
+            entity.Property(e => e.Createddate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createddate");
+            entity.Property(e => e.Defaulttax).HasColumnName("defaulttax");
+            entity.Property(e => e.Description)
+                .HasMaxLength(200)
+                .HasColumnName("description");
+            entity.Property(e => e.Isavailable).HasColumnName("isavailable");
+            entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+            entity.Property(e => e.Itemname)
+                .HasMaxLength(50)
+                .HasColumnName("itemname");
+            entity.Property(e => e.Itemtype)
+                .IsRequired()
+                .HasDefaultValueSql("true")
+                .HasColumnName("itemtype");
+            entity.Property(e => e.Modifiedby).HasColumnName("modifiedby");
+            entity.Property(e => e.Modifieddate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifieddate");
+            entity.Property(e => e.Photourl)
+                .HasMaxLength(250)
+                .HasColumnName("photourl");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.Rate).HasColumnName("rate");
+            entity.Property(e => e.Shortcode)
+                .HasMaxLength(30)
+                .HasColumnName("shortcode");
+            entity.Property(e => e.Taxpercentage)
+                .HasPrecision(5, 2)
+                .HasColumnName("taxpercentage");
+            entity.Property(e => e.Unit)
+                .HasMaxLength(20)
+                .HasColumnName("unit");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.Items)
+                .HasForeignKey(d => d.Categoryid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("items_categoryid_fkey");
+
+            entity.HasOne(d => d.CreatedbyNavigation).WithMany(p => p.ItemCreatedbyNavigations)
+                .HasForeignKey(d => d.Createdby)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("items_createdby_fkey");
+
+            entity.HasOne(d => d.ModifiedbyNavigation).WithMany(p => p.ItemModifiedbyNavigations)
+                .HasForeignKey(d => d.Modifiedby)
+                .HasConstraintName("items_modifiedby_fkey");
         });
 
         modelBuilder.Entity<Permission>(entity =>

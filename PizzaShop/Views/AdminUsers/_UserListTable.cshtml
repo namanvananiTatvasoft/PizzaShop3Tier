@@ -31,12 +31,12 @@
                     <span style="color: green;" class="me-1">@startRecord  -  @endRecord</span>  of  <span style="color: red;" class="ms-1">@ViewBag.Count</span>
                 </div>
                 <div style="height: 100%">
-                    <a href="@Url.Action("UserListAll")?PageSize=@ViewBag.PageSize&PageNumber=@(ViewBag.PageNumber-1)&SortColumn=@ViewBag.SortColumn&SortDirection=@ViewBag.SortDirection&SearchKey=@ViewBag.SearchKey" style="text-decoration: none;">
-                        <button style="width:38px; height: 40px; background-color: white; border: 1px solid black; border-radius: 3px;">&lt;</button>
-                    </a>
-                    <a href="@Url.Action("UserListAll")?PageSize=@ViewBag.PageSize&PageNumber=@(ViewBag.PageNumber+1)&SortColumn=@ViewBag.SortColumn&SortDirection=@ViewBag.SortDirection&SearchKey=@ViewBag.SearchKey">
-                        <button style="width:38px; height: 40px; background-color: white; border: 1px solid black; border-radius: 3px;">&gt;</button>
-                    </a>
+                    @* <a href="@Url.Action("UserListAll")?PageSize=@ViewBag.PageSize&PageNumber=@(ViewBag.PageNumber-1)&SortColumn=@ViewBag.SortColumn&SortDirection=@ViewBag.SortDirection&SearchKey=@ViewBag.SearchKey" style="text-decoration: none;"> *@
+                        <button style="width:38px; height: 40px; background-color: white; border: 1px solid black; border-radius: 3px;" class="pagination-btn" data-page = "@(ViewBag.PageNumber - 1)">&lt;</button>
+                    @* </a> *@
+                    @* <a href="@Url.Action("UserListAll")?PageSize=@ViewBag.PageSize&PageNumber=@(ViewBag.PageNumber+1)&SortColumn=@ViewBag.SortColumn&SortDirection=@ViewBag.SortDirection&SearchKey=@ViewBag.SearchKey"> *@
+                        <button style="width:38px; height: 40px; background-color: white; border: 1px solid black; border-radius: 3px;" class="pagination-btn" data-page = "@(ViewBag.PageNumber + 1)">&gt;</button>
+                    @* </a> *@
                 </div>
             </div>
         </div>
