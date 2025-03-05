@@ -27,8 +27,8 @@ public class AdminUsersController : BaseDashboardController
         ViewBag.SortDirection = sortDirection;
         ViewBag.SearchKey = searchKey;
         ViewBag.Active = "Users";
-        ViewData["Username"] = GetUserName();
-        ViewBag.image = GetImgUrl();
+        // ViewData["Username"] = GetUserName();
+        // ViewBag.image = GetImgUrl();
 
         if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
         {
@@ -58,8 +58,8 @@ public class AdminUsersController : BaseDashboardController
     // Add User **************************************** get Method ******************
     public async Task<IActionResult> AddUser()
     {
-        ViewBag.image = GetImgUrl();
-        ViewData["Username"] = GetUserName();
+        // ViewBag.image = GetImgUrl();
+        // ViewData["Username"] = GetUserName();
         return View();
     }
 
@@ -75,7 +75,7 @@ public class AdminUsersController : BaseDashboardController
             if (status)
             {
                 TempData["Error"] = message;
-                ViewBag.image = GetImgUrl();
+                // ViewBag.image = GetImgUrl();
                 return View("AddUser", user);
             }
             
@@ -93,7 +93,7 @@ public class AdminUsersController : BaseDashboardController
         }
 
         TempData["Error"] = "User not added";
-        ViewBag.image = GetImgUrl();
+        // ViewBag.image = GetImgUrl();
         return View();
     }
 
@@ -122,8 +122,8 @@ public class AdminUsersController : BaseDashboardController
             CityList = _auth.getCities(-1),
         };
 
-        ViewData["Username"] = GetUserName();
-        ViewBag.image = GetImgUrl();
+        // ViewData["Username"] = GetUserName();
+        // ViewBag.image = GetImgUrl();
 
         return View(model);
     }
@@ -142,9 +142,9 @@ public class AdminUsersController : BaseDashboardController
         
         await _auth.UpdateUserToDB(model, GetUserName());
 
-        ViewData["Username"] = GetUserName();
+        // ViewData["Username"] = GetUserName();
+        // ViewBag.image = GetImgUrl();
         TempData["success"] = "User updated successfully";
-        ViewBag.image = GetImgUrl();
 
         return RedirectToAction("EditUser", new {email = model.Email});
     }

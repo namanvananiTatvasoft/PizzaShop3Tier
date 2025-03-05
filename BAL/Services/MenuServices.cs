@@ -4,16 +4,26 @@ using DAL.Database;
 using DAL.Models;
 using DAL.ViewModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace BAL.Services;
 
 public class MenuServices : IMenuServices
 {
     private readonly PizzaShopDbContext _db;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public MenuServices(PizzaShopDbContext db)
+
+    public MenuServices(PizzaShopDbContext db, IWebHostEnvironment webHostEnvironment)
     {
         _db = db;
+        _webHostEnvironment = webHostEnvironment;
+    }
+
+    public Item? getItem(int itemId)
+    {
+        return _db.Items.Where(e => e.Itemid == itemId).FirstOrDefault();
     }
 
     public async Task<List<CategoryMenuModel>> getCategories()
@@ -35,10 +45,8 @@ public class MenuServices : IMenuServices
     {
         ItemsViewMenuModel model = new ItemsViewMenuModel();
 
-
-        
         var query = from itemstable in _db.Items
-                    where itemstable.Categoryid == categoryId && (itemstable.Itemname.ToLower().Contains(searchKey.ToLower()) || itemstable.Description.ToLower().Contains(searchKey.ToLower()))
+                    where itemstable.Categoryid == categoryId && !itemstable.Isdeleted &&(itemstable.Itemname.ToLower().Contains(searchKey.ToLower()) || itemstable.Description.ToLower().Contains(searchKey.ToLower()))
                     select new SingleItem
                     {
                         ItemId = itemstable.Itemid,
@@ -47,6 +55,7 @@ public class MenuServices : IMenuServices
                         Rate = itemstable.Rate,
                         Quantity = itemstable.Quantity,
                         Isavailable = itemstable.Isavailable,
+                        ImageUrl = itemstable.Photourl
 
                     };
         
@@ -103,9 +112,124 @@ public class MenuServices : IMenuServices
         category.Modifieddate = DateTime.Now;
         category.Isdeleted = true;
 
+        List<Item> items = _db.Items.Where(e=>e.Categoryid.ToString() == model.Categoryid).ToList();
+        foreach(var item in items)
+        {
+            item.Isdeleted = true;
+        }
+
         _db.SaveChanges();
         return;
     }
 
+    public void addItem(AddItemModel model)
+    {
+        Item item = new Item();
 
+        item.Itemname = model.ItemName;
+        item.Categoryid = model.ItemCategory;
+        item.Itemtype = model.ItemType;
+        item.Description = model.ItemDescription;
+        item.Rate = model.ItemRate;
+        item.Quantity = model.ItemQuantity;
+        item.Unit = model.ItemUnit;
+        item.Isavailable = model.ItemAvailable;
+        item.Defaulttax = model.DefaultTax;
+        item.Taxpercentage = model.ItemTaxPercentage;
+        item.Shortcode = model.ItemShortCode;
+
+        item.Createdby = model.CreatedBy;
+        item.Createddate = DateTime.Now;
+
+        _db.Items.Add(item);
+        _db.SaveChanges();
+
+        string imageURL = "";
+
+        if(model.ItemImage != null)
+        {
+            // Save the image
+            // var Itemname = model.ItemName;
+            var ItemID = _db.Items.Where(e=>e.Itemname == model.ItemName).FirstOrDefault();
+            var fileExtension = Path.GetExtension(model.ItemImage.FileName);
+
+            var fileName = $"{ItemID.Itemid}{fileExtension}";
+            var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "itemsPic");
+
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            Console.WriteLine(filePath);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                model.ItemImage.CopyTo(fileStream);
+            }
+
+            imageURL = "/images/itemsPic/" + fileName;
+
+            ItemID.Photourl = imageURL;
+            _db.SaveChanges();
+
+            Console.WriteLine(imageURL);
+
+        }
+
+        return;
+    }
+
+    public void editItem(AddItemModel model)
+    {
+        Item item = _db.Items.Where(e=>e.Itemid == model.ItemId).FirstOrDefault();
+
+        item.Itemname = model.ItemName;
+        item.Categoryid = model.ItemCategory;
+        item.Itemtype = model.ItemType;
+        item.Description = model.ItemDescription;
+        item.Rate = model.ItemRate;
+        item.Quantity = model.ItemQuantity;
+        item.Unit = model.ItemUnit;
+        item.Isavailable = model.ItemAvailable;
+        item.Defaulttax = model.DefaultTax;
+        item.Taxpercentage = model.ItemTaxPercentage;
+        item.Shortcode = model.ItemShortCode;
+
+        item.Modifiedby = model.CreatedBy;
+        item.Modifieddate = DateTime.Now;
+
+        if(model.ItemImage != null)
+        {
+            var ItemID = model.ItemId;
+            var fileExtension = Path.GetExtension(model.ItemImage.FileName);
+
+            var fileName = $"{ItemID}{fileExtension}";
+            var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "itemsPic");
+
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            Console.WriteLine(filePath);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                model.ItemImage.CopyTo(fileStream);
+            }
+
+            var imageURL = "/images/itemsPic/" + fileName;
+            item.Photourl = imageURL;
+
+        }
+        _db.SaveChanges();
+
+    }
+
+    public void deleteItem(AddItemModel model)
+    {
+        Item item = _db.Items.Where(e=>e.Itemid == model.ItemId).FirstOrDefault();
+        item.Modifiedby = model.CreatedBy;
+        item.Modifieddate = DateTime.Now;
+        item.Isdeleted = true;
+
+        _db.SaveChanges();
+        return;
+
+    }
 }

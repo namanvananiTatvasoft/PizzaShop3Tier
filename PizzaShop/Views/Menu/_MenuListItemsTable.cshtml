@@ -8,7 +8,7 @@
                 <img src="~/images/search.png" alt="" class="search-img" onclick="itemSearch()">
             </div>
             <div style="width: fit-content;" class="d-flex justify-content-center align-items-center border ms-2"><img src="~/images/trash.svg" alt="" class="search-img"></div>
-            <div class="d-flex align-items-center justify-content-center fs-3 ms-2" id="add-user-btn">
+            <div class="d-flex align-items-center justify-content-center fs-3 ms-2" id="add-user-btn" data-bs-toggle = "modal" data-bs-target="#addItemModel" data-catid="@Model.items.Categoryid" onclick="addItems(this)">
                 + <span class="ms-2 fs-6 d-lg-flex d-none">New Item</span>
             </div>
         </div>
@@ -41,7 +41,12 @@
                                     <div class="form-check me-2">
                                         <input class="form-check-input inner-check" type="checkbox" value="" id="flexCheckDefault">
                                     </div>
-                                    <img src="~/images/dining-menu.png" alt="" class="me-2" style="height: 25px;">
+                                    @if(item.ImageUrl != null){
+                                        <img src="@item.ImageUrl" alt="" class="me-2" style="height: 25px; width: 25px;">
+                                    }
+                                    else{
+                                        <img src="~/images/dining-menu.png" alt="" class="me-2" style="height: 25px; width: 25px">
+                                    }
                                     <div>
                                         @item.ItemName
                                     </div>
@@ -57,10 +62,8 @@
                             </td>       
                             <td>
                                 <div class="d-flex justify-content-center align-items-center">
-                                    <a href="edit_user.html" style="text-decoration: none;">
-                                        <img src="~/images/pen.svg" alt="" class="edit-delete-pic">
-                                    </a>
-                                    <img src="~/images/trash.svg" alt="" class="edit-delete-pic">
+                                    <img src="~/images/pen.svg" alt="" class="edit-delete-pic" data-bs-toggle = "modal" data-bs-target="#editItemModel" onclick="editItem(this,@item.ItemId)">
+                                    <img src="~/images/trash.svg" alt="" class="edit-delete-pic" data-bs-toggle="modal" data-bs-target="#deleteItemModal" onclick="deleteItem(this)" data-id ="@item.ItemId">
                                 </div>
                             </td>
                         </tr>
@@ -290,4 +293,9 @@ function updateListPage(direction)
         }
     });
 }
+
+
+
+
+
 </script>

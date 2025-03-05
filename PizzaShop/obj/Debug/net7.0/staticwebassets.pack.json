@@ -57,12 +57,28 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\2012-r-xl-vegetable-sandwich-with-dill-sauce-2000-0984c1b513ae4af396aee039afa5e38c.jpg",
+      "PackagePath": "staticwebassets\\images\\2012-r-xl-vegetable-sandwich-with-dill-sauce-2000-0984c1b513ae4af396aee039afa5e38c.jpg"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\Default_pfp.svg.png",
       "PackagePath": "staticwebassets\\images\\Default_pfp.svg.png"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\Mexican-Salad-Recipe-Step-By-Step-Instructions-scaled.jpg",
+      "PackagePath": "staticwebassets\\images\\Mexican-Salad-Recipe-Step-By-Step-Instructions-scaled.jpg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\OIP.jfif",
+      "PackagePath": "staticwebassets\\images\\OIP.jfif"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\QR.png",
       "PackagePath": "staticwebassets\\images\\QR.png"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\belgium fries.jfif",
+      "PackagePath": "staticwebassets\\images\\belgium fries.jfif"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\camerainput.svg",
@@ -77,12 +93,20 @@
       "PackagePath": "staticwebassets\\images\\dining-menu.png"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\dlffjdslfsdf.jfif",
+      "PackagePath": "staticwebassets\\images\\dlffjdslfsdf.jfif"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\dominos_background.jpg",
       "PackagePath": "staticwebassets\\images\\dominos_background.jpg"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\grid-3x2-gap-fill.svg",
       "PackagePath": "staticwebassets\\images\\grid-3x2-gap-fill.svg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\how-to-make-homemade-french-fries-2215971-hero-01-02f62a016f3e4aa4b41d0c27539885c3.jpg",
+      "PackagePath": "staticwebassets\\images\\how-to-make-homemade-french-fries-2215971-hero-01-02f62a016f3e4aa4b41d0c27539885c3.jpg"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\icons\\customer.svg",
@@ -125,6 +149,42 @@
       "PackagePath": "staticwebassets\\images\\icons\\waiting-time.svg"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\1.jpg",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\1.jpg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\11.jfif",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\11.jfif"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\12.jpeg",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\12.jpeg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\26.jpg",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\26.jpg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\27.jfif",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\27.jfif"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\28.jpg",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\28.jpg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\29.jfif",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\29.jfif"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\29.jpg",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\29.jpg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\5.jfif",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\5.jfif"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\list-check.svg",
       "PackagePath": "staticwebassets\\images\\list-check.svg"
     },
@@ -143,6 +203,10 @@
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\logos\\pizzashop_logo.png",
       "PackagePath": "staticwebassets\\images\\logos\\pizzashop_logo.png"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\papa-johns-pepperoni-pizza-recipe_73a08afc185dba371d10414961f2cb0c.jpeg",
+      "PackagePath": "staticwebassets\\images\\papa-johns-pepperoni-pizza-recipe_73a08afc185dba371d10414961f2cb0c.jpeg"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\pen.svg",

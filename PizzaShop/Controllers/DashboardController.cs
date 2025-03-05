@@ -20,9 +20,9 @@ public class DashboardController : BaseDashboardController
     // Dashboard **************************************** get Method ******************
     public IActionResult Dash()
     {
-        ViewData["UserName"] = GetUserName();
+        // ViewData["UserName"] = GetUserName();
         ViewBag.Active = "Dashboard";
-        ViewBag.image = GetImgUrl();
+        // ViewBag.image = GetImgUrl();
         return View();
     }
 
@@ -31,9 +31,9 @@ public class DashboardController : BaseDashboardController
     public IActionResult MyProfile()
     {
         var ojbPass = _dash.MapObject(GetUserName());
-        ViewData["UserName"] = GetUserName();
+        // ViewData["UserName"] = GetUserName();
         ViewData["Role"] = GetRole();
-        ViewBag.imageURL = GetImgUrl();
+        // ViewBag.imageURL = GetImgUrl();
 
         ViewBag.Active = "Dashboard";
         ViewBag.image = ojbPass.photoUrl;
@@ -66,8 +66,8 @@ public class DashboardController : BaseDashboardController
     public IActionResult ChangePassword()
     {
         ViewBag.Active = "Dashboard";
-        ViewData["UserName"] = GetUserName();
-        ViewBag.image = GetImgUrl();
+        // ViewData["UserName"] = GetUserName();
+        // ViewBag.image = GetImgUrl();
 
 
         return View();
@@ -90,8 +90,8 @@ public class DashboardController : BaseDashboardController
             }
         }
         ViewBag.Active = "Dashboard";
-        ViewData["UserName"] = GetUserName();
-        ViewBag.image = GetImgUrl();
+        // ViewData["UserName"] = GetUserName();
+        // ViewBag.image = GetImgUrl();
 
 
         return View();

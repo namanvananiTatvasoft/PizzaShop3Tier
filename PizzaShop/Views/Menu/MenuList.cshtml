@@ -7,7 +7,18 @@
 }
 <head>
     @* <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"> *@
+
+    <style>
+        .additemform .form-floating>label {
+            position: absolute;
+            top: 0;
+            left: 10px !important;
+            opacity: 0.65;
+        }
+    </style>
 </head>
+
+
 
 
 <div class="menu-item-container">
@@ -137,9 +148,379 @@
             </div>
         </div>
     </div>
+
+    <!-- add item modal  -->
+    <div class="modal fade" id="addItemModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered w-75" style="max-width: 100% !important">
+            <div class="modal-content">
+                <!-- </div> -->
+                <form class="modal-body additemform" asp-action="MenuListItemAdd" method="post" enctype="multipart/form-data">
+                    <div class="d-flex justify-content-between">
+                        <div class="special-color fw-bold fs-4">Add Item</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="row pe-2 mt-2">
+
+                        <div class="col-md-8 col-12">
+
+                            <div class="row">
+                                <div class="col-md-6 col-12 form-floating mt-3">
+                                    <select class="form-select" id="categoryDropdown" aria-label="Select Food Category" name="ItemCategory" required>
+                                        @foreach(var category in Model.categoryList)
+                                        {
+                                            @* <option value="@category.Categoryid" selected="@(category.Categoryid == Model.items.Categoryid)">@category.Categoryname</option> *@
+                                            <option value="@category.Categoryid">@category.Categoryname</option>
+
+                                        }
+                                    </select>
+                                    <label for="categoryDropdown">Food Category</label>
+                                </div>
+                                <div class="col-md-6 col-12 form-floating mt-3">
+                                    <input type="text" class="form-control" id="name" placeholder="Name" name="ItemName" required>
+                                    <label for="name">Name*</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-6 col-12">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <select class="form-select" id="itemTypeDropdown" aria-label="Select Food Category" name="ItemType">
+                                                @* <option value="" selected disabled>Select Category</option> *@
+                                                <option value="true" selected>Veg</option>
+                                                <option value="false">Non-Veg</option>
+                                            </select>
+                                            <label for="itemTypeDropdown">Item Type</label>
+                                        </div>
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <input type="number" class="form-control" id="name" placeholder="Name" value="0" min="0" step="1" name="ItemRate" required>
+                                            <label for="name">Rate*</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-12">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <input type="number" class="form-control" id="quantity" placeholder="Name" value="0" min="0" step="1" name="ItemQuantity" required>
+                                            <label for="quantity">Quantity*</label>
+                                        </div>
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <select class="form-select" id="unitDropdown" aria-label="Select Food Category" name="ItemUnit" required>
+                                                @* <option value="" selected disabled>Select a Unit</option> *@
+                                                <option value="piece" selected>piece</option>
+                                                <option value="plate">plate</option>
+                                                <option value="bowl">bowl</option>
+                                                <option value="bottle">bottle</option>
+                                                <option value="slice">slice</option>
+
+                                            </select>
+                                            <label for="itemTypeDropdown">Unit*</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-6 col-12 mt-3">
+                                    <div class="row">
+                                        <div class="col-6 form-check form-switch d-flex justify-content-center align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="availableToggle" style="height: 30px; width: 3.5rem;" name="ItemAvailable">
+                                            <label class="form-check-label ms-2" for="availableToggle">Available</label>
+                                            <input type="hidden" name="ItemAvailable" value="false"> 
+                                        </div>
+                                        <div class="col-6 form-check form-switch d-flex justify-content-center align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="defaultTaxToggle" style="height: 30px; width: 3.5rem;" name="DefaultTax">
+                                            <label class="form-check-label ms-2" for="defaultTaxToggle">Default Tax</label>
+                                            <input type="hidden" name="DefaultTax" value="false"> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-12">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <input type="number" class="form-control" id="taxpercentage" placeholder="Name" min="0" step="0.01" name="ItemTaxPercentage">
+                                            <label for="taxpercentage">Tax Percentage</label>
+                                        </div>
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <input type="text" class="form-control" id="shortcode" placeholder="Name" name="ItemShortCode">
+                                            <label for="shortcode">Short Code</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="description" placeholder="Enter description" rows="5" style="height: 100px;" name="ItemDescription" required></textarea>
+                                    <label for="description">Description</label>
+                                </div>
+                            </div>
+
+
+                            <div class="mt-3 fs-6" style="opacity: 0.75;">Upload Image</div>
+                            <div class="row mt-0">
+                                <div style="position: relative;">
+                                    <input type="file" class="form-control" id="itemImage" placeholder="" style="height: 90px; position: absolute; opacity: 0;" name="ItemImage">
+                                    <div id="file-box" style="height: 90px; border: 1px dashed rgb(173, 170, 170); border-radius: 5px;" class="d-flex justify-content-center align-items-center">
+                                        <img src="~/images/select-files.jfif" alt="" style="height: 29px; margin-right: 8px;"> Drag and Drop or Browse files
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4 mt-3 col-12 px-2 " style="background-color: #fff5d7; border-radius: 5px;">
+                            <div class="mod-group-select mt-2">
+                                <select class="form-select" id="ModifierGroupDropdown" aria-label="Select Food Category">
+                                    <option value="" selected disabled>Select Modifier Group</option>
+                                    <option value="mod1">Modifier 1</option>
+                                    <option value="mod2">Modifier 2</option>
+                                </select>
+                                <!-- <label for="itemTypeDropdown">Select Modifier Group</label> -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="submit" class="save-cancel-btn fw-semibold" id="save-btn">Save</button>
+                        <button type="button" class="save-cancel-btn fw-semibold" id="cancel-btn" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- edit item modal  -->
+    <div class="modal fade" id="editItemModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered w-75" style="max-width: 100% !important">
+            <div class="modal-content">
+                <!-- </div> -->
+                <form class="modal-body additemform" asp-action="MenuListItemEdit" method="post" enctype="multipart/form-data">
+                    <div class="d-flex justify-content-between">
+                        <div class="special-color fw-bold fs-4">Edit Item</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <input type="text" id="idEdit" name="ItemId" hidden>
+
+                    <div class="row pe-2 mt-2">
+                        <div class="col-md-8 col-12">
+                            <div class="row">
+                                <div class="col-md-6 col-12 form-floating mt-3">
+                                    <select class="form-select" id="categoryDropdownEdit" aria-label="Select Food Category" name="ItemCategory" required>
+                                        @foreach(var category in Model.categoryList)
+                                        {
+                                            @* <option value="@category.Categoryid" selected="@(category.Categoryid == Model.items.Categoryid)">@category.Categoryname</option> *@
+                                            <option value="@category.Categoryid">@category.Categoryname</option>
+
+                                        }
+                                    </select>
+                                    <label for="categoryDropdownEdit">Food Category</label>
+                                </div>
+                                <div class="col-md-6 col-12 form-floating mt-3">
+                                    <input type="text" class="form-control" id="nameEdit" placeholder="Name" name="ItemName" required>
+                                    <label for="nameEdit">Name*</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-6 col-12">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <select class="form-select" id="itemTypeDropdownEdit" aria-label="Select Food Category" name="ItemType">
+                                                @* <option value="" selected disabled>Select Category</option> *@
+                                                <option value="true" selected>Veg</option>
+                                                <option value="false">Non-Veg</option>
+                                            </select>
+                                            <label for="itemTypeDropdownEdit">Item Type</label>
+                                        </div>
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <input type="number" class="form-control" id="rateEdit" placeholder="Name" value="0" min="0" step="1" name="ItemRate" required>
+                                            <label for="rateEdit">Rate*</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-12">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <input type="number" class="form-control" id="quantityEdit" placeholder="Name" value="0" min="0" step="1" name="ItemQuantity" required>
+                                            <label for="quantityEdit">Quantity*</label>
+                                        </div>
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <select class="form-select" id="unitDropdownEdit" aria-label="Select Food Category" name="ItemUnit" required>
+                                                @* <option value="" selected disabled>Select a Unit</option> *@
+                                                <option value="piece" selected>piece</option>
+                                                <option value="plate">plate</option>
+                                                <option value="bowl">bowl</option>
+                                                <option value="bottle">bottle</option>
+                                                <option value="slice">slice</option>
+
+                                            </select>
+                                            <label for="unitDropdownEdit">Unit*</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-6 col-12 mt-3">
+                                    <div class="row">
+                                        <div class="col-6 form-check form-switch d-flex justify-content-center align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="availableToggleEdit" style="height: 30px; width: 3.5rem;" name="ItemAvailable">
+                                            <label class="form-check-label ms-2" for="availableToggleEdit">Available</label>
+                                            <input type="hidden" name="ItemAvailable" value="false"> 
+                                        </div>
+                                        <div class="col-6 form-check form-switch d-flex justify-content-center align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="defaultTaxToggleEdit" style="height: 30px; width: 3.5rem;" name="DefaultTax">
+                                            <label class="form-check-label ms-2" for="defaultTaxToggleEdit">Default Tax</label>
+                                            <input type="hidden" name="DefaultTax" value="false"> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-12">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <input type="number" class="form-control" id="taxpercentageEdit" placeholder="Name" min="0" step="0.01" name="ItemTaxPercentage">
+                                            <label for="taxpercentageEdit">Tax Percentage</label>
+                                        </div>
+                                        <div class="col-md-6 col-12 form-floating mt-3">
+                                            <input type="text" class="form-control" id="shortcodeEdit" placeholder="Name" name="ItemShortCode">
+                                            <label for="shortcodeEdit">Short Code</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="descriptionEdit" placeholder="Enter description" rows="5" style="height: 100px;" name="ItemDescription" required></textarea>
+                                    <label for="descriptionEdit">Description</label>
+                                </div>
+                            </div>
+
+
+                            <div class="mt-3 fs-6" style="opacity: 0.75;">Upload Image</div>
+                            <div class="row mt-0">
+                                <div style="position: relative;">
+                                    <input type="file" class="form-control" id="itemImageEdit" placeholder="" style="height: 90px; position: absolute; opacity: 0;" name="ItemImage">
+                                    <div id="file-box-edit" style="height: 90px; border: 1px dashed rgb(173, 170, 170); border-radius: 5px;" class="d-flex justify-content-center align-items-center">
+                                        <img src="~/images/select-files.jfif" alt="" style="height: 29px; margin-right: 8px;"> Drag and Drop or Browse files
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4 mt-3 col-12 px-2 " style="background-color: #fff5d7; border-radius: 5px;">
+                            <div class="mod-group-select mt-2">
+                                <select class="form-select" id="ModifierGroupDropdown" aria-label="Select Food Category">
+                                    <option value="" selected disabled>Select Modifier Group</option>
+                                    <option value="mod1">Modifier 1</option>
+                                    <option value="mod2">Modifier 2</option>
+                                </select>
+                                <!-- <label for="itemTypeDropdown">Select Modifier Group</label> -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="submit" class="save-cancel-btn fw-semibold" id="save-btn">Save</button>
+                        <button type="button" class="save-cancel-btn fw-semibold" id="cancel-btn" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete item Modal -->
+    <div class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- </div> -->
+                <form class="modal-body" asp-action="MenuListItemDelete" method="post">
+                    <div class="d-flex justify-content-between mb-3">
+                        <h1 class="modal-title fs-5 fw-semibold special-color" id="exampleModalLabel">Delete Confirmation</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <input type="text" name="ItemId" id="deleteitemId" hidden>
+
+                    <div class="d-flex align-items-center flex-column justify-content-center mb-4">
+                        <img src="~/images/warning.png" alt="" style="height: 35px; width: 35px;">
+                        <div class="f-5">Are You Sure you want to delete Item ?</div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="save-cancel-btn fw-semibold" id="save-btn">Yes</button>
+                        <button type="button" class="save-cancel-btn fw-semibold" id="cancel-btn" data-bs-dismiss="modal">No</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
+    document.getElementById('availableToggle').addEventListener('change', function () {
+        if (!this.checked) {
+            this.value = "false"; // set value to false if unchecked
+        } else {
+            this.value = "true"; // set value to true if checked
+        }
+    });
+
+    document.getElementById('defaultTaxToggle').addEventListener('change', function () {
+        if (!this.checked) {
+            this.value = "false"; // set value to false if unchecked
+        } else {
+            this.value = "true"; // set value to true if checked
+        }
+    });
+
+    document.getElementById('availableToggleEdit').addEventListener('change', function () {
+        if (!this.checked) {
+            this.value = "false"; // set value to false if unchecked
+        } else {
+            this.value = "true"; // set value to true if checked
+        }
+    });
+
+    document.getElementById('defaultTaxToggleEdit').addEventListener('change', function () {
+        if (!this.checked) {
+            this.value = "false"; // set value to false if unchecked
+        } else {
+            this.value = "true"; // set value to true if checked
+        }
+    });
+
+    document.getElementById('itemImage').addEventListener('change', function () {
+        var fileInput = this;
+        var fileBox = document.getElementById('file-box');
+        
+        // If a file is selected
+        if (fileInput.files.length > 0) {
+            fileBox.style.borderColor = "rgb(0, 123, 255)"; // Change to desired border color (e.g., blue)
+        } else {
+            fileBox.style.borderColor = "rgb(173, 170, 170)"; // Original border color (gray)
+        }
+    });
+
+    document.getElementById('itemImageEdit').addEventListener('change', function () {
+        var fileInput = this;
+        var fileBox = document.getElementById('file-box-edit');
+        
+        // If a file is selected
+        if (fileInput.files.length > 0) {
+            fileBox.style.borderColor = "rgb(0, 123, 255)"; // Change to desired border color (e.g., blue)
+        } else {
+            fileBox.style.borderColor = "rgb(173, 170, 170)"; // Original border color (gray)
+        }
+    });
+
     function editCategory(element)
     {
         var catId = element.getAttribute('data-id');
@@ -157,6 +538,75 @@
         var catId = element.getAttribute('data-id');
         document.getElementById("deletecategoryId").value = catId;
     }
+
+    function addItems(element)
+    {
+        var categoryId = element.getAttribute('data-catid');
+        console.log(categoryId);
+
+        $('#addItemModel').on('shown.bs.modal', function () {
+            $('#categoryDropdown').val(categoryId);
+        });
+
+    }
+
+    function editItem(element, itemid)
+    {
+        console.log(itemid);
+        var isavailable;
+        var defaulttax;
+
+        $.ajax({
+            url: '/Menu/ItemDetailsForEdit',
+            type: 'GET',
+            data: {Itemid: itemid}, 
+            success: function(response){
+
+                console.log(response);
+                $('#idEdit').val(response.itemid);
+                $('#nameEdit').val(response.itemname);
+                $('#categoryDropdownEdit').val(response.categoryid);
+                $('#itemTypeDropdownEdit').val(response.itemtype.toString()); 
+                $('#rateEdit').val(response.rate);
+                $('#quantityEdit').val(response.quantity);
+                $('#unitDropdownEdit').val(response.unit);
+                $('#taxpercentageEdit').val(response.taxpercentage);
+                $('#shortcodeEdit').val(response.shortcode);
+                $('#descriptionEdit').val(response.description);
+
+                // Set the toggle buttons based on the data returned
+                $('#availableToggleEdit').prop('checked', response.isavailable);
+                $('#availableToggleEdit').val(response.isavailable);
+
+                $('#availableToggleEdit').next('input[type="hidden"]').val(response.isavailable); // Set the hidden field value
+
+                $('#defaultTaxToggleEdit').prop('checked', response.defaulttax);
+                $('#defaultTaxToggleEdit').next('input[type="hidden"]').val(response.defaulttax); // Set the hidden field value
+                $('#defaultTaxToggleEdit').val(response.defaulttax);
+
+
+                $('#editItemModel').modal('show');
+@* 
+                $('#availableToggleEdit').prop('checked', response.isavailable);
+                $('#defaultTaxToggleEdit').prop('checked', response.defaulttax); *@
+
+                
+            },
+            error: function() {
+                console.error("Failed to fetch item data.");
+            }
+        });
+
+    
+    }
+
+    function deleteItem(element)
+    {
+        var itemId = element.getAttribute('data-id');
+        document.getElementById("deleteitemId").value = itemId;
+    }
+
+    
 
 
 </script>

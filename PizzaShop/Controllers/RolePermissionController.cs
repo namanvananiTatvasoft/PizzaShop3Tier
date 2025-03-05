@@ -17,9 +17,9 @@ public class RolePermissionController : BaseDashboardController
     [HttpGet]
     public IActionResult RolesList()
     {
-        ViewData["Username"] = GetUserName();
+        // ViewData["Username"] = GetUserName();
         List<Role> roles = _authServices.getRoles();
-        ViewBag.image = GetImgUrl();
+        // ViewBag.image = GetImgUrl();
         return View(roles);
     }
 
@@ -28,8 +28,8 @@ public class RolePermissionController : BaseDashboardController
     {
         PermissionModel model = _rolePermissionServices.GetPermissionModel(roleid);
 
-        ViewData["Username"] = GetUserName();
-        ViewBag.image = GetImgUrl();
+        // ViewData["Username"] = GetUserName();
+        // ViewBag.image = GetImgUrl();
 
         return View(model);
     }
@@ -39,8 +39,8 @@ public class RolePermissionController : BaseDashboardController
     {
         _rolePermissionServices.UpdatePermissions(model);
 
-        ViewData["Username"] = GetUserName();
-        ViewBag.image = GetImgUrl();
+        // ViewData["Username"] = GetUserName();
+        // ViewBag.image = GetImgUrl();
         
         TempData["success"] = "Permissions Updated Succesfully !";
         return View(model);

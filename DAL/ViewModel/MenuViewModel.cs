@@ -1,3 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using System.Numerics;
+using Microsoft.AspNetCore.Http;
+
 namespace DAL.ViewModel;
 
 public class MenuViewModel
@@ -51,6 +55,8 @@ public class SingleItem
     public int Quantity { get; set; }
 
     public bool Isavailable { get; set; }
+
+    public string ImageUrl {get; set;}
 }
 
 
@@ -69,5 +75,46 @@ public class AddEditDeleteCategory
 
     public DateTime ModifiedDate{get; set;}
 
+}
+
+public enum Unit
+{
+    Inches,
+    Pieces,
+    Grams,
+    Ml
+}
+
+public class AddItemModel
+{
+    public int ItemId {get; set;}
+    
+    public string ItemName {get; set;}
+
+    public int ItemCategory {get; set;}
+
+    public bool ItemType {get; set;}
+
+    public short ItemRate {get; set;}
+
+    public short ItemQuantity {get; set;}
+
+    public string ItemUnit {get; set;}
+
+    public bool ItemAvailable {get; set;}
+
+    public bool DefaultTax {get; set;}
+
+    [Range(0, 999.99, ErrorMessage = "ItemRate must be between 0 and 999.99.")]
+    public decimal ItemTaxPercentage {get; set;}
+
+    public string ItemShortCode {get; set;}
+
+    public string ItemDescription {get; set;}
+
+    public IFormFile ItemImage {get; set;}
+
+    public int CreatedBy {get; set;}
+    
 }
 

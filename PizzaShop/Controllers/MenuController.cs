@@ -1,4 +1,5 @@
 using BAL.Interfaces;
+using DAL.Models;
 using DAL.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,8 +22,8 @@ public class MenuController : BaseDashboardController
         model.categoryList = await _menuServices.getCategories();
         model.items = await _menuServices.getItems(categoryId, pageNumber, pageSize, searchKey);
 
-        ViewData["Username"] = GetUserName();
-        ViewBag.image = GetImgUrl();
+        // ViewData["Username"] = GetUserName();
+        // ViewBag.image = GetImgUrl();
 
         if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
         {
@@ -38,8 +39,8 @@ public class MenuController : BaseDashboardController
         model.categoryList = await _menuServices.getCategories();
         model.items = await _menuServices.getItems(categoryId, pageNumber, pageSize, searchKey);
 
-        ViewData["Username"] = GetUserName();
-        ViewBag.image = GetImgUrl();
+        // ViewData["Username"] = GetUserName();
+        // ViewBag.image = GetImgUrl();
 
         return PartialView("_MenuListItemsTable", model); // Return partial view for AJAX
     }
@@ -70,6 +71,39 @@ public class MenuController : BaseDashboardController
     {
         categoryAdd.ModifiedBy = _auth.getUser(GetUserName()).Userid;
         _menuServices.deleteCategory(categoryAdd);
+        return RedirectToAction("MenuList");
+    }
+
+    [HttpPost]
+    public IActionResult MenuListItemAdd(AddItemModel model)
+    {
+        model.CreatedBy = _auth.getUser(GetUserName()).Userid;
+        _menuServices.addItem(model);
+        return RedirectToAction("MenuList");
+    }
+
+    [HttpGet]
+    public IActionResult ItemDetailsForEdit(int Itemid)
+    {
+        Item item = _menuServices.getItem(Itemid);
+        return Json(item);
+    }
+
+    [HttpPost]
+    public IActionResult MenuListItemEdit(AddItemModel model)
+    {
+        model.CreatedBy = _auth.getUser(GetUserName()).Userid;
+        _menuServices.editItem(model);
+        Console.WriteLine(model.ItemId);
+        return RedirectToAction("MenuList");
+    }
+
+    [HttpPost]
+    public IActionResult MenuListItemDelete(AddItemModel model)
+    {
+        model.CreatedBy = _auth.getUser(GetUserName()).Userid;
+        _menuServices.deleteItem(model);
+        TempData["success"] = "Item is Deleted";
         return RedirectToAction("MenuList");
     }
 

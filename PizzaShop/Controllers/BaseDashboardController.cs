@@ -34,6 +34,9 @@ namespace PizzaShop.Controllers
             _role = _jwtservices.getRoleDetailsFromToken(token);
             _imgurl = _auth.getImageUrl(_userName);
 
+            ViewData["Username"] = GetUserName();
+            ViewBag.image = GetImgUrl();
+
         }
 
         protected string GetUserName()

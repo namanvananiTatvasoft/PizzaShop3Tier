@@ -6257,8 +6257,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "c:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj": {
-              "projectPath": "c:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj"
+            "C:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj": {
+              "projectPath": "C:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj"
             }
           }
         }
