@@ -115,6 +115,8 @@ public class AddItemModel
     public IFormFile ItemImage {get; set;}
 
     public int CreatedBy {get; set;}
+
+    public List<int> modGroupList {get; set;}
     
 }
 

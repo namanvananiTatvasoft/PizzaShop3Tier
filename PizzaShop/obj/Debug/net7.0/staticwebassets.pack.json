@@ -77,6 +77,10 @@
       "PackagePath": "staticwebassets\\images\\QR.png"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\Vegetable-Spaghetti-Recipe-2-1200.jpg",
+      "PackagePath": "staticwebassets\\images\\Vegetable-Spaghetti-Recipe-2-1200.jpg"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\belgium fries.jfif",
       "PackagePath": "staticwebassets\\images\\belgium fries.jfif"
     },
@@ -101,8 +105,16 @@
       "PackagePath": "staticwebassets\\images\\dominos_background.jpg"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\dropdownimg.webp",
+      "PackagePath": "staticwebassets\\images\\dropdownimg.webp"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\grid-3x2-gap-fill.svg",
       "PackagePath": "staticwebassets\\images\\grid-3x2-gap-fill.svg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\homemade-barbecue-sauce-sweet-and-spicy.jpg",
+      "PackagePath": "staticwebassets\\images\\homemade-barbecue-sauce-sweet-and-spicy.jpg"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\how-to-make-homemade-french-fries-2215971-hero-01-02f62a016f3e4aa4b41d0c27539885c3.jpg",
@@ -153,12 +165,24 @@
       "PackagePath": "staticwebassets\\images\\itemsPic\\1.jpg"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\10.jpg",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\10.jpg"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\11.jfif",
       "PackagePath": "staticwebassets\\images\\itemsPic\\11.jfif"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\12.jpeg",
       "PackagePath": "staticwebassets\\images\\itemsPic\\12.jpeg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\14.jpg",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\14.jpg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\18.jpg",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\18.jpg"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\26.jpg",
@@ -181,8 +205,28 @@
       "PackagePath": "staticwebassets\\images\\itemsPic\\29.jpg"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\3.jfif",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\3.jfif"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\3.jpg",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\3.jpg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\33.jfif",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\33.jfif"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\5.jfif",
       "PackagePath": "staticwebassets\\images\\itemsPic\\5.jfif"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\itemsPic\\9.jfif",
+      "PackagePath": "staticwebassets\\images\\itemsPic\\9.jfif"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\k_Photo_Recipes_2024-08-hummus_hummus-165.jfif",
+      "PackagePath": "staticwebassets\\images\\k_Photo_Recipes_2024-08-hummus_hummus-165.jfif"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\list-check.svg",
@@ -339,6 +383,10 @@
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\trash.svg",
       "PackagePath": "staticwebassets\\images\\trash.svg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\tuna-sald-sandwich-153064942-0eac25cff6ba42f48a4873a2739a971b.jpg",
+      "PackagePath": "staticwebassets\\images\\tuna-sald-sandwich-153064942-0eac25cff6ba42f48a4873a2739a971b.jpg"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\warning.png",

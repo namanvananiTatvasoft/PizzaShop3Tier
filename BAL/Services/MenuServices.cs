@@ -5,6 +5,7 @@ using DAL.Models;
 using DAL.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 
 namespace BAL.Services;
@@ -81,28 +82,41 @@ public class MenuServices : IMenuServices
         return model;
     }
 
-    public void addCategory(AddEditDeleteCategory model)
+    public (string, bool) addCategory(AddEditDeleteCategory model)
     {
         Category category = new Category();
+
+        if(_db.Categories.Where(e=>e.Categoryname == model.Categoryname).FirstOrDefault() != null)
+        {
+            return("Category Already Exists", false);
+        }
         category.Categoryname = model.Categoryname;
         category.Description = model.Description;
         category.Createdby = model.CreatedBy;
 
         _db.Categories.Add(category);
         _db.SaveChanges();
-        return;
+
+        return("New Category is Added", true);
     }
 
-    public void editCategory(AddEditDeleteCategory model)
+    public (string, bool) editCategory(AddEditDeleteCategory model)
     {
+
+        if(_db.Categories.Where(e=>e.Categoryid.ToString()!=model.Categoryid && e.Categoryname == model.Categoryname ).FirstOrDefault() != null)
+        {
+            return("Category Name Already Exists", false);
+        }
+
         Category category = _db.Categories.Where(e => e.Categoryid.ToString() == model.Categoryid).FirstOrDefault();
+
         category.Categoryname = model.Categoryname;
         category.Description = model.Description;
         category.Modifiedby = model.ModifiedBy;
         category.Modifieddate = DateTime.Now;
 
         _db.SaveChanges();
-        return;
+        return ("Category Updated Succesfully", true);
     }
 
     public void deleteCategory(AddEditDeleteCategory model)
@@ -122,9 +136,14 @@ public class MenuServices : IMenuServices
         return;
     }
 
-    public void addItem(AddItemModel model)
+    public (string, bool) addItem(AddItemModel model)
     {
         Item item = new Item();
+
+        if(_db.Items.Where(e=>e.Itemname == model.ItemName).FirstOrDefault() != null)
+        {
+            return ("Item name already Exists", false);
+        }
 
         item.Itemname = model.ItemName;
         item.Categoryid = model.ItemCategory;
@@ -145,6 +164,8 @@ public class MenuServices : IMenuServices
         _db.SaveChanges();
 
         string imageURL = "";
+
+        
 
         if(model.ItemImage != null)
         {
@@ -174,11 +195,31 @@ public class MenuServices : IMenuServices
 
         }
 
-        return;
+        Item itemToBeAdded = _db.Items.Where(e=>e.Itemname == model.ItemName).FirstOrDefault();
+
+        for (int i = 0; i < model.modGroupList.Count; i++)
+        {
+            _db.Itemmodifiergroupmaps.Add(
+                new Itemmodifiergroupmap{
+                    Itemid = itemToBeAdded.Itemid,
+                    Modifiergroupid = model.modGroupList[i]
+                }
+            );
+        }
+
+        _db.SaveChanges();
+
+        return ("Item Added Succesfully!", true);
+
     }
 
-    public void editItem(AddItemModel model)
+    public (string, bool) editItem(AddItemModel model)
     {
+
+        if(_db.Items.Where(e=>e.Itemid!=model.ItemId && e.Itemname == model.ItemName).FirstOrDefault() != null)
+        {
+            return ("Item name already Exists", false);
+        }
         Item item = _db.Items.Where(e=>e.Itemid == model.ItemId).FirstOrDefault();
 
         item.Itemname = model.ItemName;
@@ -219,6 +260,8 @@ public class MenuServices : IMenuServices
         }
         _db.SaveChanges();
 
+        return ("Item Updated Succesfully!", true);
+
     }
 
     public void deleteItem(AddItemModel model)
@@ -232,4 +275,22 @@ public class MenuServices : IMenuServices
         return;
 
     }
+
+    public void deleteItemCombine(List<int> itemList)
+    {
+        for (int i = 0; i < itemList.Count; i++)
+        {
+            Item item = _db.Items.Where(e=>e.Itemid == itemList[i]).FirstOrDefault();
+            item.Isdeleted = true;
+
+        }
+
+        _db.SaveChanges();
+    }
+
+    public List<Modgroup> getModGroups()
+    {
+        return _db.Modgroups.ToList();
+    }
+
 }

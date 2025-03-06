@@ -8,7 +8,7 @@ namespace DAL.Database;
 
 public partial class PizzaShopDbContext : DbContext
 {
-    protected readonly IConfiguration _config;
+    protected IConfiguration _config;
     public PizzaShopDbContext(IConfiguration configuration)
     {
         _config = configuration;
@@ -28,6 +28,10 @@ public partial class PizzaShopDbContext : DbContext
 
     public virtual DbSet<Item> Items { get; set; }
 
+    public virtual DbSet<Itemmodifiergroupmap> Itemmodifiergroupmaps { get; set; }
+
+    public virtual DbSet<Modgroup> Modgroups { get; set; }
+
     public virtual DbSet<Permission> Permissions { get; set; }
 
     public virtual DbSet<Permissionlist> Permissionlists { get; set; }
@@ -40,12 +44,12 @@ public partial class PizzaShopDbContext : DbContext
 
     public virtual DbSet<Userdetail> Userdetails { get; set; }
 
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var connectionString = _config.GetConnectionString("DefaultConnection");
         optionsBuilder.UseNpgsql(connectionString);
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
@@ -188,6 +192,65 @@ public partial class PizzaShopDbContext : DbContext
             entity.HasOne(d => d.ModifiedbyNavigation).WithMany(p => p.ItemModifiedbyNavigations)
                 .HasForeignKey(d => d.Modifiedby)
                 .HasConstraintName("items_modifiedby_fkey");
+        });
+
+        modelBuilder.Entity<Itemmodifiergroupmap>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("itemmodifiergroupmap_pkey");
+
+            entity.ToTable("itemmodifiergroupmap");
+
+            entity.HasIndex(e => new { e.Itemid, e.Modifiergroupid }, "unique_item_modifier").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Itemid).HasColumnName("itemid");
+            entity.Property(e => e.Modifiergroupid).HasColumnName("modifiergroupid");
+
+            entity.HasOne(d => d.Item).WithMany(p => p.Itemmodifiergroupmaps)
+                .HasForeignKey(d => d.Itemid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("itemmodifiergroupmap_itemid_fkey");
+
+            entity.HasOne(d => d.Modifiergroup).WithMany(p => p.Itemmodifiergroupmaps)
+                .HasForeignKey(d => d.Modifiergroupid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("itemmodifiergroupmap_modifiergroupid_fkey");
+        });
+
+        modelBuilder.Entity<Modgroup>(entity =>
+        {
+            entity.HasKey(e => e.Modgroupid).HasName("modgroup_pkey");
+
+            entity.ToTable("modgroup");
+
+            entity.HasIndex(e => e.Modgroupname, "modgroup_modgroupname_key").IsUnique();
+
+            entity.Property(e => e.Modgroupid).HasColumnName("modgroupid");
+            entity.Property(e => e.Createdby).HasColumnName("createdby");
+            entity.Property(e => e.Createddate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createddate");
+            entity.Property(e => e.Description)
+                .HasMaxLength(200)
+                .HasColumnName("description");
+            entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+            entity.Property(e => e.Modgroupname)
+                .HasMaxLength(50)
+                .HasColumnName("modgroupname");
+            entity.Property(e => e.Modifiedby).HasColumnName("modifiedby");
+            entity.Property(e => e.Modifieddate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifieddate");
+
+            entity.HasOne(d => d.CreatedbyNavigation).WithMany(p => p.ModgroupCreatedbyNavigations)
+                .HasForeignKey(d => d.Createdby)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("modgroup_createdby_fkey");
+
+            entity.HasOne(d => d.ModifiedbyNavigation).WithMany(p => p.ModgroupModifiedbyNavigations)
+                .HasForeignKey(d => d.Modifiedby)
+                .HasConstraintName("modgroup_modifiedby_fkey");
         });
 
         modelBuilder.Entity<Permission>(entity =>

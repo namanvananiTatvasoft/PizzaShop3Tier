@@ -7,7 +7,7 @@
                 <input type="text" placeholder="Search" id="search-input" class="text-bark d-none d-md-block items-search-input" value="@Model.items.searchKey" onkeydown="handleKeyPress(event)">
                 <img src="~/images/search.png" alt="" class="search-img" onclick="itemSearch()">
             </div>
-            <div style="width: fit-content;" class="d-flex justify-content-center align-items-center border ms-2"><img src="~/images/trash.svg" alt="" class="search-img"></div>
+            <div style="width: fit-content;" class="d-flex justify-content-center align-items-center border ms-2" onclick="deleteAllItems()"><img src="~/images/trash.svg" alt="" class="search-img"></div>
             <div class="d-flex align-items-center justify-content-center fs-3 ms-2" id="add-user-btn" data-bs-toggle = "modal" data-bs-target="#addItemModel" data-catid="@Model.items.Categoryid" onclick="addItems(this)">
                 + <span class="ms-2 fs-6 d-lg-flex d-none">New Item</span>
             </div>
@@ -39,7 +39,7 @@
                             <td>
                                 <div class="d-flex justify-content-start">
                                     <div class="form-check me-2">
-                                        <input class="form-check-input inner-check" type="checkbox" value="" id="flexCheckDefault">
+                                        <input class="form-check-input inner-check food-item-check" type="checkbox" value="" id="flexCheckDefault" data-id = "@item.ItemId">
                                     </div>
                                     @if(item.ImageUrl != null){
                                         <img src="@item.ImageUrl" alt="" class="me-2" style="height: 25px; width: 25px;">
@@ -292,6 +292,51 @@ function updateListPage(direction)
             console.error("Error fetching data:", error);
         }
     });
+}
+
+
+function deleteAllItems()
+{
+
+    var listOfItemsId = [];
+    $(".inner-check.food-item-check:checked").each(function(){
+        var dataId = parseInt($(this).attr('data-id'), 10);
+        listOfItemsId.push(dataId); 
+    });
+
+    $.ajax({
+        url: "/Menu/MenuItemDeleteCombine", 
+        type: "POST",
+        data: {
+            itemList : listOfItemsId
+        },
+        success: function (data) {
+            var url = `/Menu/MenuList?categoryId=${@Model.items.Categoryid}&pageNumber=${1}&pageSize=${@Model.items.pageSize}&searchKey=${encodeURIComponent($('#search-input').val())}`;
+            window.location.href = url;
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+
+    @* $.ajax({
+        url: "/Menu/MenuListTable", 
+        type: "GET",
+        data: {
+            categoryId: @Model.items.Categoryid,
+            searchKey: $('#search-input').val(),
+            pageSize: @Model.items.pageSize,
+            pageNumber: pageNum
+        },
+        success: function (data) {
+            $("#menuListTable").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    }); *@
+
+    
 }
 
 

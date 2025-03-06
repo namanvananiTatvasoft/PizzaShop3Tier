@@ -23,6 +23,10 @@ public partial class User
 
     public virtual ICollection<Item> ItemModifiedbyNavigations { get; } = new List<Item>();
 
+    public virtual ICollection<Modgroup> ModgroupCreatedbyNavigations { get; } = new List<Modgroup>();
+
+    public virtual ICollection<Modgroup> ModgroupModifiedbyNavigations { get; } = new List<Modgroup>();
+
     public virtual ICollection<Permission> Permissions { get; } = new List<Permission>();
 
     public virtual ICollection<Userdetail> UserdetailCreatedbyNavigations { get; } = new List<Userdetail>();

@@ -66,7 +66,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <!-- </div> -->
-                <form class="modal-body" asp-action="MenuListCategoryAdd" method="post">
+                <form class="modal-body" id="categoryAddForm">
                     <div class="d-flex justify-content-between mb-5">
                         <h1 class="modal-title fs-5 fw-semibold" id="exampleModalLabel">Add Category</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -74,6 +74,7 @@
 
                     <div class="form-group mb-3">
                         <input type="text" class="form-control py-2" id="categoryName" placeholder="Name*" asp-for="categoryAdd.Categoryname">
+                        <div id="categoryNameError" class="text-danger"></div>
                     </div>
 
                     <div class="form-group mb-5">
@@ -96,7 +97,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <!-- </div> -->
-                <form class="modal-body" asp-action="MenuListCategoryEdit" method="post">
+                <form class="modal-body" method="post" id="categoryEditForm">
                     <div class="d-flex justify-content-between mb-5">
                         <h1 class="modal-title fs-5 fw-semibold" id="exampleModalLabel">Edit Category</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -105,6 +106,7 @@
 
                     <div class="form-group mb-3">
                         <input type="text" class="form-control py-2" id="inputcategoryName" placeholder="Name*" asp-for="categoryAdd.Categoryname">
+                        <div id="categoryNameEditError" class="text-danger"></div>
                     </div>
 
                     <div class="form-group mb-5">
@@ -154,7 +156,8 @@
         <div class="modal-dialog modal-dialog-centered w-75" style="max-width: 100% !important">
             <div class="modal-content">
                 <!-- </div> -->
-                <form class="modal-body additemform" asp-action="MenuListItemAdd" method="post" enctype="multipart/form-data">
+                @* <form class="modal-body additemform" asp-action="MenuListItemAdd" method="post" enctype="multipart/form-data" id="itemAddForm"> *@
+                <form class="modal-body additemform" method="post" enctype="multipart/form-data" id="itemAddForm">
                     <div class="d-flex justify-content-between">
                         <div class="special-color fw-bold fs-4">Add Item</div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -194,7 +197,7 @@
                                             <label for="itemTypeDropdown">Item Type</label>
                                         </div>
                                         <div class="col-md-6 col-12 form-floating mt-3">
-                                            <input type="number" class="form-control" id="name" placeholder="Name" value="0" min="0" step="1" name="ItemRate" required>
+                                            <input type="number" class="form-control" id="name" placeholder="Name" min="0" step="1" name="ItemRate" required>
                                             <label for="name">Rate*</label>
                                         </div>
                                     </div>
@@ -202,12 +205,11 @@
                                 <div class="col-xl-6 col-12">
                                     <div class="row">
                                         <div class="col-md-6 col-12 form-floating mt-3">
-                                            <input type="number" class="form-control" id="quantity" placeholder="Name" value="0" min="0" step="1" name="ItemQuantity" required>
+                                            <input type="number" class="form-control" id="quantity" placeholder="Name" min="0" step="1" name="ItemQuantity" required>
                                             <label for="quantity">Quantity*</label>
                                         </div>
                                         <div class="col-md-6 col-12 form-floating mt-3">
                                             <select class="form-select" id="unitDropdown" aria-label="Select Food Category" name="ItemUnit" required>
-                                                @* <option value="" selected disabled>Select a Unit</option> *@
                                                 <option value="piece" selected>piece</option>
                                                 <option value="plate">plate</option>
                                                 <option value="bowl">bowl</option>
@@ -272,12 +274,14 @@
 
                         <div class="col-md-4 mt-3 col-12 px-2 " style="background-color: #fff5d7; border-radius: 5px;">
                             <div class="mod-group-select mt-2">
-                                <select class="form-select" id="ModifierGroupDropdown" aria-label="Select Food Category">
-                                    <option value="" selected disabled>Select Modifier Group</option>
-                                    <option value="mod1">Modifier 1</option>
-                                    <option value="mod2">Modifier 2</option>
-                                </select>
-                                <!-- <label for="itemTypeDropdown">Select Modifier Group</label> -->
+                                <div id="modifierGroupDropdown" style="background-color: white; border-radius: 5px;" class="p-2 d-flex align-items-center justify-content-between">
+                                    Select Modifier Group 
+                                    <img src="~/images/dropdownimg.webp" alt="" style="height: 15px;">
+                                </div>
+
+                                <div id="modGroupCheckBoxes" class="bg-white p-3 mt-2 d-none" style="border-radius: 5px;">
+
+                                </div>
                             </div>
                         </div>
 
@@ -473,6 +477,18 @@
         }
     });
 
+    document.getElementById('modifierGroupDropdown').addEventListener('click', function() {
+
+        var modGroupCheckBoxes = document.getElementById('modGroupCheckBoxes');
+        if (modGroupCheckBoxes.classList.contains('d-none')) {
+            modGroupCheckBoxes.classList.remove('d-none');
+        } else {
+            modGroupCheckBoxes.classList.add('d-none');
+        }
+    });
+
+
+
     document.getElementById('defaultTaxToggle').addEventListener('change', function () {
         if (!this.checked) {
             this.value = "false"; // set value to false if unchecked
@@ -548,6 +564,35 @@
             $('#categoryDropdown').val(categoryId);
         });
 
+        
+        $.ajax({
+            url: '/Menu/getModifierNames',
+            type: 'GET',
+            data: {}, 
+            success: function(result){
+
+                console.log(result);
+                
+                for(let i=0;i<result.modGroupList.length;i++)
+                {
+                    console.log(result.modGroupList[i].modgroupid + ":" + result.modGroupList[i].modgroupname);
+                    $("#modGroupCheckBoxes").append(
+                        `<div class="form-check mb-1">
+                            <input class="form-check-input" type="checkbox" name="Modifiers" value="${result.modGroupList[i].modgroupid}">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                ${result.modGroupList[i].modgroupname}
+                            </label>
+                        </div>`
+                    );
+                }  
+
+                
+            },
+            error: function() {
+                console.error("Failed to fetch item data.");
+            }
+        });
+
     }
 
     function editItem(element, itemid)
@@ -607,6 +652,99 @@
     }
 
     
+$("#categoryAddForm").submit(function (e) {
+
+    formData = new FormData(this);
+    event.preventDefault();
+
+    console.log(formData);
+
+    $.ajax({
+        type: "POST",
+        url: "/Menu/MenuListCategoryAdd",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success:function (response)
+        {
+            if(response.success)
+            {
+                toastr.success(response.message);
+                $('#addCategoryModel').modal('hide');
+            }else{
+                $('#categoryNameError').html(response.message);
+            }
+        }
+    });
+});
+
+
+$("#categoryEditForm").submit(function (e) {
+
+    event.preventDefault();
+
+    let formData = new FormData(this);
+
+
+    $.ajax({
+        type: "POST",
+        url: "/Menu/MenuListCategoryEdit",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success:function (response)
+        {
+            if(response.success)
+            {
+                toastr.success(response.message);
+                $('#editCategoryModal').modal('hide');
+            }else{
+                $('#categoryNameEditError').html(response.message);
+            }
+        }
+    });
+});
+
+
+
+$("#itemAddForm").submit(function (e) {
+
+    event.preventDefault();
+    let formData = new FormData(this);
+
+    var selectedModGroupIds = [];
+    $('#modGroupCheckBoxes input[type="checkbox"]:checked').each(function() {
+        selectedModGroupIds.push(parseInt($(this).val(), 10));
+
+        console.log(parseInt($(this).val(), 10));
+    });
+
+    selectedModGroupIds.forEach(function(id) {
+        formData.append('modGroupList[]', id);  // Append each selected ID to modGroupList[]
+    });
+
+
+
+    $.ajax({
+        type: "POST",
+        url: "/Menu/MenuListItemAdd",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success:function (response)
+        {
+            if(response.success)
+            {
+                toastr.success(response.message);
+                $('#editCategoryModal').modal('hide');
+
+                window.location.href = response.urlToRedirect;
+            }else{
+                $('#categoryNameEditError').html(response.message);
+            }
+        }
+    });
+});
 
 
 </script>

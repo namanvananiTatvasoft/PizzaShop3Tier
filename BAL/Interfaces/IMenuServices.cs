@@ -10,15 +10,19 @@ public interface IMenuServices
 
     public Task<ItemsViewMenuModel> getItems(int categoryId,int pageNumber,int pageSize,string searchKey);
 
-    public void addCategory(AddEditDeleteCategory model);
+    public (string, bool) addCategory(AddEditDeleteCategory model);
 
-    public void editCategory(AddEditDeleteCategory model);
+    public (string, bool) editCategory(AddEditDeleteCategory model);
 
     public void deleteCategory(AddEditDeleteCategory model);
 
-    public void addItem(AddItemModel model);
+    public (string, bool) addItem(AddItemModel model);
 
-    public void editItem(AddItemModel model);
+    public (string, bool) editItem(AddItemModel model);
 
     public void deleteItem(AddItemModel model);
+
+    public void deleteItemCombine(List<int> itemList);
+
+    public List<Modgroup> getModGroups();
 }
