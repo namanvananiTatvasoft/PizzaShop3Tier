@@ -103,7 +103,7 @@ public class HomeController : Controller
         }
             
         
-        return View();
+        return View("Login");
     }
 
 
@@ -136,7 +136,7 @@ public class HomeController : Controller
 
         if(user.Email != null){
 
-            var emailToken = _jwtServices.GenerateJwtToken(obj.Email, "", 24 * 60);
+            var emailToken = _jwtServices.GenerateJwtToken(obj.Email, "", 60);
             string uriii = Url.Action("ResetPassword", "Home", new { Email = emailToken }, Request.Scheme);
 
             // string uriii = Url.Action("ResetPassword", "Home", new { Email = obj.Email }, Request.Scheme);
@@ -176,7 +176,8 @@ public class HomeController : Controller
             await _auth.UpdatePassword(obj.Email, obj.NewPassword);
             ViewData["Message"] = "Password Updated Succesfully";
             ViewData["Email"] = obj.Email;
-            return View();
+            TempData["success"] = "Password Updated Succesfully";
+            return RedirectToAction("Login");
         }
 
         

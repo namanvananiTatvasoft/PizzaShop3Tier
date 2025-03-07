@@ -25,4 +25,8 @@ public interface IMenuServices
     public void deleteItemCombine(List<int> itemList);
 
     public List<Modgroup> getModGroups();
+
+    public List<ModifierGroupModel> getModGroupsForList();
+
+    public ModifiersViewMenuModel getModifiersList(int categoryId,int pageNumber,int pageSize,string searchKey);
 }

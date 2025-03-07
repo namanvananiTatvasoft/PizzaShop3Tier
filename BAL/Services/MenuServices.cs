@@ -293,4 +293,44 @@ public class MenuServices : IMenuServices
         return _db.Modgroups.ToList();
     }
 
+    public List<ModifierGroupModel> getModGroupsForList()
+    {
+        return _db.Modgroups.Select(mg => new ModifierGroupModel{Modifiergroupid = mg.Modgroupid, Modifiergroupname = mg.Modgroupname, Description = mg.Description}).ToList();
+    }
+
+    public ModifiersViewMenuModel getModifiersList(int categoryId,int pageNumber,int pageSize,string searchKey)
+    {
+        ModifiersViewMenuModel model = new ModifiersViewMenuModel();
+
+        var query = from moditems in _db.Moditems
+                    join map in _db.Moditemgroupmaps on moditems.Modifierid equals map.Modifierid
+                    where map.Modgroupid == categoryId && !moditems.Isdeleted && (moditems.Modifiername.ToLower().Contains(searchKey.ToLower()) || moditems.Description.ToLower().Contains(searchKey.ToLower()))
+                    select new SingleModifier
+                    {
+                        ModifierId = moditems.Modifierid,
+                        Modifiername = moditems.Modifiername,
+                        Unit = moditems.Unit,
+                        Rate = moditems.Rate,
+                        Quantity = moditems.Quantity,
+                        ImageUrl = moditems.Photourl
+                    };
+            
+        var count = query.Count();
+
+        if (pageNumber < 1) pageNumber = 1;
+        var totalPages = (int)Math.Ceiling((double)count / pageSize);
+        if (pageNumber > totalPages) pageNumber = totalPages;
+        if (pageNumber < 1) pageNumber = 1;
+
+        model.Modgroupid = categoryId;
+        model.Pagenumber = pageNumber;
+        model.Pagesize = pageSize;
+        model.Searchkey = searchKey;
+        model.Count = count;
+        model.modifiersList = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+
+        return model;
+    }
+
 }

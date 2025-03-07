@@ -1,0 +1,57 @@
+<div class="row">
+    <!-- category -->
+    <div class="d-flex flex-column col-12 col-lg-2 border p-2 category-column">
+
+        <div class="d-flex justify-content-between align-items-center mb-4 mt-2">
+            <div class="name-category fs-5 special-color fw-bold">Modifier</div>
+            <div class="add-category special-color fw-bold d-flex align-self-center" data-bs-toggle="modal" data-bs-target="#addModifierGroupModel">+</div>
+        </div>
+
+        <!-- category list  -->
+        <div class="d-flex flex-column category-list ">
+            @foreach(var modGroup in Model.modifierGroupList)
+            {
+                <div class="d-flex justify-content-between category-container">
+                    <div class="d-flex pb-3 @(modGroup.Modifiergroupid == Model.modifiers.Modgroupid ? "active-category" : "")">
+                        <img src="~/images/grid-3x2-gap-fill.svg" alt="" style="transform: rotate(90deg);">
+                        <div onclick="changeModgroup('@modGroup.Modifiergroupid')">@modGroup.Modifiergroupname</div>
+                    </div>
+                    <div class="text-nowrap button-container">
+                        <img src="~/images/pen.svg" alt="" class="editButtom" id="editCategory" data-bs-toggle="modal" data-bs-target="#editModifierGroupModal" data-id = "@modGroup.Modifiergroupid" onclick="editCategory(this)">
+                        <img src="~/images/trash.svg" alt="" class="deleteButton" id="deleteCategory" data-bs-toggle="modal" data-bs-target="#deleteModifierGroupModal" data-id="@modGroup.Modifiergroupid" onclick="deleteCategory(this)">
+                    </div> 
+                </div>
+            }        
+        </div>
+    </div>
+    <!-- items -->
+    <div class="contianer-fluid col-12 col-lg-10 category-item-list-container" id="menuListModifierTable">
+        <partial name="~/Views/Menu/_ModifierTable.cshtml" />
+    </div>
+    
+</div>
+
+<script>
+
+function changeModgroup(modgroupId) {
+    console.log('ModifierGroup ID:', modgroupId);
+
+    $.ajax({
+        url: "/Menu/MenuModifiersList", 
+        type: "GET",
+        data: {
+            categoryId: modgroupId,
+            pageSize: $("#modifiersPerPageItemList").val()
+        },
+        success: function (data) {
+            $("#nav-profile").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+
+
+</script>

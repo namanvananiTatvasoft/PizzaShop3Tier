@@ -11,10 +11,15 @@ public class MenuViewModel
     public ItemsViewMenuModel items {get; set;}
 
     public AddEditDeleteCategory categoryAdd {get; set;}
+
+    // modifiers ----------------------------
+    public List<ModifierGroupModel> modifierGroupList {get; set;}
+
+    public ModifiersViewMenuModel modifiers {get; set;}
     
 }
 
-
+// all about category & item --------------------------------------
 public class CategoryMenuModel
 {
     public int Categoryid { get; set; }
@@ -59,8 +64,6 @@ public class SingleItem
     public string ImageUrl {get; set;}
 }
 
-
-
 public class AddEditDeleteCategory
 {
     public string Categoryid {get; set;}
@@ -75,14 +78,6 @@ public class AddEditDeleteCategory
 
     public DateTime ModifiedDate{get; set;}
 
-}
-
-public enum Unit
-{
-    Inches,
-    Pieces,
-    Grams,
-    Ml
 }
 
 public class AddItemModel
@@ -120,3 +115,43 @@ public class AddItemModel
     
 }
 
+
+// all about Modifier Group & item --------------------------------------
+public class ModifierGroupModel
+{
+    public int Modifiergroupid { get; set; }
+
+    public string Modifiergroupname { get; set; }
+
+    public string Description { get; set; }
+}
+
+public class ModifiersViewMenuModel
+{
+    public int Modgroupid { get; set; }
+
+    public int Pagenumber {get; set;}
+
+    public int Pagesize {get; set;}
+
+    public string Searchkey {get; set;}
+
+    public int Count{get; set;}
+
+    public List<SingleModifier> modifiersList {get; set;}
+}
+
+public class SingleModifier
+{
+    public int ModifierId {get; set;}
+
+    public string Modifiername {get; set;}
+
+    public string Unit {get; set;}
+
+    public short Rate { get; set; }
+
+    public int Quantity { get; set; }
+
+    public string ImageUrl {get; set;}
+}

@@ -273,12 +273,24 @@
       "PackagePath": "staticwebassets\\images\\profilePic\\14.png"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\2.jfif",
+      "PackagePath": "staticwebassets\\images\\profilePic\\2.jfif"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\23.png",
       "PackagePath": "staticwebassets\\images\\profilePic\\23.png"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\29.png",
       "PackagePath": "staticwebassets\\images\\profilePic\\29.png"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\3.jpeg",
+      "PackagePath": "staticwebassets\\images\\profilePic\\3.jpeg"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\31.jfif",
+      "PackagePath": "staticwebassets\\images\\profilePic\\31.jfif"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\31.png",
@@ -297,8 +309,16 @@
       "PackagePath": "staticwebassets\\images\\profilePic\\36.png"
     },
     {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\41.jpg",
+      "PackagePath": "staticwebassets\\images\\profilePic\\41.jpg"
+    },
+    {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\43.png",
       "PackagePath": "staticwebassets\\images\\profilePic\\43.png"
+    },
+    {
+      "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\47.jpg",
+      "PackagePath": "staticwebassets\\images\\profilePic\\47.jpg"
     },
     {
       "Id": "C:\\Projects\\PizzaShopMain\\PizzaShop\\wwwroot\\images\\profilePic\\50.jpg",

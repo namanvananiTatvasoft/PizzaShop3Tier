@@ -1,0 +1,347 @@
+<div class="row special-color fw-bold fs-6">
+    Modifier pageNumber = @Model.modifiers.Pagenumber  pagesize = @Model.modifiers.Pagesize count = @Model.modifiers.Count ModGroup-id = @Model.modifiers.Modgroupid searchKey = @Model.modifiers.Searchkey
+</div>
+
+<div class="row d-flex justify-content-end category-item-list-container">
+    <div class="search-box d-flex align-items-center bg-white ms-2">
+        <input type="text" placeholder="Search" id="mod-search-input" class="text-bark d-none d-md-block items-search-input" value="@Model.modifiers.Searchkey" onkeydown="handleKeyPressModifier(event)">
+        <img src="~/images/search.png" alt="" class="search-img" onclick="modifierSearch()">
+    </div>
+    <div style="width: fit-content;" class="d-flex justify-content-center align-items-center border ms-2" onclick="deleteAllModifiers()"><img src="~/images/trash.svg" alt="" class="search-img"></div>
+    <div class="d-flex align-items-center justify-content-center fs-3 ms-2" id="add-user-btn" data-bs-toggle = "modal" data-bs-target="#addModifierModel" data-catid="@Model.modifiers.Modgroupid" onclick="addItems(this)">
+        + <span class="ms-2 fs-6 d-lg-flex d-none">New Modifier</span>
+    </div>
+</div>
+
+<div class="row table-responsive modifiers-table">
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th scope="col" class="d-flex">
+                    <div class="form-check me-2">
+                        <input class="form-check-input outer-check-modifiers" type="checkbox" value="" id="flexCheckDefault">
+                    </div>
+                    <div>
+                        Name
+                    </div>
+                </th>
+                @* <th scope="col" style="text-wrap: nowrap;">Item Type</th> *@
+                <th scope="col">Unit</th>
+                <th scope="col">Rate</th>
+                <th scope="col">Quantity</th>
+                @* <th scope="col">Available</th> *@
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var modifier in Model.modifiers.modifiersList)
+            {
+                <tr>
+                    <td>
+                        <div class="d-flex justify-content-start">
+                            <div class="form-check me-2">
+                                <input class="form-check-input inner-check-modifier food-item-check" type="checkbox" value="" id="flexCheckDefault" data-id = "@modifier.ModifierId">
+                            </div>
+                            @* @if(modifier.ImageUrl != null){
+                                <img src="@modifier.ImageUrl" alt="" class="me-2" style="height: 25px; width: 25px;">
+                            }
+                            else{
+                                <img src="~/images/dining-menu.png" alt="" class="me-2" style="height: 25px; width: 25px">
+                            } *@
+                            <div>
+                                @modifier.Modifiername
+                            </div>
+                        </div>
+                    </td>
+                    @* <td class="text-center"><img src="@Url.Content(item.ItemType ? "~/images/icons/veg-icon.svg" : "~/images/icons/non-veg-icon.svg")" alt="" style="height: 20px;"></td> *@
+                    <td>@modifier.Unit</td>
+                    <td>@modifier.Rate</td>
+                    <td>@modifier.Quantity</td>
+                    @* <td>
+                        <div class="form-check form-switch d-flex justify-content-center">
+                            <input class="form-check-input toggle-size" type="checkbox" role="switch" id="flexSwitchCheckDefault" @((item.Isavailable) ? "checked": "") disabled>
+                        </div>
+                    </td>        *@
+                    <td>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img src="~/images/pen.svg" alt="" class="edit-delete-pic" data-bs-toggle = "modal" data-bs-target="#editItemModel" onclick="editItem(this,@modifier.ModifierId)">
+                            <img src="~/images/trash.svg" alt="" class="edit-delete-pic" data-bs-toggle="modal" data-bs-target="#deleteItemModal" onclick="deleteItem(this)" data-id ="@modifier.ModifierId">
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex justify-content-end align-items-end align-items-md-center flex-column flex-md-row bg-white pe-2 pt-3 mb-6" style="">
+    <div class="d-flex align-items-center mt-6 mb-3 mb-md-0">
+        <label for="itemsPerPage" class="form-label me-3 text-center">Items per page:</label>
+        <select id="modifiersPerPageItemList" class="form-select me-3" style="width: 68px; height: 85%; font-size: 15px;" onchange="updateModifierListPerPage()">
+            @if (Model.modifiers.Pagesize != null)
+            {
+                <option value="1" selected="@(Model.modifiers.Pagesize == 1 ? true : false)">1</option>
+                <option value="2" selected="@(Model.modifiers.Pagesize == 2 ? true : false)">2</option>
+                <option value="5" selected="@(Model.modifiers.Pagesize == 5 ? true : false)">5</option>
+                <option value="10" selected="@(Model.modifiers.Pagesize == 10 ? true : false)">10</option>
+                <option value="25" selected="@(Model.modifiers.Pagesize == 25 ? true : false)">25</option>
+            }
+        </select>
+    </div>
+    <div class="d-flex align-items-center me-3">
+        <div class="me-2">
+            Showing 
+            @{
+                var startRecord = (Model.modifiers.Pagenumber - 1) * Model.modifiers.Pagesize + 1;
+                var endRecord = Model.modifiers.Pagenumber *  Model.modifiers.Pagesize;
+                if (endRecord > Model.modifiers.Count) 
+                    endRecord = Model.modifiers.Count;
+                
+                if(Model.modifiers.Count==0){
+                    startRecord = 0;
+                    endRecord = 0;
+                }
+            }
+            <span style="color: green;" class="me-1">@startRecord  -  @endRecord</span>  of  <span style="color: red;" class="ms-1">@Model.modifiers.Count</span>
+        </div>
+        <div style="height: 100%">
+            @* <a href="@Url.Action("UserListAll")?PageSize=@ViewBag.PageSize&PageNumber=@(ViewBag.PageNumber-1)&SortColumn=@ViewBag.SortColumn&SortDirection=@ViewBag.SortDirection&SearchKey=@ViewBag.SearchKey" style="text-decoration: none;"> *@
+                <button style="width:38px; height: 40px; background-color: white; border: 1px solid black; border-radius: 3px;" onclick="updateModifierPage('back')">&lt;</button>
+            @* </a> *@
+            @* <a href="@Url.Action("UserListAll")?PageSize=@ViewBag.PageSize&PageNumber=@(ViewBag.PageNumber+1)&SortColumn=@ViewBag.SortColumn&SortDirection=@ViewBag.SortDirection&SearchKey=@ViewBag.SearchKey"> *@
+                <button style="width:38px; height: 40px; background-color: white; border: 1px solid black; border-radius: 3px;" onclick="updateModifierPage('next')">&gt;</button>
+            @* </a> *@
+        </div>
+    </div>
+</div>
+
+
+<script>
+    
+var mainCheckModifier = document.querySelector('.outer-check-modifiers');
+var innerCheckModifier = document.querySelectorAll('.inner-check-modifier');
+
+mainCheckModifier.addEventListener('change', function () {
+    if(this.checked){
+        innerCheckModifier.forEach(function (ie){
+            ie.checked = true;
+        });
+    }else{
+        innerCheckModifier.forEach(function (ie){
+            ie.checked = false;
+        });
+    }
+
+    innerCheckModifier.forEach(function (ic) {
+        var row = $(ic).closest("tr");  // Use `ic` here, not `this`
+
+        // If isEnable is unchecked, uncheck other checkboxes
+        if (!$(ic).prop("checked")) {
+            row.find(".can-view input, .can-add-edit input, .can-delete input").prop("checked", false);
+        }
+
+        // If any checkbox is checked, check the `mainCheckModifier` box
+        // if ($(ic).prop("checked") && !mainCheckModifier.checked) {
+        //     mainCheckModifier.checked = true;
+        // }
+    });
+});
+
+innerCheckModifier.forEach(function (ic) {
+    ic.addEventListener('change', function() {
+        if (!this.checked) {
+            mainCheckModifier.checked = false;
+        }else{
+            var mc = true;
+            innerCheckModifier.forEach(function(ie) {
+                if(!ie.checked){
+                    mc = false;
+                }
+            });
+            
+            if(mc){
+                mainCheckModifier.checked = true;
+            }
+        }
+    })
+})
+
+$(".inner-check-modifier").change(function () {
+    // Get the row this checkbox belongs to
+    var row = $(this).closest("tr");
+
+    // If isEnable is unchecked, uncheck other checkboxes
+    if (!$(this).prop("checked")) {
+        row.find(".can-view input, .can-add-edit input, .can-delete input").prop("checked", false);
+    }
+});
+
+$(".form-check-input").change(function () {
+    // Get the row this checkbox belongs to
+    var row = $(this).closest("tr");
+
+    // If isEnable is unchecked and one of the others is checked, check isEnable
+    if (row.find(".inner-check-modifier").prop("checked") === false) {
+        if (row.find(".can-view input:checked, .can-add-edit input:checked, .can-delete input:checked").length > 0) {
+            row.find(".inner-check-modifier").prop("checked", true);
+        }
+    }
+
+    var eo = true;
+
+    innerCheckModifier.forEach(function (ic) {
+        if (!ic.checked) {
+            eo = false;
+        }
+    });
+
+    if (eo) {
+        mainCheckModifier.checked = true;
+    }
+
+
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var mainCheckModifier = document.querySelector('.outer-check-modifiers');
+    var innerCheckModifier = document.querySelectorAll('.inner-check-modifier');
+    var eo = true;
+
+    innerCheckModifier.forEach(function (ic) {
+        if (!ic.checked) {
+            eo = false;
+            console.log("Hi");
+        }
+    });
+
+    if (eo) {
+        mainCheckModifier.checked = true;
+    }
+});
+
+
+function handleKeyPressModifier(event) {
+    if (event.key === 'Enter') {
+        modifierSearch();  // Call the itemSearch function when Enter is pressed
+    }
+}
+
+
+function modifierSearch() {
+    @* console.log(@Model.items.Categoryid); *@
+    $.ajax({
+        url: "/Menu/MenuModifiersListTable", // The server-side action
+        type: "GET",
+        data: {
+            categoryId: @Model.modifiers.Modgroupid,
+            searchKey: $('#mod-search-input').val(),
+            pageSize: @Model.modifiers.Pagesize
+        },
+        success: function (data) {
+            $("#menuListModifierTable").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+
+function updateModifierListPerPage()
+{
+    console.log($("#modifiersPerPageItemList").val());
+
+    $.ajax({
+        url: "/Menu/MenuModifiersListTable", 
+        type: "GET",
+        data: {
+            categoryId: @Model.modifiers.Modgroupid,
+            searchKey: $('#mod-search-input').val(),
+            pageSize: $("#modifiersPerPageItemList").val()
+        },
+        success: function (data) {
+            $("#menuListModifierTable").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+
+function updateModifierPage(direction)
+{
+    var pageNum = @Model.modifiers.Pagenumber;
+    console.log(pageNum);
+    if(direction=='back') pageNum--;
+    if(direction=='next') pageNum++;
+
+    $.ajax({
+        url: "/Menu/MenuModifiersListTable", 
+        type: "GET",
+        data: {
+            categoryId: @Model.modifiers.Modgroupid,
+            searchKey: $('#search-input').val(),
+            pageSize: $("#modifiersPerPageItemList").val(),
+            pageNumber: pageNum
+        },
+        success: function (data) {
+            $("#menuListModifierTable").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+
+function deleteAllItems()
+{
+
+    @* var listOfItemsId = [];
+    $(".inner-check-modifier.food-item-check:checked").each(function(){
+        var dataId = parseInt($(this).attr('data-id'), 10);
+        listOfItemsId.push(dataId); 
+    });
+
+    $.ajax({
+        url: "/Menu/MenuItemDeleteCombine", 
+        type: "POST",
+        data: {
+            itemList : listOfItemsId
+        },
+        success: function (data) {
+            var url = `/Menu/MenuList?categoryId=${@Model.items.Categoryid}&pageNumber=${1}&pageSize=${@Model.items.pageSize}&searchKey=${encodeURIComponent($('#search-input').val())}`;
+            window.location.href = url;
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    }); *@
+
+    @* $.ajax({
+        url: "/Menu/MenuListTable", 
+        type: "GET",
+        data: {
+            categoryId: @Model.items.Categoryid,
+            searchKey: $('#search-input').val(),
+            pageSize: @Model.items.pageSize,
+            pageNumber: pageNum
+        },
+        success: function (data) {
+            $("#menuListTable").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    }); *@
+
+    
+}
+
+
+
+
+
+</script>

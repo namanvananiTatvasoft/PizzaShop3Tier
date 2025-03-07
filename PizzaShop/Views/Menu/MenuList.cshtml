@@ -20,10 +20,7 @@
 
 
 
-
 <div class="menu-item-container">
-
-
 
     <!-- Menu Display -->
     <div class="row px-0 d-flex justify-content-between mb-3">
@@ -53,8 +50,10 @@
             </div>
 
             <!-- modifiers content  -->
-            <div class="tab-pane fade border" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-                Tab 2
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                @* tab 2 *@
+                <div id="modifierContent"></div>
+                @* <partial name="~/Views/Menu/_modifier.cshtml"/> *@
             </div>
 
         </div>
@@ -466,6 +465,35 @@
         </div>
     </div>
 
+    <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample2" role="button" aria-controls="offcanvasExample2">
+        Link with href
+    </a>
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample2" aria-controls="offcanvasExample2">
+        Button with data-bs-target
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample2" aria-labelledby="offcanvasExampleLabel2">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+            Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+            </div>
+            <div class="dropdown mt-3">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                Dropdown button
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -486,8 +514,6 @@
             modGroupCheckBoxes.classList.add('d-none');
         }
     });
-
-
 
     document.getElementById('defaultTaxToggle').addEventListener('change', function () {
         if (!this.checked) {
@@ -706,7 +732,6 @@ $("#categoryEditForm").submit(function (e) {
 });
 
 
-
 $("#itemAddForm").submit(function (e) {
 
     event.preventDefault();
@@ -747,8 +772,39 @@ $("#itemAddForm").submit(function (e) {
 });
 
 
+
+// ---------------------------------------------- All about Modifiers -------------------------------------------------------------
+var isTabLoaded = false;
+
+
+
+document.getElementById('nav-profile-tab').addEventListener('click', function(){
+
+    if(!isTabLoaded)
+    {
+        $.ajax({
+            type: "GET",
+            url: "/Menu/MenuModifiersList",
+            success: function(response) {
+                console.log("Tab content loaded successfully");
+                $('#nav-profile').html(response); // Inject the response into the tab
+                isTabLoaded = true;
+            },
+            error: function(xhr, status, error) {
+                console.error("Error loading data: ", error);
+            }
+        });
+        
+    }else{
+        console.log("Tab is loaded");
+    }
+}); 
+
+
+
+
+
+
 </script>
 
 <script src="~/js/MenuList.js"></script>
-@* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-FxfkB8Sb6D8ugghYzX5frzG3VfV7bDZn6zShuyFqVOTC8N5pFwQ4B8lYrsLQb7Bx" crossorigin="anonymous"></script> *@
-

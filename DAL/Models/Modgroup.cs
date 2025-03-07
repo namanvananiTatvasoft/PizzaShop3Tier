@@ -26,4 +26,6 @@ public partial class Modgroup
     public virtual ICollection<Itemmodifiergroupmap> Itemmodifiergroupmaps { get; } = new List<Itemmodifiergroupmap>();
 
     public virtual User? ModifiedbyNavigation { get; set; }
+
+    public virtual ICollection<Moditemgroupmap> Moditemgroupmaps { get; } = new List<Moditemgroupmap>();
 }

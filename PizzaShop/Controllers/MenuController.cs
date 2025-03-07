@@ -18,6 +18,9 @@ public class MenuController : BaseDashboardController
         _auth = authServices;
     }
 
+
+// All About the Main Menu Category --------------------------------------------------------------------------------------------------------
+
     [HttpGet("MenuList")]
     public async Task<IActionResult> MenuList(int categoryId = 1, int pageNumber = 1, int pageSize = 5, string searchKey = "")
     {
@@ -168,4 +171,30 @@ public class MenuController : BaseDashboardController
         List<Modgroup> modList = _menuServices.getModGroups();
         return Json(new {modGroupList = modList});
     }
+
+
+// All About the Modifier Menu Category --------------------------------------------------------------------------------------------------------
+
+    [HttpGet("MenuModifiersList")]
+    public IActionResult MenuModifiersList(int categoryId = 1, int pageNumber = 1, int pageSize = 5, string searchKey = "")
+    {
+        MenuViewModel model = new MenuViewModel();
+        model.modifierGroupList = _menuServices.getModGroupsForList();
+        model.modifiers = _menuServices.getModifiersList(categoryId, pageNumber, pageSize, searchKey);
+
+        return PartialView("_Modifier",model);
+    }
+
+    [HttpGet("MenuModifiersListTable")]
+    public IActionResult MenuModifiersListTable(int categoryId = 1, int pageNumber = 1, int pageSize = 5, string searchKey = "")
+    {
+        MenuViewModel model = new MenuViewModel();
+        model.modifierGroupList = _menuServices.getModGroupsForList();
+        model.modifiers = _menuServices.getModifiersList(categoryId, pageNumber, pageSize, searchKey);
+
+        return PartialView("_ModifierTable",model);
+    }
+
+
+    
 }
