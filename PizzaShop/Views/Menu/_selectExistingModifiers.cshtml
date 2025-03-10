@@ -1,0 +1,273 @@
+@model DAL.ViewModel.MenuViewModel
+
+<div class="search-box d-flex align-items-center bg-white w-50 px-3 py-2 h-50 mb-3">
+    <input type="text" placeholder="Search" id="search-modifiers-input" class="text-bark items-search-input" onkeypress="handleKeyPressModifiersss(this)" value="@Model.allModifiers.Searchkey">
+    <img src="~/images/search.png" alt="" class="search-img" onclick="modifierItemSearch()">
+</div>
+
+
+<table class="table mt-4" id="addmofiiertable">
+    <thead>
+        <tr>
+            <th scope="col" class="d-flex">
+                <div class="form-check me-2">
+                    <input class="form-check-input outer-check-modifiers-list" type="checkbox" value="" id="flexCheckDefault">
+                </div>
+                <div>
+                    Name
+                </div>
+            </th>
+            <th scope="col">Unit</th>
+            <th scope="col">Rate</th>
+            <th scope="col">Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var modifierItem in Model.allModifiers.modifiersList)
+        {
+            <tr>
+                <td class="d-flex">
+                    <div class="form-check me-2">
+                        <input class="form-check-input inner-check-modifiers-list" type="checkbox" value="" data-itemid="@modifierItem.ModifierId" data-itemname="@modifierItem.Modifiername">
+                    </div>
+                    <div>
+                        @modifierItem.Modifiername
+                    </div>
+                </td>
+                <td>@modifierItem.Unit</td>
+                <td>@modifierItem.Rate</td>
+                <td>@modifierItem.Quantity</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+<div class="d-flex justify-content-end align-items-end align-items-md-center flex-column flex-md-row bg-white pe-2 pt-3 mb-6" style="">
+    <div class="d-flex align-items-center mt-6 mb-3 mb-md-0">
+        <label for="itemsPerPage" class="form-label me-1 text-center fs-6">Items per page:</label>
+        <select id="modifiersTablePerPageItemList" class="form-select me-3" style="width: 68px; height: 35px; font-size: 12px;" onchange="uupdateItemModifierListPerPage()">
+            @if (Model.allModifiers.Pagesize != null)
+            {
+                <option value="1" selected="@(Model.allModifiers.Pagesize == 1 ? true : false)">1</option>
+                <option value="2" selected="@(Model.allModifiers.Pagesize == 2 ? true : false)">2</option>
+                <option value="5" selected="@(Model.allModifiers.Pagesize == 5 ? true : false)">5</option>
+                <option value="10" selected="@(Model.allModifiers.Pagesize == 10 ? true : false)">10</option>
+                <option value="25" selected="@(Model.allModifiers.Pagesize == 25 ? true : false)">25</option>
+            }
+        </select>
+    </div>
+    <div class="d-flex align-items-center me-3 fs-6">
+        <div class="me-2">
+            Showing 
+            @{
+                var startRecord = (Model.allModifiers.Pagenumber - 1) * Model.allModifiers.Pagesize + 1;
+                var endRecord = Model.allModifiers.Pagenumber *  Model.allModifiers.Pagesize;
+                if (endRecord > Model.allModifiers.Count) 
+                    endRecord = Model.allModifiers.Count;
+                
+                if(Model.allModifiers.Count==0){
+                    startRecord = 0;
+                    endRecord = 0;
+                }
+            }
+            <span style="color: green;" class="me-1">@startRecord  -  @endRecord</span>  of  <span style="color: red;" class="ms-1">@Model.allModifiers.Count</span>
+        </div>
+        <div style="height: 70%">
+            <button style="width:38px; height: 40px; background-color: white; border: 1px solid black; border-radius: 3px;" onclick="updateModifiersItemListPage('back')">&lt;</button>
+            <button style="width:38px; height: 40px; background-color: white; border: 1px solid black; border-radius: 3px;" onclick="updateModifiersItemListPage('next')">&gt;</button>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+var mainCheckModifier = document.querySelector('.outer-check-modifiers-list');
+var innerCheckModifier = document.querySelectorAll('.inner-check-modifiers-list');
+
+$(document).ready(function() {
+    $('#search-modifiers-input').on('keypress', function(event) {
+        handleKeyPressModifiersss(event);  // Call the handleKeyPressModifiersss function on keypress
+    });
+
+    console.log("This is loaded");
+    var mainCheckModifier = document.querySelector('.outer-check-modifiers-list');
+    var innerCheckModifier = document.querySelectorAll('.inner-check-modifiers-list');
+    var eo = true;
+
+    innerCheckModifier.forEach(function (ic) {
+        if (!ic.checked) {
+            eo = false;
+            console.log("Hi");
+        }
+    });
+
+    if (eo) {
+        mainCheckModifier.checked = true;
+    }
+
+    document.querySelectorAll('.inner-check-modifiers-list').forEach(function (checkbox) {
+        console.log("htis is jdfdl");
+        const itemId = parseInt(checkbox.getAttribute('data-itemid'));
+        const itemname = parseInt(checkbox.getAttribute('data-itemname'));
+
+        
+        if (modifierIds.has(itemId)) {
+            checkbox.checked = true;  // Check the checkbox if id exists in the Set
+        }
+    });
+
+    $(document).on('change', '.inner-check-modifiers-list', function() {
+        let itemId = $(this).data('itemid');
+        let itemname = $(this).data('itemname');
+
+        if ($(this).is(':checked')) {
+            modifierIds.add(itemId);
+            modifierNames.add(itemname);
+        } else {
+            modifierIds.delete(itemId);
+            modifierNames.delete(itemname);
+        }
+
+        updateSelectedModifiers();
+
+        console.log(Array.from(modifierIds)); // For debugging purposes
+        console.log(Array.from(modifierNames)); // For debugging purposes
+
+    });
+
+    $('.outer-check-modifiers-list').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('.inner-check-modifiers-list').each(function() {
+                let itemId = $(this).data('itemid');
+                let itemname = $(this).data('itemname');
+
+                modifierIds.add(itemId);
+                modifierNames.add(itemname);
+
+                $(this).prop('checked', true); // Check all inner checkboxes
+            });
+        } else {
+            $('.inner-check-modifiers-list').each(function() {
+                let itemId = $(this).data('itemid');
+                let itemname = $(this).data('itemname');
+
+                modifierIds.delete(itemId);
+                modifierNames.delete(itemname);
+
+                $(this).prop('checked', false); // Uncheck all inner checkboxes
+            });
+        }
+
+        updateSelectedModifiers();
+        console.log(Array.from(modifierIds)); // For debugging purposes
+        console.log(Array.from(modifierNames)); // For debugging purposes
+
+    });
+});
+    
+function handleKeyPressModifiersss(event) {
+
+    if (event.key === 'Enter') {
+        modifierItemSearch();  // Call the itemSearch function when Enter is pressed
+    }
+}
+
+function modifierItemSearch() {
+    $.ajax({
+        url: "/Menu/AddModGroupModalTable", // The server-side action
+        type: "GET",
+        data: {
+            searchKey: $('#search-modifiers-input').val(),
+            pageSize: @Model.allModifiers.Pagesize
+        },
+        success: function (data) {
+            $("#selectModifierTable").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+function uupdateItemModifierListPerPage()
+{
+
+    $.ajax({
+        url: "/Menu/AddModGroupModalTable", 
+        type: "GET",
+        data: {
+            searchKey: $('#search-modifiers-input').val(),
+            pageSize: $("#modifiersTablePerPageItemList").val()
+        },
+        success: function (data) {
+            $("#selectModifierTable").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+function updateModifiersItemListPage(direction)
+{
+    var pageNum = @Model.allModifiers.Pagenumber;
+    if(direction=='back') pageNum--;
+    if(direction=='next') pageNum++;
+
+    $.ajax({
+        url: "/Menu/AddModGroupModalTable", 
+        type: "GET",
+        data: {
+            searchKey: $('#search-modifiers-input').val(),
+            pageSize: $("#modifiersTablePerPageItemList").val(),
+            pageNumber: pageNum
+        },
+        success: function (data) {
+            $("#selectModifierTable").html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+
+
+
+mainCheckModifier.addEventListener('change', function () {
+    if(this.checked){
+        innerCheckModifier.forEach(function (ie){
+            ie.checked = true;
+        });
+    }else{
+        innerCheckModifier.forEach(function (ie){
+            ie.checked = false;
+        });
+    }
+
+});
+
+innerCheckModifier.forEach(function (ic) {
+    ic.addEventListener('change', function() {
+        if (!this.checked) {
+            mainCheckModifier.checked = false;
+        }else{
+            var mc = true;
+            innerCheckModifier.forEach(function(ie) {
+                if(!ie.checked){
+                    mc = false;
+                }
+            });
+            
+            if(mc){
+                mainCheckModifier.checked = true;
+            }
+        }
+    })
+})
+
+
+</script>

@@ -29,4 +29,8 @@ public interface IMenuServices
     public List<ModifierGroupModel> getModGroupsForList();
 
     public ModifiersViewMenuModel getModifiersList(int categoryId,int pageNumber,int pageSize,string searchKey);
+
+    public void addModGroup(AddEditDeleteModGroup model);
+
+
 }

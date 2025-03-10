@@ -82,26 +82,28 @@
         </div>
         <div class="offcanvas-body px-0">
             <div class="d-flex flex-column off-sidebar pt-4 fw-semibold">
-                <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box active-sidebar">
-                    <img src="~/images/sidebar icons/dashboard.png" alt="" class="sidebar-icons ps-3 active-icon">
-                    <div class="sidebar-names ps-3 active-name">Dashboard</div>
-                </div>
+                <a asp-controller="Dashboard" asp-action="Dash" style="text-decoration: none;">
+                    <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box @(ViewBag.Active == "Dashboard"? "active-sidebar" :" ")">
+                        <img src="~/images/sidebar icons/dashboard.png" alt="" class="sidebar-icons @(ViewBag.Active == "Dashboard"? "active-icon" :" ") ps-3">
+                        <div class="sidebar-names ps-3 @(ViewBag.Active == "Dashboard"? "active-name" :" ")">Dashboard</div>
+                    </div>
+                </a>
                 <a asp-controller="AdminUsers" asp-action="UserListAll" style="text-decoration: none;">
-                    <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
-                        <img src="~/images/sidebar icons/users.png" alt="" class="sidebar-icons ps-3">
-                        <div class="sidebar-names ps-3">Users</div>
+                    <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box @(ViewBag.Active == "Users"? "active-sidebar" :" ")">
+                        <img src="~/images/sidebar icons/users.png" alt="" class="sidebar-icons ps-3 @(ViewBag.Active == "Users"? "active-icon" :" ")">
+                        <div class="sidebar-names ps-3 @(ViewBag.Active == "Users"? "active-name" :" ")">Users</div>
                     </div>
                 </a>
-                <a href="roles.html" style="text-decoration: none;">
-                    <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
-                        <img src="~/images/sidebar icons/roles_permission.png" alt="" class="sidebar-icons ps-3">
-                        <div class="sidebar-names ps-3">Role and Permission</div>
+                <a asp-controller="RolePermission" asp-action="RolesList" style="text-decoration: none;">
+                    <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box @(ViewBag.Active == "RolePermission"? "active-sidebar" :" ")">
+                        <img src="~/images/sidebar icons/roles_permission.png" alt="" class="sidebar-icons ps-3 @(ViewBag.Active == "RolePermission"? "active-icon" :" ")">
+                        <div class="sidebar-names ps-3 @(ViewBag.Active == "RolePermission"? "active-name" :" ")">Role and Permission</div>
                     </div>
                 </a>
-                <a href="menu.html" style="text-decoration: none;">
-                    <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">
-                        <img src="~/images/sidebar icons/menu.png" alt="" class="sidebar-icons ps-3">
-                        <div class="sidebar-names ps-3">Menu</div>
+                <a asp-controller="Menu" asp-action="MenuList" style="text-decoration: none;">
+                    <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box @(ViewBag.Active == "Menu"? "active-sidebar" :" ")">
+                        <img src="~/images/sidebar icons/menu.png" alt="" class="sidebar-icons ps-3 @(ViewBag.Active == "Menu"? "active-icon" :" ")">
+                        <div class="sidebar-names ps-3 @(ViewBag.Active == "Menu"? "active-name" :" ")">Menu</div>
                     </div>
                 </a>
                 <div class="d-flex mb-3 justify-content-start align-items-center sidebar-box">

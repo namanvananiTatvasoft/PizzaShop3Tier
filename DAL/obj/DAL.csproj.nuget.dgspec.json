@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj": {}
+    "c:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj": {
+    "c:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj",
+        "projectUniqueName": "c:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "C:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj",
+        "projectPath": "c:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj",
         "packagesPath": "C:\\Users\\pct106\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\PizzaShopMain\\DAL\\obj\\",
+        "outputPath": "c:\\Projects\\PizzaShopMain\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pct106\\AppData\\Roaming\\NuGet\\NuGet.Config"

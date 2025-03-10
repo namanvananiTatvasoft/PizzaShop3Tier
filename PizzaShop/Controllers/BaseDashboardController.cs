@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace PizzaShop.Controllers
 {
-    [CustomAuthorise(new string[] {"Super Admin", "Chef"})]// Apply Authorize at the controller level
+    [CustomAuthorise(new string[] {"Super Admin"})]// Apply Authorize at the controller level
     public abstract class BaseDashboardController : Controller
     {
         private string _userName;

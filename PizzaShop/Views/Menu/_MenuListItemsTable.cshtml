@@ -3,8 +3,8 @@
         </div>
 
         <div class="row d-flex justify-content-end category-item-list-container">
-            <div class="search-box d-flex align-items-center bg-white ms-2">
-                <input type="text" placeholder="Search" id="search-input" class="text-bark d-none d-md-block items-search-input" value="@Model.items.searchKey" onkeydown="handleKeyPress(event)">
+            <div class="search-box d-flex align-items-center bg-white ms-2 w-50">
+                <input type="text" placeholder="Search" id="search-input" class="text-bark items-search-input" value="@Model.items.searchKey" onkeydown="handleKeyPress(event)">
                 <img src="~/images/search.png" alt="" class="search-img" onclick="itemSearch()">
             </div>
             <div style="width: fit-content;" class="d-flex justify-content-center align-items-center border ms-2" onclick="deleteAllItems()"><img src="~/images/trash.svg" alt="" class="search-img"></div>

@@ -2,6 +2,330 @@
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
     ViewData["Title"] = "Admin Dashboard";
 }
+<style>
+.dashboard-icon{
+  
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+}
+.dashboard-icon-outer
+{
+  width: 60px;
+  height: 60px;
+  padding: 10px;
+}
 
-<h1>@ViewData["UserName"]</h1>
-<div class="border">Hello</div>
+</style>
+
+<div style="background-color: #f2f2f2;">
+
+    @* <h1>@ViewData["UserName"]</h1> *@
+
+    <h2 class="fw-bold mx-3 pt-4 special-color">Dashboard</h2>
+
+    <div class="container-fluid">
+        <div class="row gx-4">
+
+            <div class="col-6 col-lg-3 cards  mt-3">
+                <div class="bg-white shadow rounded p-2">
+                    <div class="d-flex justify-content-end ">
+                        <div class="p-2 d-flex justify-content-center align-items-center dashboard-icon-outer rounded-circle"
+                            style="border: 1px solid rgb(93, 214, 93);">
+                            <div class="dashboard-icon d-flex justify-content-center align-items-center"
+                                style="background-color: rgb(93, 214, 93);">
+                                <img src="~/images/icons/total-sales.svg" height="20" width="20" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <h2 class="text-left"> &#x20b9; 4695</h2>
+                    </div>
+                    <div class="d-flex justify-content-start opacity-50">
+                        <span>Total Sales</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-6 col-lg-3 cards mt-3">
+                <div class="bg-white shadow rounded p-2">
+                    <div class="d-flex justify-content-end">
+                        <div class="p-2 d-flex justify-content-center align-items-center dashboard-icon-outer rounded-circle"
+                            style="border: 1px solid rgb(255, 118, 255);">
+                            <div class="dashboard-icon d-flex justify-content-center align-items-center"
+                                style="background-color: rgb(255, 118, 255);">
+                                <img src="~/images/icons/total-orders.svg" height="20" width="20" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <h2 class="text-left"> 7</h2>
+                    </div>
+                    <div class="d-flex justify-content-start opacity-50">
+                        <span>Total Orders</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-6 col-lg-3 cards mt-3">
+                <div class="bg-white shadow rounded p-2">
+                    <div class="d-flex justify-content-end">
+                        <div class="p-2 d-flex justify-content-center align-items-center dashboard-icon-outer rounded-circle"
+                            style="border: 1px solid rgb(180, 180, 180);">
+                            <div class="dashboard-icon d-flex justify-content-center align-items-center"
+                                style="background-color: rgb(180, 180, 180);">
+                                <img src="~/images/icons/total-orders.svg" height="20" width="20" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <h2 class="text-left"> &#x20b9; 671</h2>
+                    </div>
+                    <div class="d-flex justify-content-start opacity-50">
+                        <span>Avg Order Value</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-6 col-lg-3 cards mt-3">
+                <div class="bg-white shadow rounded p-2">
+                    <div class="d-flex justify-content-end">
+                        <div class="p-2 d-flex justify-content-center align-items-center dashboard-icon-outer rounded-circle"
+                            style="border: 1px solid rgb(255, 118, 64);">
+                            <div class="dashboard-icon d-flex justify-content-center align-items-center"
+                                style="background-color: rgb(255, 118, 64);">
+                                <img src="~/images/icons/waiting-time.svg" height="20" width="20" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <h2 class="text-left"> 1707.2 mins</h2>
+                    </div>
+                    <div class="d-flex justify-content-start opacity-50">
+                        <span>Avg Waiting Time</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row gx-4">
+            <div class="col cards mt-4">
+                <div class="d-flex flex-column bg-white shadow rounded p-2 h-100">
+                    <h4>Revenue</h4>
+                    <div class="chart">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col cards mt-4">
+                <div class="d-flex flex-column bg-white shadow rounded p-2 h-100">
+                    <h4>Customer Growth</h4>
+                    <div class="chart">
+                        <canvas id="customerGrowthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row d-flex" >
+            <div class="col-6 col-lg-3 cards mt-4">
+                <div class="d-flex flex-column bg-white shadow rounded p-2">
+                    <h4 class="mb-3">Top Selling Items</h4>
+                    <div class="d-flex justify-content-start align-items-center">
+                        <span>#1</span>
+                        <img src="~/images/dining-menu.png" alt="" height="40" width="40" class="mx-2">
+                        <div class="d-flex flex-column">
+                            <span>Grilled Burger</span>
+                            <div class="d-flex">
+                                <img src="~/images/sidebar icons/menu.png" alt="" width="20" height="20"> 1 Order
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-start align-items-center">
+                        <span>#2</span>
+                        <img src="~/images/dining-menu.png" alt="" height="40" width="40" class="mx-2">
+                        <div class="d-flex flex-column">
+                            <span>Grilled Burger</span>
+                            <div class="d-flex">
+                                <img src="~/images/sidebar icons/menu.png" alt="" width="20" height="20"> 1 Order
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3 cards mt-4">
+                <div class="d-flex flex-column bg-white shadow rounded p-2">
+                    <h4 class="mb-3">Least Selling Items</h4>
+                    <div class="d-flex justify-content-start align-items-center">
+                        <span>#1</span>
+                        <img src="~/images/dining-menu.png" alt="" height="40" width="40" class="mx-2">
+                        <div class="d-flex flex-column">
+                            <span>Grilled Burger</span>
+                            <div class="d-flex">
+                                <img src="~/images/sidebar icons/menu.png" alt="" width="20" height="20"> 1 Order
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-start align-items-center">
+                        <span>#2</span>
+                        <img src="~/images/dining-menu.png" alt="" height="40" width="40" class="mx-2">
+                        <div class="d-flex flex-column">
+                            <span>Grilled Burger</span>
+                            <div class="d-flex">
+                                <img src="~/images/sidebar icons/menu.png" alt="" width="20" height="20"> 1 Order
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3 cards mt-4">
+                <div class="bg-white shadow rounded p-2  h-100 d-flex flex-column justify-content-between">
+                    <div class="d-flex justify-content-end">
+                        <div class="p-2 d-flex justify-content-center align-items-center dashboard-icon-outer rounded-circle"
+                            style="border: 1px solid orange;">
+                            <div class="dashboard-icon d-flex justify-content-center align-items-center"
+                                style="background-color: orange;">
+                                <img src="~/images/icons/waiting-list.svg" height="20" width="20" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-start">
+                            <h2 class="text-left">27</h2>
+                        </div>
+                        <div class="d-flex justify-content-start opacity-50">
+                            <span>Waiting List Count</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-6 col-lg-3 cards mt-4">
+                <div class="bg-white shadow rounded p-2  h-100 d-flex flex-column justify-content-between">
+                    <div class="d-flex justify-content-end">
+                        <div class="p-2 d-flex justify-content-center align-items-center dashboard-icon-outer rounded-circle"
+                            style="border: 1px solid orange;">
+                            <div class="dashboard-icon d-flex justify-content-center align-items-center"
+                                style="background-color: orange;">
+                                <img src="~/images/icons/waiting-list.svg" height="20" width="20" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-start">
+                            <h2 class="text-left">10</h2>
+                        </div>
+                        <div class="d-flex justify-content-start opacity-50">
+                            <span>Waiting List Count</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById("myChart").getContext("2d");
+
+        new Chart(ctx, {
+            type: "line", // Line chart type
+            data: {
+                labels: Array.from({ length: 31 }, (_, i) => i + 1), // Generate numbers from 1 to 31
+                datasets: [{
+                    label: "Revenue (₹)",
+                    data: [
+                        5823, 6754, 7342, 8432, 9132, 5001, 6024, 7589, 8342, 9032, 
+                        6124, 7392, 8032, 6514, 7701, 6345, 9212, 8423, 7621, 6173, 
+                        5421, 7251, 6312, 5789, 8653, 9045, 7598, 8271, 6114, 7223, 
+                        8311, 6402, 8731
+                    ],
+                    backgroundColor: "rgba(75, 192, 192, 0.2)", // Light fill color
+                    borderColor: "rgba(75, 192, 192, 1)", // Line color
+                    borderWidth: 2,
+                    fill: true, // Fill area under line
+                    tension: 0.3 // Smooth curve effect
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                        }
+                    },
+                    y: {
+                        @* beginAtZero: true, *@
+                        title: {
+                            display: true,
+                        }
+                    }
+                }
+            }
+        });
+
+        var ctx2 = document.getElementById("customerGrowthChart").getContext("2d");
+
+        new Chart(ctx2, {
+            type: "line",
+            data: {
+                labels: [
+                    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                ],
+                datasets: [{
+                    label: "Customer Growth",
+                    data: [100, 250, 400, 550, 700, 850, 1000, 1300, 1600, 1900, 2200, 2500],
+                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Months"
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            display: true,
+                        },
+                        grid: {
+                            drawTicks: false,
+                            drawBorder: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    });
+    
+</script>

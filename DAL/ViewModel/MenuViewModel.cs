@@ -16,6 +16,10 @@ public class MenuViewModel
     public List<ModifierGroupModel> modifierGroupList {get; set;}
 
     public ModifiersViewMenuModel modifiers {get; set;}
+
+    public AddEditDeleteModGroup modifierGroupAdd{get; set;}
+
+    public ModifiersViewMenuModel allModifiers{get; set;}
     
 }
 
@@ -154,4 +158,23 @@ public class SingleModifier
     public int Quantity { get; set; }
 
     public string ImageUrl {get; set;}
+}
+
+public class AddEditDeleteModGroup
+{
+    public string Modgroupid {get; set;}
+
+    public string Modgroupname { get; set; }
+
+    public string Description { get; set; }
+
+    public List<string> Modifierslist {get; set;}
+
+    public List<int> Modifiersidlist {get; set;}
+
+    public int CreatedBy {get; set;}
+
+    // public int ModifiedBy {get; set;}
+
+    public DateTime ModifiedDate{get; set;}
 }

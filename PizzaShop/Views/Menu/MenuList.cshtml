@@ -45,7 +45,7 @@
         <div class="tab-content" id="nav-tabContent">
 
             <!-- items content  -->
-            <div class="tab-pane fade show active " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
                 <partial name="~/Views/Menu/_MenuListItems.cshtml"/>
             </div>
 
@@ -465,38 +465,125 @@
         </div>
     </div>
 
-    <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample2" role="button" aria-controls="offcanvasExample2">
-        Link with href
-    </a>
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample2" aria-controls="offcanvasExample2">
-        Button with data-bs-target
-    </button>
-
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample2" aria-labelledby="offcanvasExampleLabel2">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div>
-            Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
-            </div>
-            <div class="dropdown mt-3">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-                Dropdown button
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
+    <!-- add modifier group modal  -->
+    <div class="modal fade" id="addModifierGroupModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered w-50">
+            <div class="modal-content">
+                <!-- </div> -->
+                <div id="addModifierGroupContent">
+                    <!-- Partial view content will be loaded here -->
+                </div>
+                
             </div>
         </div>
     </div>
 
+
 </div>
 
 <script>
+    var newvariable = "Hi My Name is Naman";
+    var modifiersToAdd = [1, 2];
+    var modifiersNameToAdd = ["Mushrom", "Babycorn"];
+
+    let modifierIds = new Set();
+    let modifierNames = new Set();
+
+    function updateSelectedModifiers() {
+        let selectedModifiersDiv = $('#selectedModifiers');
+        selectedModifiersDiv.empty(); // Clear existing content
+
+        @* modifierNames.forEach(function(name) {
+            selectedModifiersDiv.append(`
+                <span class="mod-name-text">
+                    ${name}
+                    <i class="bi bi-x-lg dark-icon"></i>
+                </span>
+            `);
+        }); *@
+
+        modifierNames.forEach(function(name) {
+            let itemId = Array.from(modifierIds).find(id => name === $(`[data-itemid="${id}"]`).data('itemname'));
+            console.log(itemId);
+            selectedModifiersDiv.append(`
+                <span class="mod-name-text" data-itemid="${itemId}">
+                    ${name}
+                    <i class="bi bi-x-lg cross-icon" data-itemid="${itemId}" data-itemname="${name}"></i>
+                </span>
+            `);
+        });
+
+        $('.cross-icon').on('click', function() {
+            let itemId = $(this).data('itemid');
+            let itemName = $(this).data('itemname');
+
+            console.log(itemId);
+            console.log(itemName);
+            modifierIds.delete(itemId);
+            modifierNames.delete(itemName);
+            updateSelectedModifiers(); // Update the selected modifiers display
+
+            $(`.inner-check-modifiers-list[data-itemid="${itemId}"]`).prop('checked', false);
+        });
+
+        console.log(Array.from(modifierIds)); // For debugging purposes
+        console.log(Array.from(modifierNames)); // For debugging purposes
+    }
+
+
+    
+    function addExistingModifiers()
+    {
+        console.log(newvariable);
+        $.ajax({
+            url: '/Menu/getExistingModifiers',
+            type: 'GET',
+
+            success: function (data) {
+                $('#addModifierGroupContent').html(data);
+            },
+            error: function () {
+                alert('Error loading the modal content');
+            }
+
+        });
+    }
+
+  
+
+    var addExistingModifiersBtn;
+    var backBtn;
+    var modifierAddForm;
+    var selectExistingModifiersTab;
+        
+
+
+    $(document).ready(function()
+    {
+        $('#addModifierGroupModel').on('show.bs.modal', function () {
+            console.log("Hiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+            $.ajax({
+                url: '/Menu/AddModGroupModal',
+                type: 'GET',
+                success: function (data) {
+                    $('#addModifierGroupContent').html(data);
+                },
+                error: function () {
+                    alert('Error loading the modal content');
+                }
+            });
+        });
+
+        $('#addModifierGroupModel').on('hidden.bs.modal', function () {
+            modifierIds.clear();
+            modifierNames.clear();
+            updateSelectedModifiers();
+        });
+
+    });
+
+
+
     document.getElementById('availableToggle').addEventListener('change', function () {
         if (!this.checked) {
             this.value = "false"; // set value to false if unchecked
@@ -770,6 +857,32 @@ $("#itemAddForm").submit(function (e) {
         }
     });
 });
+
+
+function AddModGroup(formData)
+{
+    let modifierIdsArray = Array.from(modifierIds);  // Convert Set to Array
+    modifierIdsArray.forEach(function(id) {
+        formData.append('Modifiersidlist[]', id);  // Append each selected ID to modGroupList[]
+    });
+
+    // Perform AJAX request
+    $.ajax({
+        type: "POST",
+        url: "/Menu/MenuListModGroupAdd",  // Update this URL to your actual route
+        data: formData,
+        processData: false,  // Don't process the data (FormData will handle it)
+        contentType: false,  // Let the browser set the correct content type
+        success: function (response) {
+            $('#addModifierGroupModel').modal('hide');
+        },
+        error: function (xhr, status, error) {
+            // Handle AJAX error here
+            console.log("AJAX error:", status, error);
+            toastr.error("There was an error submitting the form.");  // Show error notification
+        }
+    });
+}
 
 
 

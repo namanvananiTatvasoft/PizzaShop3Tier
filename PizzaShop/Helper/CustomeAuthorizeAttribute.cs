@@ -51,8 +51,10 @@ public class CustomAuthoriseAttribute : Attribute, IAuthorizationFilter
             {
                 context.HttpContext.Response.Cookies.Delete("AuthToken");
                 context.HttpContext.Response.Cookies.Delete("UserName");
-                context.Result = new RedirectToRouteResult(new { Controller = "Home", action = "AccessDenied" });
+                context.Result = new RedirectToRouteResult(new { Controller = "Home", action = "Hello" });
             }
+
+
         }
         catch (Exception ex)
         {

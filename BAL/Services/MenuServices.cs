@@ -300,20 +300,42 @@ public class MenuServices : IMenuServices
 
     public ModifiersViewMenuModel getModifiersList(int categoryId,int pageNumber,int pageSize,string searchKey)
     {
+
         ModifiersViewMenuModel model = new ModifiersViewMenuModel();
 
-        var query = from moditems in _db.Moditems
-                    join map in _db.Moditemgroupmaps on moditems.Modifierid equals map.Modifierid
-                    where map.Modgroupid == categoryId && !moditems.Isdeleted && (moditems.Modifiername.ToLower().Contains(searchKey.ToLower()) || moditems.Description.ToLower().Contains(searchKey.ToLower()))
-                    select new SingleModifier
-                    {
-                        ModifierId = moditems.Modifierid,
-                        Modifiername = moditems.Modifiername,
-                        Unit = moditems.Unit,
-                        Rate = moditems.Rate,
-                        Quantity = moditems.Quantity,
-                        ImageUrl = moditems.Photourl
-                    };
+        var query = default(IQueryable<SingleModifier>);
+
+        if(categoryId == -1)
+        {
+            query = from moditems in _db.Moditems
+            where !moditems.Isdeleted && (moditems.Modifiername.ToLower().Contains(searchKey.ToLower()) || moditems.Description.ToLower().Contains(searchKey.ToLower()))
+            select new SingleModifier
+            {
+                ModifierId = moditems.Modifierid,
+                Modifiername = moditems.Modifiername,
+                Unit = moditems.Unit,
+                Rate = moditems.Rate,
+                Quantity = moditems.Quantity,
+                ImageUrl = moditems.Photourl
+            };
+
+        }else
+        {
+            query = from moditems in _db.Moditems
+            join map in _db.Moditemgroupmaps on moditems.Modifierid equals map.Modifierid
+            where map.Modgroupid == categoryId && !moditems.Isdeleted && (moditems.Modifiername.ToLower().Contains(searchKey.ToLower()) || moditems.Description.ToLower().Contains(searchKey.ToLower()))
+            select new SingleModifier
+            {
+                ModifierId = moditems.Modifierid,
+                Modifiername = moditems.Modifiername,
+                Unit = moditems.Unit,
+                Rate = moditems.Rate,
+                Quantity = moditems.Quantity,
+                ImageUrl = moditems.Photourl
+            };
+        }
+
+
             
         var count = query.Count();
 
@@ -331,6 +353,42 @@ public class MenuServices : IMenuServices
 
 
         return model;
+    }
+
+
+    public void addModGroup(AddEditDeleteModGroup model)
+    {
+        Modgroup group = _db.Modgroups.Where(e=>e.Modgroupname == model.Modgroupname).FirstOrDefault();
+
+        if(group != null)
+        {
+            Console.WriteLine("Mod Group Already Exist");
+        }
+
+        _db.Modgroups.Add(new Modgroup
+        {
+            Modgroupname = model.Modgroupname,
+            Description = model.Description,
+            Createdby = model.CreatedBy,
+            Createddate = DateTime.Now
+        });
+
+        _db.SaveChanges();
+
+        group = _db.Modgroups.Where(e=>e.Modgroupname == model.Modgroupname).FirstOrDefault();
+
+        foreach(var modifierid in model.Modifiersidlist)
+        {
+            _db.Moditemgroupmaps.Add(new Moditemgroupmap
+            {
+                Modgroupid = group.Modgroupid,
+                Modifierid = modifierid
+            });
+        }
+
+        _db.SaveChanges();
+
+
     }
 
 }

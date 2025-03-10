@@ -195,6 +195,43 @@ public class MenuController : BaseDashboardController
         return PartialView("_ModifierTable",model);
     }
 
+    [HttpPost("MenuListModGroupAdd")]
+    public IActionResult MenuListModGroupAdd(AddEditDeleteModGroup model)
+    {
+        model.CreatedBy = _auth.getUser(GetUserName()).Userid;
+        _menuServices.addModGroup(model);
 
-    
+        return Json( new { success = true, message = "hi"});
+    }
+
+    [HttpGet("AddModGroupModal")]
+    public IActionResult AddModGroupModal(int categoryId = -1, int pageNumber = 1, int pageSize = 5, string searchKey = "")
+    {
+        MenuViewModel model = new MenuViewModel();
+        // model.modifierGroupAdd = new AddEditDeleteModGroup{
+        //     Modifiersidlist = new List<int> {1,2},
+        //     Modifierslist = new List<string> {"Mushrom", "Babycorn"},
+        // };
+
+        model.allModifiers = _menuServices.getModifiersList(categoryId, pageNumber, pageSize, searchKey);
+
+        return PartialView("_addModGroupModal", model);
+    }
+
+    [HttpGet("AddModGroupModalTable")]
+    public IActionResult AddModGroupModalTable(int categoryId = -1, int pageNumber = 1, int pageSize = 5, string searchKey = "")
+    {
+        MenuViewModel model = new MenuViewModel();
+        // model.modifierGroupAdd = new AddEditDeleteModGroup{
+        //     Modifiersidlist = new List<int> {1,2},
+        //     Modifierslist = new List<string> {"Mushrom", "Babycorn"},
+        // };
+
+        model.allModifiers = _menuServices.getModifiersList(categoryId, pageNumber, pageSize, searchKey);
+
+        return PartialView("_selectExistingModifiers", model);
+    }
+
+
+
 }
