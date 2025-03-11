@@ -6,6 +6,7 @@ using DAL.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 
 namespace BAL.Services;
@@ -295,7 +296,15 @@ public class MenuServices : IMenuServices
 
     public List<ModifierGroupModel> getModGroupsForList()
     {
-        return _db.Modgroups.Select(mg => new ModifierGroupModel{Modifiergroupid = mg.Modgroupid, Modifiergroupname = mg.Modgroupname, Description = mg.Description}).ToList();
+        return _db.Modgroups
+            .Where(mg => mg.Isdeleted == false)  // Filter where isDeleted is false
+            .Select(mg => new ModifierGroupModel
+            {
+                Modifiergroupid = mg.Modgroupid,
+                Modifiergroupname = mg.Modgroupname,
+                Description = mg.Description
+            })
+            .ToList();
     }
 
     public ModifiersViewMenuModel getModifiersList(int categoryId,int pageNumber,int pageSize,string searchKey)
@@ -389,6 +398,99 @@ public class MenuServices : IMenuServices
         _db.SaveChanges();
 
 
+    }
+
+    public AddEditDeleteModGroup getModGroupValuesForEdit(int modifierGroupId)
+    {
+        AddEditDeleteModGroup model = new AddEditDeleteModGroup();
+
+        Modgroup modgroup = _db.Modgroups.Where(e=>e.Modgroupid == modifierGroupId).FirstOrDefault();
+        if(modgroup == null) return model;
+
+        model.Modgroupid = modgroup?.Modgroupid.ToString() ?? string.Empty;
+        model.Modgroupname = modgroup.Modgroupname;
+        model.Description = modgroup.Description;
+
+
+        // model.Modifiersidlist = (from maptable in _db.Moditemgroupmaps
+        //                         where maptable.Modgroupid == modifierGroupId
+        //                         select maptable.Modifierid).ToList();
+
+        // model.Modifierslist = (from moditems in _db.Moditems
+        //                        join maptable in _db.Moditemgroupmaps on moditems.Modifierid equals maptable.Modifierid
+        //                        where maptable.Modgroupid == modifierGroupId
+        //                        select moditems.Modifiername).ToList();
+
+        var result = (from maptable in _db.Moditemgroupmaps
+                      join moditems in _db.Moditems on maptable.Modifierid equals moditems.Modifierid
+                      where maptable.Modgroupid == modifierGroupId
+                      select new 
+                      {
+                          Modifierid = maptable.Modifierid,
+                          Modifiername = moditems.Modifiername
+                      }).ToList();
+
+        model.Modifiersidlist = result.Select(r => r.Modifierid).ToList();
+        model.Modifierslist = result.Select(r => r.Modifiername).ToList();
+    
+
+        return model;
+    }
+
+    public void editModGroup(AddEditDeleteModGroup model)
+    {
+
+        if (!int.TryParse(model.Modgroupid, out int modGroupId))
+        {
+            // Optionally, log the error or return early
+            return;
+        }
+
+        Modgroup group = _db.Modgroups.Where(e=>e.Modgroupid == int.Parse(model.Modgroupid)).FirstOrDefault();
+
+        if(group == null)
+        {
+            return;
+        }
+
+        group.Modgroupname = model.Modgroupname;
+        group.Description = model.Description;
+        group.Modifiedby = model.CreatedBy;
+        group.Modifieddate = DateTime.Now;
+
+        var itemsToRemove = _db.Moditemgroupmaps.Where(e=>e.Modgroupid == int.Parse(model.Modgroupid)).ToList();
+
+        _db.Moditemgroupmaps.RemoveRange(itemsToRemove);
+
+
+        if (model.Modifiersidlist != null && model.Modifiersidlist.Any())
+        {
+            var newMappings = model.Modifiersidlist.Select(modifierid => new Moditemgroupmap
+            {
+                Modgroupid = group.Modgroupid,
+                Modifierid = modifierid
+            }).ToList();
+
+            _db.Moditemgroupmaps.AddRange(newMappings);
+        }
+
+        _db.SaveChanges();
+
+
+    }
+
+
+    public void deleteModGroup(int deleteModGroup, int modifiedBy)
+    {
+        Modgroup group = _db.Modgroups.Where(e=>e.Modgroupid == deleteModGroup).FirstOrDefault();
+        group.Isdeleted = true;
+        group.Modifiedby = modifiedBy;
+        group.Modifieddate = DateTime.Now;
+
+        var itemsToRemove = _db.Moditemgroupmaps.Where(e=>e.Modgroupid == deleteModGroup).ToList();
+        _db.Moditemgroupmaps.RemoveRange(itemsToRemove);
+
+        _db.SaveChanges();
     }
 
 }

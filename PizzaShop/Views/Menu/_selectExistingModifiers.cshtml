@@ -5,6 +5,8 @@
     <img src="~/images/search.png" alt="" class="search-img" onclick="modifierItemSearch()">
 </div>
 
+<input type="text" asp-for = "modifierGroupAdd.Modgroupid" id="modifier-group-id-input">
+
 
 <table class="table mt-4" id="addmofiiertable">
     <thead>
@@ -92,7 +94,8 @@ $(document).ready(function() {
         handleKeyPressModifiersss(event);  // Call the handleKeyPressModifiersss function on keypress
     });
 
-    console.log("This is loaded");
+ 
+
     var mainCheckModifier = document.querySelector('.outer-check-modifiers-list');
     var innerCheckModifier = document.querySelectorAll('.inner-check-modifiers-list');
     var eo = true;
@@ -109,7 +112,6 @@ $(document).ready(function() {
     }
 
     document.querySelectorAll('.inner-check-modifiers-list').forEach(function (checkbox) {
-        console.log("htis is jdfdl");
         const itemId = parseInt(checkbox.getAttribute('data-itemid'));
         const itemname = parseInt(checkbox.getAttribute('data-itemname'));
 
@@ -131,14 +133,27 @@ $(document).ready(function() {
             modifierNames.delete(itemname);
         }
 
-        updateSelectedModifiers();
+        if($("#modifier-group-id-input").val() == "")
+        {
+            console.log("This is for add");
+            updateSelectedModifiers();
+            
+        }else
+        {
+            console.log("This is for edit");
+            updateSelectedModifiersForEdit();
+        }
+
+
+
+        @* updateSelectedModifiers(); *@
 
         console.log(Array.from(modifierIds)); // For debugging purposes
         console.log(Array.from(modifierNames)); // For debugging purposes
 
     });
 
-    $('.outer-check-modifiers-list').on('change', function() {
+    @* $('.outer-check-modifiers-list').on('change', function() {
         if ($(this).is(':checked')) {
             $('.inner-check-modifiers-list').each(function() {
                 let itemId = $(this).data('itemid');
@@ -165,7 +180,7 @@ $(document).ready(function() {
         console.log(Array.from(modifierIds)); // For debugging purposes
         console.log(Array.from(modifierNames)); // For debugging purposes
 
-    });
+    }); *@
 });
     
 function handleKeyPressModifiersss(event) {
@@ -176,10 +191,12 @@ function handleKeyPressModifiersss(event) {
 }
 
 function modifierItemSearch() {
+    
     $.ajax({
         url: "/Menu/AddModGroupModalTable", // The server-side action
         type: "GET",
         data: {
+            modgroupid: $("#modifier-group-id-input").val(),
             searchKey: $('#search-modifiers-input').val(),
             pageSize: @Model.allModifiers.Pagesize
         },
@@ -199,6 +216,7 @@ function uupdateItemModifierListPerPage()
         url: "/Menu/AddModGroupModalTable", 
         type: "GET",
         data: {
+            modgroupid: $("#modifier-group-id-input").val(),
             searchKey: $('#search-modifiers-input').val(),
             pageSize: $("#modifiersTablePerPageItemList").val()
         },
@@ -221,6 +239,7 @@ function updateModifiersItemListPage(direction)
         url: "/Menu/AddModGroupModalTable", 
         type: "GET",
         data: {
+            modgroupid: $("#modifier-group-id-input").val(),
             searchKey: $('#search-modifiers-input').val(),
             pageSize: $("#modifiersTablePerPageItemList").val(),
             pageNumber: pageNum
@@ -237,7 +256,7 @@ function updateModifiersItemListPage(direction)
 
 
 
-mainCheckModifier.addEventListener('change', function () {
+@* mainCheckModifier.addEventListener('change', function () {
     if(this.checked){
         innerCheckModifier.forEach(function (ie){
             ie.checked = true;
@@ -248,7 +267,7 @@ mainCheckModifier.addEventListener('change', function () {
         });
     }
 
-});
+}); *@
 
 innerCheckModifier.forEach(function (ic) {
     ic.addEventListener('change', function() {

@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices.JavaScript;
 using BAL.Interfaces;
 using DAL.Models;
@@ -204,34 +205,53 @@ public class MenuController : BaseDashboardController
         return Json( new { success = true, message = "hi"});
     }
 
+
     [HttpGet("AddModGroupModal")]
-    public IActionResult AddModGroupModal(int categoryId = -1, int pageNumber = 1, int pageSize = 5, string searchKey = "")
+    public IActionResult AddModGroupModal(int categoryId = -1, int pageNumber = 1, int pageSize = 5, string searchKey = "", int modifierGroupId=-1)
     {
         MenuViewModel model = new MenuViewModel();
-        // model.modifierGroupAdd = new AddEditDeleteModGroup{
-        //     Modifiersidlist = new List<int> {1,2},
-        //     Modifierslist = new List<string> {"Mushrom", "Babycorn"},
-        // };
 
         model.allModifiers = _menuServices.getModifiersList(categoryId, pageNumber, pageSize, searchKey);
 
-        return PartialView("_addModGroupModal", model);
+        if(modifierGroupId==-1) return PartialView("_addModGroupModal", model);
+
+        model.modifierGroupAdd = _menuServices.getModGroupValuesForEdit(modifierGroupId);
+
+        return PartialView("_editModGroupModal", model);
     }
 
     [HttpGet("AddModGroupModalTable")]
-    public IActionResult AddModGroupModalTable(int categoryId = -1, int pageNumber = 1, int pageSize = 5, string searchKey = "")
+    public IActionResult AddModGroupModalTable(int categoryId = -1, int pageNumber = 1, int pageSize = 5, string searchKey = "", string modgroupid = "")
     {
         MenuViewModel model = new MenuViewModel();
-        // model.modifierGroupAdd = new AddEditDeleteModGroup{
-        //     Modifiersidlist = new List<int> {1,2},
-        //     Modifierslist = new List<string> {"Mushrom", "Babycorn"},
-        // };
-
         model.allModifiers = _menuServices.getModifiersList(categoryId, pageNumber, pageSize, searchKey);
+
+        if(modgroupid != "")
+        {
+            model.modifierGroupAdd = new AddEditDeleteModGroup{Modgroupid = modgroupid};
+        }
 
         return PartialView("_selectExistingModifiers", model);
     }
 
+    [HttpPost("MenuListModGroupEdit")]
+    public IActionResult MenuListModGroupEdit(AddEditDeleteModGroup model)
+    {
+        model.CreatedBy = _auth.getUser(GetUserName()).Userid;
+        _menuServices.editModGroup(model);
+
+        Console.WriteLine("inside edit mod group");
+
+        return Json( new { success = true, message = "hi"});
+    }
+
+    [HttpPost("MenuListModGroupDelete")]
+    public IActionResult MenuListModGroupDelete(int deleteModGroup)
+    {
+        int modifiedBy = _auth.getUser(GetUserName()).Userid;
+        _menuServices.deleteModGroup(deleteModGroup, modifiedBy);
 
 
+        return RedirectToAction("MenuList");
+    }
 }

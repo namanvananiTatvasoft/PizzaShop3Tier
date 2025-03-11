@@ -17,8 +17,8 @@
                         <div onclick="changeModgroup('@modGroup.Modifiergroupid')">@modGroup.Modifiergroupname</div>
                     </div>
                     <div class="text-nowrap button-container">
-                        <img src="~/images/pen.svg" alt="" class="editButtom" id="editCategory" data-bs-toggle="modal" data-bs-target="#editModifierGroupModal" data-id = "@modGroup.Modifiergroupid" onclick="editCategory(this)">
-                        <img src="~/images/trash.svg" alt="" class="deleteButton" id="deleteCategory" data-bs-toggle="modal" data-bs-target="#deleteModifierGroupModal" data-id="@modGroup.Modifiergroupid" onclick="deleteCategory(this)">
+                        <img src="~/images/pen.svg" alt="" class="editButtom" id="editCategory" data-bs-toggle="modal" data-bs-target="#editModifierGroupModel" data-id = "@modGroup.Modifiergroupid" onclick="editModGroup(this)">
+                        <img src="~/images/trash.svg" alt="" class="deleteButton" id="deleteCategory" data-bs-toggle="modal" data-bs-target="#deleteModifierGroupModal" data-id="@modGroup.Modifiergroupid" onclick="deleteModGroup(this)">
                     </div> 
                 </div>
             }        

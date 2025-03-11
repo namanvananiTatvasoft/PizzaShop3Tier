@@ -32,5 +32,10 @@ public interface IMenuServices
 
     public void addModGroup(AddEditDeleteModGroup model);
 
+    public AddEditDeleteModGroup getModGroupValuesForEdit(int modifierGroupId);
+
+    public void editModGroup(AddEditDeleteModGroup model);
+
+    public void deleteModGroup(int deleteModGroup, int modifiedBy);
 
 }
