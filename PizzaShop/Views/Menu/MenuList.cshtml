@@ -492,7 +492,7 @@
         </div>
     </div>
 
-    
+    <!-- delete modifier group modal  -->
     <div class="modal fade" id="deleteModifierGroupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -519,13 +519,18 @@
         </div>
     </div>
 
+    <!-- add modifier item modal  -->
+    <partial name="~/Views/Menu/_AddModItemModal.cshtml"/>
+    <partial name="~/Views/Menu/_EditModItemModal.cshtml"/>
+
+
+
 
 
 </div>
 
 <script>
     var newvariable = "Hi My Name is Naman";
-
 
     let modifierIds = new Set();
     let modifierNames = new Set();
@@ -667,7 +672,6 @@
     var modifierAddFormForEdit;
     var selectExistingModifiersTabForEdit;
     var cancelBtnsForEdit;
-        
 
 
     $(document).ready(function()
@@ -719,8 +723,6 @@
         });
 
     });
-
-
 
     document.getElementById('availableToggle').addEventListener('change', function () {
         if (!this.checked) {
@@ -1075,8 +1077,64 @@ function EditModGroup(formData)
     });   
 }
 
+function addModifier(formData)
+{
+    $.ajax({
+        type: "POST",
+        url: "/Menu/ModifierAdd",  // Update this URL to your actual route
+        data: formData,
+        processData: false,  // Don't process the data (FormData will handle it)
+        contentType: false,  // Let the browser set the correct content type
+        success: function (response) {
+            if(response.success){
+                @* $('#addModifieritemModal').modal('dispose'); *@
+                $('#addModifieritemModal').modal('hide');
 
+                toastr.success(response.messages);
+            }else{
+                console.log("Hi you have got error");
+                toastr.error(response.messages);
+            }
 
+        },
+        error: function (xhr, status, error) {
+            // Handle AJAX error here
+            console.log("AJAX error:", status, error);
+            alert("There was an error submitting the form.");  // Show error notification
+        }
+    });
+}
+
+function editModifierForPost(formData)
+{
+    console.log("Why it is here?"); 
+    @* for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+    } *@
+    $.ajax({
+        type: "POST",
+        url: "/Menu/ModifierEdit",  // Update this URL to your actual route
+        data: formData,
+        processData: false,  // Don't process the data (FormData will handle it)
+        contentType: false,  // Let the browser set the correct content type
+        success: function (response) {
+            if(response.success){
+                $('#editModifieritemModal').modal('hide');
+
+                toastr.success(response.messages);
+            }else{
+                console.log("Hi you have got error");
+                toastr.error(response.messages);
+            }
+
+        },
+        error: function (xhr, status, error) {
+            // Handle AJAX error here
+            console.log("AJAX error:", status, error);
+            alert("There was an error submitting the form.");  // Show error notification
+        }
+    });
+}
 // ---------------------------------------------- All about Modifiers -------------------------------------------------------------
 var isTabLoaded = false;
 

@@ -493,4 +493,108 @@ public class MenuServices : IMenuServices
         _db.SaveChanges();
     }
 
+    public (string, bool) addModifier(AddEditDeleteModifiers model)
+    {
+
+        Moditem moditem = _db.Moditems.Where(e=>e.Modifiername == model.Modifiername).FirstOrDefault();
+        if(moditem != null)
+        {
+            return ("Modifier Name Already Exists", false);
+        }
+
+        _db.Moditems.Add(new Moditem {
+            Modifiername = model.Modifiername,
+            Description = model.Description,
+            Unit = model.Unit,
+            Rate = model.Rate,
+            Quantity = model.Quantity,
+            Createdby = model.ModifiedBy,
+            Createddate = DateTime.Now
+        });
+
+        _db.SaveChanges();
+
+        var itemId = _db.Moditems.Where(e=>e.Modifiername == model.Modifiername).FirstOrDefault().Modifierid;
+
+        foreach(var modGroupid in model.ModifiersGroupList)
+        {
+            _db.Moditemgroupmaps.Add(new Moditemgroupmap{
+                Modifierid = itemId,
+                Modgroupid = int.Parse(modGroupid)
+            });
+        }
+
+        _db.SaveChanges();
+
+        return ("Added Modifier Succesfully", true);
+    }
+
+    public (string, bool) editModifier(AddEditDeleteModifiers model)
+    {
+
+        Moditem moditem = _db.Moditems.Where(e=>e.Modifiername == model.Modifiername && e.Modifierid != model.ModifierId).FirstOrDefault();
+        if(moditem != null)
+        {
+            return ("Modifier Name Already Exists", false);
+        }
+
+        Moditem item = _db.Moditems.Where(e=>e.Modifierid == model.ModifierId).FirstOrDefault();
+
+        item.Modifiername = model.Modifiername;
+        item.Description = model.Description;
+        item.Unit = model.Unit;
+        item.Rate = model.Rate;
+        item.Quantity = model.Quantity;
+        item.Modifiedby = model.ModifiedBy;
+        item.Modifieddate = DateTime.Now;
+
+        
+        var itemsToRemove = _db.Moditemgroupmaps.Where(e=>e.Modifierid == model.ModifierId).ToList();
+        _db.Moditemgroupmaps.RemoveRange(itemsToRemove);
+
+
+        if (model.ModifiersGroupList != null && model.ModifiersGroupList.Any())
+        {
+            var newMappings = model.ModifiersGroupList.Select(modifierGroupid => new Moditemgroupmap
+            {
+                Modgroupid = int.Parse(modifierGroupid),
+                Modifierid = model.ModifierId
+            }).ToList();
+
+            _db.Moditemgroupmaps.AddRange(newMappings);
+        }
+
+
+        // _db.SaveChanges();
+
+        // foreach(var modGroupid in model.ModifiersGroupList)
+        // {
+        //     _db.Moditemgroupmaps.Add(new Moditemgroupmap{
+        //         Modifierid = model.ModifierId,
+        //         Modgroupid = int.Parse(modGroupid)
+        //     });
+        // }
+
+        _db.SaveChanges();
+
+        return ("Updated Modifier Succesfully", true);
+    }
+
+    public AddEditDeleteModifiers getModifierValuesForEdit(int modifierid)
+    {
+        AddEditDeleteModifiers model = new AddEditDeleteModifiers();
+        
+        Moditem item = _db.Moditems.Where(e=>e.Modifierid == modifierid).FirstOrDefault();
+        model.ModifierId = item.Modifierid;
+        model.Unit = item.Unit;
+        model.Quantity = item.Quantity;
+        model.Description = item.Description;
+        model.Modifiername = item.Modifiername;
+        model.Rate = item.Rate;
+
+        model.ModifiersGroupListIds = _db.Moditemgroupmaps.Where(e=>e.Modifierid == modifierid).Select(e=>e.Modgroupid).ToList();
+
+        return model;
+    }
+
 }

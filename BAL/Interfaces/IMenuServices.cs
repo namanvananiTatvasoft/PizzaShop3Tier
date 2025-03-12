@@ -38,4 +38,16 @@ public interface IMenuServices
 
     public void deleteModGroup(int deleteModGroup, int modifiedBy);
 
+
+    public (string, bool) addModifier(AddEditDeleteModifiers model);
+
+    public AddEditDeleteModifiers getModifierValuesForEdit(int modifierid);
+
+    public (string, bool) editModifier(AddEditDeleteModifiers model);
+
+
+
+
 }
+
+

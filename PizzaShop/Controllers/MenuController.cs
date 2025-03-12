@@ -254,4 +254,36 @@ public class MenuController : BaseDashboardController
 
         return RedirectToAction("MenuList");
     }
+
+    [HttpPost("ModifierAdd")]
+    public IActionResult ModifierAdd(AddEditDeleteModifiers model)
+    {
+        string message;
+        bool status;
+        model.ModifiedBy = _auth.getUser(GetUserName()).Userid;
+
+        (message, status) = _menuServices.addModifier(model);
+        
+        return Json( new { success = status, messages = message});
+    }
+
+    [HttpGet("getModifierDetailsForEdit")]
+    public IActionResult getModifierDetailsForEdit(int modifierid)
+    {
+        AddEditDeleteModifiers values = _menuServices.getModifierValuesForEdit(modifierid);
+        List<Modgroup> modList = _menuServices.getModGroups();
+        return Json(new {modGroupList = modList, values = values});
+    }
+
+    [HttpPost("ModifierEdit")]
+    public IActionResult ModifierEdit(AddEditDeleteModifiers model)
+    {
+        string message;
+        bool status;
+        model.ModifiedBy = _auth.getUser(GetUserName()).Userid;
+
+        (message, status) = _menuServices.editModifier(model);
+        
+        return Json( new { success = status, messages = message});
+    }
 }
