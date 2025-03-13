@@ -117,8 +117,15 @@ public class AddItemModel
 
     public int CreatedBy {get; set;}
 
-    public List<int> modGroupList {get; set;}
+    public List<IdMinMax> modGroupList {get; set;}
     
+}
+
+public class IdMinMax
+{
+    public int modGroupId {get; set;}
+    public int Min {get; set;}
+    public int Max {get; set;}
 }
 
 
@@ -201,4 +208,20 @@ public class AddEditDeleteModifiers
 
 
     public int ModifiedBy{get; set;}
+}
+
+
+public class ModGroupDetails
+{
+    public int Id{get; set;}
+    public string GroupName{get; set;}
+    public int Min{get; set;}
+    public int Max{get; set;}
+    public List<itemForList> Items{get; set;}
+}
+
+public class itemForList
+{
+    public string ItemName{get; set;}
+    public short Rate { get; set; }
 }

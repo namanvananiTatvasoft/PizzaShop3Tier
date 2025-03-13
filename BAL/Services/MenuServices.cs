@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Org.BouncyCastle.Asn1.Misc;
+using Microsoft.Extensions.Options;
 
 
 namespace BAL.Services;
@@ -23,9 +25,25 @@ public class MenuServices : IMenuServices
         _webHostEnvironment = webHostEnvironment;
     }
 
-    public Item? getItem(int itemId)
+    public AddItemModel? getItem(int itemId)
     {
-        return _db.Items.Where(e => e.Itemid == itemId).FirstOrDefault();
+        Item item = _db.Items.Where(e => e.Itemid == itemId).FirstOrDefault();
+        AddItemModel model = new AddItemModel();
+        model.ItemId = item.Itemid;
+        model.ItemName = item.Itemname;
+        model.ItemCategory = item.Categoryid;
+        model.ItemType = (bool)item.Itemtype;
+        model.DefaultTax = item.Defaulttax;
+        model.ItemAvailable = item.Isavailable;
+        model.ItemQuantity = (short)item.Quantity;
+        model.ItemRate = item.Rate;
+        model.ItemTaxPercentage = item.Taxpercentage;
+        model.ItemShortCode = item.Shortcode;
+        model.ItemDescription = item.Description;
+
+
+    
+        return model;
     }
 
     public async Task<List<CategoryMenuModel>> getCategories()
@@ -203,7 +221,9 @@ public class MenuServices : IMenuServices
             _db.Itemmodifiergroupmaps.Add(
                 new Itemmodifiergroupmap{
                     Itemid = itemToBeAdded.Itemid,
-                    Modifiergroupid = model.modGroupList[i]
+                    Modifiergroupid = model.modGroupList[i].modGroupId,
+                    Min = model.modGroupList[i].Min,
+                    Max = model.modGroupList[i].Max
                 }
             );
         }
@@ -291,13 +311,14 @@ public class MenuServices : IMenuServices
 
     public List<Modgroup> getModGroups()
     {
-        return _db.Modgroups.ToList();
+        return _db.Modgroups.OrderBy(m=>m.Modgroupid).ToList();
     }
 
     public List<ModifierGroupModel> getModGroupsForList()
     {
         return _db.Modgroups
             .Where(mg => mg.Isdeleted == false)  // Filter where isDeleted is false
+            .OrderBy(mg => mg.Modgroupid)
             .Select(mg => new ModifierGroupModel
             {
                 Modifiergroupid = mg.Modgroupid,
@@ -594,6 +615,38 @@ public class MenuServices : IMenuServices
 
         model.ModifiersGroupListIds = _db.Moditemgroupmaps.Where(e=>e.Modifierid == modifierid).Select(e=>e.Modgroupid).ToList();
 
+        return model;
+    }
+
+
+    public void deleteModItemGroupMap(int modifierItemId,int modifierGroupId)
+    {
+        Moditemgroupmap? item = _db.Moditemgroupmaps.FirstOrDefault(e=>e.Modifierid == modifierItemId && e.Modgroupid == modifierGroupId);
+        if (item != null)
+        {
+            _db.RemoveRange(new List<Moditemgroupmap> { item });
+        }
+        _db.SaveChanges();
+    }
+
+
+    public ModGroupDetails getModGroupDetails(int modGroupId)
+    {
+        Modgroup? group = _db.Modgroups.Where(e=>e.Modgroupid == modGroupId).FirstOrDefault();
+        ModGroupDetails model = new ModGroupDetails();
+        if (group != null)
+        {
+            model.Id = group.Modgroupid;
+            model.GroupName = group.Modgroupname;
+            model.Items = (from m in _db.Moditems
+                         join map in _db.Moditemgroupmaps on m.Modifierid equals map.Modifierid
+                         where map.Modgroupid == modGroupId
+                         select new itemForList{
+                            ItemName = m.Modifiername,
+                            Rate = m.Rate
+                         }).ToList();
+        }
+    
         return model;
     }
 

@@ -271,7 +271,7 @@
 
                         </div>
 
-                        <div class="col-md-4 mt-3 col-12 px-2 " style="background-color: #fff5d7; border-radius: 5px;">
+                        <div class="col-md-4 mt-3 col-12 px-2 " style="background-color: #fff5d7; border-radius: 5px; height:460px; overflow-y: auto;">
                             <div class="mod-group-select mt-2">
                                 <div id="modifierGroupDropdown" style="background-color: white; border-radius: 5px;" class="p-2 d-flex align-items-center justify-content-between">
                                     Select Modifier Group 
@@ -281,6 +281,11 @@
                                 <div id="modGroupCheckBoxes" class="bg-white p-3 mt-2 d-none" style="border-radius: 5px;">
 
                                 </div>
+
+                                <div id="modGroupDetailsModule">
+                                    @* <partial name="~/Views/Menu/_PartialModGroupDetails.cshtml"/> *@
+                                </div>
+
                             </div>
                         </div>
 
@@ -416,14 +421,24 @@
 
                         </div>
 
-                        <div class="col-md-4 mt-3 col-12 px-2 " style="background-color: #fff5d7; border-radius: 5px;">
+                        <div class="col-md-4 mt-3 col-12 px-2 " style="background-color: #fff5d7; border-radius: 5px; height:460px; overflow-y: auto;">
                             <div class="mod-group-select mt-2">
-                                <select class="form-select" id="ModifierGroupDropdown" aria-label="Select Food Category">
-                                    <option value="" selected disabled>Select Modifier Group</option>
-                                    <option value="mod1">Modifier 1</option>
-                                    <option value="mod2">Modifier 2</option>
-                                </select>
-                                <!-- <label for="itemTypeDropdown">Select Modifier Group</label> -->
+                                <div id="modifierGroupDropdownForEdit" style="background-color: white; border-radius: 5px;" class="p-2 d-flex align-items-center justify-content-between">
+                                    Select Modifier Group 
+                                    <img src="~/images/dropdownimg.webp" alt="" style="height: 15px;">
+                                </div>
+
+                                <div id="modGroupCheckBoxesForEdit" class="bg-white p-3 mt-2 d-none" style="border-radius: 5px;">
+
+                                </div>
+
+                                <div id="modGroupDetailsModuleForEdit">
+                                    @* <partial name="~/Views/Menu/_PartialModGroupDetails.cshtml"/> *@
+                                </div>
+
+                                <div onclick="getModGroupDataForEdit()">
+                                    click
+                                </div>
                             </div>
                         </div>
 
@@ -487,7 +502,8 @@
                     
                     <!-- Partial view content will be loaded here -->
                 </div>
-                
+
+
             </div>
         </div>
     </div>
@@ -521,9 +537,10 @@
 
     <!-- add modifier item modal  -->
     <partial name="~/Views/Menu/_AddModItemModal.cshtml"/>
+    <!-- edit modifier item modal  -->
     <partial name="~/Views/Menu/_EditModItemModal.cshtml"/>
-
-
+    <!-- delete modifier item modal  -->
+    <partial name="~/Views/Menu/_DeleteModItemModal.cshtml"/>
 
 
 
@@ -567,8 +584,8 @@
             selectedModifiersDiv.append(`
                 <span class="mod-name-text" data-itemid="${itemId}">
                     ${name} ${itemId}
-                    <i class="bi bi-x-lg cross-icon" data-itemid="${itemId}" data-itemname="${name}"></i>
-                </span>
+                    
+                <i class="bi bi-x-lg cross-icon" data-itemid="${itemId}" data-itemname="${name}"></i></span>
             `);
         });
 
@@ -732,15 +749,6 @@
         }
     });
 
-    document.getElementById('modifierGroupDropdown').addEventListener('click', function() {
-
-        var modGroupCheckBoxes = document.getElementById('modGroupCheckBoxes');
-        if (modGroupCheckBoxes.classList.contains('d-none')) {
-            modGroupCheckBoxes.classList.remove('d-none');
-        } else {
-            modGroupCheckBoxes.classList.add('d-none');
-        }
-    });
 
     document.getElementById('defaultTaxToggle').addEventListener('change', function () {
         if (!this.checked) {
@@ -836,101 +844,14 @@
         document.getElementById("deletecategoryId").value = catId;
     }
 
-    function addItems(element)
-    {
-        var categoryId = element.getAttribute('data-catid');
-        console.log(categoryId);
-
-        $('#addItemModel').on('shown.bs.modal', function () {
-            $('#categoryDropdown').val(categoryId);
-        });
-
-        
-        $.ajax({
-            url: '/Menu/getModifierNames',
-            type: 'GET',
-            data: {}, 
-            success: function(result){
-
-                console.log(result);
-                
-                for(let i=0;i<result.modGroupList.length;i++)
-                {
-                    console.log(result.modGroupList[i].modgroupid + ":" + result.modGroupList[i].modgroupname);
-                    $("#modGroupCheckBoxes").append(
-                        `<div class="form-check mb-1">
-                            <input class="form-check-input" type="checkbox" name="Modifiers" value="${result.modGroupList[i].modgroupid}">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                ${result.modGroupList[i].modgroupname}
-                            </label>
-                        </div>`
-                    );
-                }  
-
-                
-            },
-            error: function() {
-                console.error("Failed to fetch item data.");
-            }
-        });
-
-    }
-
-    function editItem(element, itemid)
-    {
-        console.log(itemid);
-        var isavailable;
-        var defaulttax;
-
-        $.ajax({
-            url: '/Menu/ItemDetailsForEdit',
-            type: 'GET',
-            data: {Itemid: itemid}, 
-            success: function(response){
-
-                console.log(response);
-                $('#idEdit').val(response.itemid);
-                $('#nameEdit').val(response.itemname);
-                $('#categoryDropdownEdit').val(response.categoryid);
-                $('#itemTypeDropdownEdit').val(response.itemtype.toString()); 
-                $('#rateEdit').val(response.rate);
-                $('#quantityEdit').val(response.quantity);
-                $('#unitDropdownEdit').val(response.unit);
-                $('#taxpercentageEdit').val(response.taxpercentage);
-                $('#shortcodeEdit').val(response.shortcode);
-                $('#descriptionEdit').val(response.description);
-
-                // Set the toggle buttons based on the data returned
-                $('#availableToggleEdit').prop('checked', response.isavailable);
-                $('#availableToggleEdit').val(response.isavailable);
-
-                $('#availableToggleEdit').next('input[type="hidden"]').val(response.isavailable); // Set the hidden field value
-
-                $('#defaultTaxToggleEdit').prop('checked', response.defaulttax);
-                $('#defaultTaxToggleEdit').next('input[type="hidden"]').val(response.defaulttax); // Set the hidden field value
-                $('#defaultTaxToggleEdit').val(response.defaulttax);
-
-
-                $('#editItemModel').modal('show');
-@* 
-                $('#availableToggleEdit').prop('checked', response.isavailable);
-                $('#defaultTaxToggleEdit').prop('checked', response.defaulttax); *@
-
-                
-            },
-            error: function() {
-                console.error("Failed to fetch item data.");
-            }
-        });
-
-    
-    }
 
     function deleteItem(element)
     {
         var itemId = element.getAttribute('data-id');
         document.getElementById("deleteitemId").value = itemId;
     }
+
+
 
     
 $("#categoryAddForm").submit(function (e) {
@@ -987,44 +908,7 @@ $("#categoryEditForm").submit(function (e) {
 });
 
 
-$("#itemAddForm").submit(function (e) {
 
-    event.preventDefault();
-    let formData = new FormData(this);
-
-    var selectedModGroupIds = [];
-    $('#modGroupCheckBoxes input[type="checkbox"]:checked').each(function() {
-        selectedModGroupIds.push(parseInt($(this).val(), 10));
-
-        console.log(parseInt($(this).val(), 10));
-    });
-
-    selectedModGroupIds.forEach(function(id) {
-        formData.append('modGroupList[]', id);  // Append each selected ID to modGroupList[]
-    });
-
-
-
-    $.ajax({
-        type: "POST",
-        url: "/Menu/MenuListItemAdd",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success:function (response)
-        {
-            if(response.success)
-            {
-                toastr.success(response.message);
-                $('#editCategoryModal').modal('hide');
-
-                window.location.href = response.urlToRedirect;
-            }else{
-                $('#categoryNameEditError').html(response.message);
-            }
-        }
-    });
-});
 
 
 function AddModGroup(formData)
@@ -1165,6 +1049,283 @@ document.getElementById('nav-profile-tab').addEventListener('click', function(){
 
 
 
+// ---------------------------------- Add Item --------------------------
+
+document.getElementById('modifierGroupDropdown').addEventListener('click', function() {
+
+    var modGroupCheckBoxes = document.getElementById('modGroupCheckBoxes');
+    if (modGroupCheckBoxes.classList.contains('d-none')) {
+        modGroupCheckBoxes.classList.remove('d-none');
+    } else {
+        modGroupCheckBoxes.classList.add('d-none');
+    }
+});
+
+function addItems(element)
+{
+    var categoryId = element.getAttribute('data-catid');
+    console.log(categoryId);
+
+    $('#addItemModel').on('shown.bs.modal', function () {
+        $('#categoryDropdown').val(categoryId);
+    });
+
+    $("#modGroupCheckBoxes").empty();
+    $('#modGroupDetailsModule').empty();
+    
+    $.ajax({
+        url: '/Menu/getModifierNames',
+        type: 'GET',
+        data: {}, 
+        success: function(result){
+
+            console.log(result);
+            
+            for(let i=0;i<result.modGroupList.length;i++)
+            {
+                console.log(result.modGroupList[i].modgroupid + ":" + result.modGroupList[i].modgroupname);
+                $("#modGroupCheckBoxes").append(
+                    `<div class="form-check mb-1">
+                        <input class="form-check-input" type="checkbox" name="Modifiers" value="${result.modGroupList[i].modgroupid}">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            ${result.modGroupList[i].modgroupname}
+                        </label>
+                    </div>`
+                );
+            }  
+
+            
+        },
+        error: function() {
+            console.error("Failed to fetch item data.");
+        }
+    });
+
+}
+
+$("#modGroupCheckBoxes").on('change', 'input[name="Modifiers"]', function () {
+    var selectedModGroupId = $(this).val(); // Get the modgroupid
+    var isChecked = $(this).prop('checked'); // Check if the checkbox is checked
+
+    if (isChecked) {
+        // Perform the AJAX call to get the partial view
+        $.ajax({
+            url: '/Menu/AddModGroupDetails', // Update with your controller's URL and action method
+            type: 'GET',
+            data: { modGroupId: selectedModGroupId },
+            success: function (response) {
+                // On success, append the partial view to the #modGroupDetailsModule
+                if ($('#modGroupDetailsModule').find(`.mod-group-${selectedModGroupId}`).length === 0) {
+                    // Append the partial view to the #modGroupDetailsModule
+                    $('#modGroupDetailsModule').append(
+                        `<div class="mod-group-${selectedModGroupId} mod-group-detail mt-2">
+                            ${response}
+                        </div>`
+                    );
+                }
+                @* $('#modGroupDetailsModule').removeClass('d-none'); // Ensure the module is visible *@
+            },
+            error: function (error) {
+                console.log('Error fetching data: ', error);
+            }
+        });
+    } else {
+        $('#modGroupDetailsModule').find(`.mod-group-${selectedModGroupId}`).remove();
+    }
+});
+
+function getModGroupData()
+{
+    var modGroupData = [];
+    
+    $('.mod-group-detail').each(function() {
+        var modGroupId = $(this).find('.delete-modifier-group').data('modgroupid'); // Get the modGroupId from the delete button
+        
+        var minValue = $(this).find('.min-select').val(); // Get the value of the min select
+        var maxValue = $(this).find('.max-select').val(); // Get the value of the max select
+        
+        modGroupData.push({
+            modGroupId: modGroupId,
+            Min: minValue,
+            Max: maxValue
+        });
+    });
+
+    return modGroupData;
+}
+
+$("#itemAddForm").submit(function (e) {
+
+    event.preventDefault();
+    let formData = new FormData(this);
+
+    var modGroupList = getModGroupData();
+    formData.append("modGroupList", JSON.stringify(modGroupList));
+
+    $.ajax({
+        type: "POST",
+        url: "/Menu/MenuListItemAdd",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success:function (response)
+        {
+            if(response.success)
+            {
+                toastr.success(response.message);
+                $('#addItemModel').modal('hide');
+
+                window.location.href = response.urlToRedirect;
+            }else{
+                $('#categoryNameEditError').html(response.message);
+            }
+        }
+    });
+});
+
+
+// ---------------------------------- Edit Item --------------------------
+document.getElementById('modifierGroupDropdownForEdit').addEventListener('click', function() {
+
+    var modGroupCheckBoxes = document.getElementById('modGroupCheckBoxesForEdit');
+    if (modGroupCheckBoxes.classList.contains('d-none')) {
+        modGroupCheckBoxes.classList.remove('d-none');
+    } else {
+        modGroupCheckBoxes.classList.add('d-none');
+    }
+});
+
+function editItem(element, itemid)
+{
+    console.log(itemid);
+    var isavailable;
+    var defaulttax;
+
+    $.ajax({
+        url: '/Menu/ItemDetailsForEdit',
+        type: 'GET',
+        data: {Itemid: itemid}, 
+        success: function(response){
+
+            console.log(response);
+            @* $('#idEdit').val(response.itemid);
+            $('#nameEdit').val(response.itemname);
+            $('#categoryDropdownEdit').val(response.categoryid);
+            $('#itemTypeDropdownEdit').val(response.itemtype.toString()); 
+            $('#rateEdit').val(response.rate);
+            $('#quantityEdit').val(response.quantity);
+            $('#unitDropdownEdit').val(response.unit);
+            $('#taxpercentageEdit').val(response.taxpercentage);
+            $('#shortcodeEdit').val(response.shortcode);
+            $('#descriptionEdit').val(response.description);
+
+            // Set the toggle buttons based on the data returned
+            $('#availableToggleEdit').prop('checked', response.isavailable);
+            $('#availableToggleEdit').val(response.isavailable);
+
+            $('#availableToggleEdit').next('input[type="hidden"]').val(response.isavailable); // Set the hidden field value
+
+            $('#defaultTaxToggleEdit').prop('checked', response.defaulttax);
+            $('#defaultTaxToggleEdit').next('input[type="hidden"]').val(response.defaulttax); // Set the hidden field value
+            $('#defaultTaxToggleEdit').val(response.defaulttax);
+
+
+            $('#editItemModel').modal('show'); *@
+@* 
+            $('#availableToggleEdit').prop('checked', response.isavailable);
+            $('#defaultTaxToggleEdit').prop('checked', response.defaulttax); *@
+
+            
+        },
+        error: function() {
+            console.error("Failed to fetch item data.");
+        }
+    });
+
+    $("#modGroupCheckBoxesForEdit").empty();
+    $('#modGroupDetailsModuleForEdit').empty();
+
+    $.ajax({
+        url: '/Menu/getModifierNames',
+        type: 'GET',
+        data: {}, 
+        success: function(result){
+
+            console.log(result);
+            
+            for(let i=0;i<result.modGroupList.length;i++)
+            {
+                console.log(result.modGroupList[i].modgroupid + ":" + result.modGroupList[i].modgroupname);
+                $("#modGroupCheckBoxesForEdit").append(
+                    `<div class="form-check mb-1">
+                        <input class="form-check-input" type="checkbox" name="Modifiers" value="${result.modGroupList[i].modgroupid}">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            ${result.modGroupList[i].modgroupname}
+                        </label>
+                    </div>`
+                );
+            }  
+ 
+        },
+        error: function() {
+            console.error("Failed to fetch item data.");
+        }
+    });
+
+
+}
+
+$("#modGroupCheckBoxesForEdit").on('change', 'input[name="Modifiers"]', function () {
+    var selectedModGroupId = $(this).val(); // Get the modgroupid
+    var isChecked = $(this).prop('checked'); // Check if the checkbox is checked
+
+    if (isChecked) {
+        // Perform the AJAX call to get the partial view
+        $.ajax({
+            url: '/Menu/AddModGroupDetails', // Update with your controller's URL and action method
+            type: 'GET',
+            data: { modGroupId: selectedModGroupId },
+            success: function (response) {
+                // On success, append the partial view to the #modGroupDetailsModule
+                if ($('#modGroupDetailsModuleForEdit').find(`.mod-group-${selectedModGroupId}`).length === 0) {
+                    // Append the partial view to the #modGroupDetailsModule
+                    $('#modGroupDetailsModuleForEdit').append(
+                        `<div class="mod-group-${selectedModGroupId} mod-group-detail mt-2">
+                            ${response}
+                        </div>`
+                    );
+                }
+                @* $('#modGroupDetailsModule').removeClass('d-none'); // Ensure the module is visible *@
+            },
+            error: function (error) {
+                console.log('Error fetching data: ', error);
+            }
+        });
+    } else {
+        $('#modGroupDetailsModuleForEdit').find(`.mod-group-${selectedModGroupId}`).remove();
+    }
+});
+
+function getModGroupDataForEdit()
+{
+    var modGroupData = [];
+    
+    $('.mod-group-detail').each(function() {
+        var modGroupId = $(this).find('.delete-modifier-group').data('modgroupid'); // Get the modGroupId from the delete button
+        
+        var minValue = $(this).find('.min-select').val(); // Get the value of the min select
+        var maxValue = $(this).find('.max-select').val(); // Get the value of the max select
+        
+        modGroupData.push({
+            modGroupId: modGroupId,
+            Min: minValue,
+            Max: maxValue
+        });
+    });
+
+    console.log(modGroupData);
+    @* return modGroupData; *@
+}
 
 
 </script>

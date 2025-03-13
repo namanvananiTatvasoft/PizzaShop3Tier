@@ -1,0 +1,52 @@
+@* @model DAL.ViewModel.ModGroupDetails; *@
+<div style="background-color: transparent;" class="mt-3 ">
+    <div class="d-flex justify-content-between px-2" style="background-color: transparent;">
+        @* <h5>@Model.Name</h5> *@
+        <h5 class="text-primary">@Model.GroupName</h5>
+        @* <div><img src="~/images/icons/trash.svg" class="delete-modifier-group" modifiergroup-id="@Model.ModifierGroupId" alt="Delete"> *@
+        <div><img src="~/images/trash.svg" class="delete-modifier-group" alt="Delete" data-modgroupid="@Model.Id">
+
+    </div>
+</div>
+
+ <div class="d-flex gap-4 justify-content-between" style="background-color: transparent;">
+        <select class="form-select mb-3 border rounded-pill min-select" aria-label="Min select">
+            <option value=0 selected>Min</option>
+            @for(int i=1;i<=Model.Items.Count;i++)
+            {
+                <option value=@i>@i</option>
+            }
+        </select>
+        <select class="form-select mb-3 border rounded-pill max-select" aria-label="Max select">
+
+            <option selected value=@Model.Items.Count>Max</option>
+            @for(int i=1;i<=Model.Items.Count;i++)
+            {
+                <option value=@i>@i</option>
+            }
+        </select>
+    </div>
+
+    <ul>
+        @foreach (var i in Model.Items)
+        {
+            <li>
+                <div class="d-flex justify-content-between">
+                    <div class="text-secondary">@i.ItemName</div>
+                    <div class="text-secondary">@i.Rate</div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+
+
+<script>
+    $(document).on('click', '.delete-modifier-group', function () {
+        // Find the parent .mod-group-container and remove it
+        @* var id = @Model.Id; *@
+        var modGroupId = $(this).data('modgroupid');
+        $(this).closest('.mod-group-detail').remove();
+        $(`input[name="Modifiers"][value="${modGroupId}"]`).prop('checked', false);
+    });
+</script>

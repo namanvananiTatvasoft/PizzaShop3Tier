@@ -2,23 +2,18 @@
 using System.Collections.Generic;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace DAL.Database;
 
 public partial class PizzaShopDbContext : DbContext
 {
-    private readonly IConfiguration _config;
-
-    public PizzaShopDbContext(IConfiguration config)
+    public PizzaShopDbContext()
     {
-        _config = config;
     }
 
-    public PizzaShopDbContext(DbContextOptions<PizzaShopDbContext> options, IConfiguration config)
+    public PizzaShopDbContext(DbContextOptions<PizzaShopDbContext> options)
         : base(options)
     {
-        _config = config;
     }
 
     public virtual DbSet<Category> Categories { get; set; }
@@ -50,10 +45,8 @@ public partial class PizzaShopDbContext : DbContext
     public virtual DbSet<Userdetail> Userdetails { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var connectionString = _config.GetConnectionString("DefaultConnection");
-        optionsBuilder.UseNpgsql(connectionString);
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql("Host=localhost:5432;Database=PizzaShopDemo;Username=postgres;Password=Tatva@123");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -209,6 +202,8 @@ public partial class PizzaShopDbContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Itemid).HasColumnName("itemid");
+            entity.Property(e => e.Max).HasColumnName("max");
+            entity.Property(e => e.Min).HasColumnName("min");
             entity.Property(e => e.Modifiergroupid).HasColumnName("modifiergroupid");
 
             entity.HasOne(d => d.Item).WithMany(p => p.Itemmodifiergroupmaps)

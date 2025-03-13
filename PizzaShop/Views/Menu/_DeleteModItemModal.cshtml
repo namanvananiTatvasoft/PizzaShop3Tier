@@ -1,0 +1,65 @@
+<div class="modal fade" id="deleteModifieritemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- </div> -->
+            <form class="modal-body" method="post" id="deleteModifierItem">
+                <div class="d-flex justify-content-between mb-3">
+                    <h1 class="modal-title fs-5 fw-semibold special-color" id="exampleModalLabel">Delete Confirmation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <input type="text" name="modifierItemId" id="deleteModifieritemId">
+                <input type="text" name="modifierGroupId" id="deleteModifierGroupitemId">
+
+                
+
+                <div class="d-flex align-items-center flex-column justify-content-center mb-4">
+                    <img src="~/images/warning.png" alt="" style="height: 35px; width: 35px;">
+                    <div class="f-5">Are You Sure you want to delete Modifier ?</div>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="save-cancel-btn fw-semibold" id="save-btn" data-bs-dismiss="modal">Yes</button>
+                    <button type="button" class="save-cancel-btn fw-semibold" id="cancel-btn" data-bs-dismiss="modal">No</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+<script>
+    function deleteModifierItem(element)
+    {
+        var itemId = element.getAttribute('data-id');
+        console.log("item to be deleted"  + itemId);
+        var modGroupId = element.getAttribute('data-modgroupid');
+        console.log("modgroup to be deleted"+modGroupId);
+        document.getElementById("deleteModifieritemId").value = itemId;
+        document.getElementById("deleteModifierGroupitemId").value = modGroupId;
+        console.log("looking good,.........");
+    }
+
+
+    $('#deleteModifierItem').submit(function(event){
+        event.preventDefault();
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '/Menu/MenuListModifierDelete',
+            data: formData,
+            type: 'POST',
+                    processData: false,     // Don't process the data (important for FormData)
+        contentType: false,  
+            success: function (data) {
+                $('#menuListModifierTable').html(data);
+            },
+            error: function () {
+                alert('Error loading the modal content');
+            }
+        });
+
+    });
+</script>

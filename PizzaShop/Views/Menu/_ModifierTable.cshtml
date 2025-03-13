@@ -65,7 +65,7 @@
                     <td>
                         <div class="d-flex justify-content-center align-items-center">
                             <img src="~/images/pen.svg" alt="" class="edit-delete-pic" data-bs-toggle = "modal" data-bs-target="#editModifieritemModal" onclick="editModifier(this)" data-id="@modifier.ModifierId">
-                            <img src="~/images/trash.svg" alt="" class="edit-delete-pic" data-bs-toggle="modal" data-bs-target="#deleteItemModal" onclick="deleteItem(this)" data-id ="@modifier.ModifierId">
+                            <img src="~/images/trash.svg" alt="" class="edit-delete-pic" data-bs-toggle="modal" data-bs-target="#deleteModifieritemModal" onclick="deleteModifierItem(this)" data-id ="@modifier.ModifierId" data-modgroupid = "@Model.modifiers.Modgroupid">
                         </div>
                     </td>
                 </tr>

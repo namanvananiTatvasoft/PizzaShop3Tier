@@ -5,7 +5,8 @@ namespace BAL.Interfaces;
 
 public interface IMenuServices
 {
-    public Item getItem(int itemId);
+    public AddItemModel? getItem(int itemId);
+
     public Task<List<CategoryMenuModel>> getCategories();
 
     public Task<ItemsViewMenuModel> getItems(int categoryId,int pageNumber,int pageSize,string searchKey);
@@ -45,7 +46,9 @@ public interface IMenuServices
 
     public (string, bool) editModifier(AddEditDeleteModifiers model);
 
+    public void deleteModItemGroupMap(int modifierItemId,int modifierGroupId);
 
+    public ModGroupDetails getModGroupDetails(int modGroupId);
 
 
 }

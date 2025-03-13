@@ -6238,11 +6238,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
+      "projectUniqueName": "C:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
       "projectName": "BAL",
-      "projectPath": "c:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
+      "projectPath": "C:\\Projects\\PizzaShopMain\\BAL\\BAL.csproj",
       "packagesPath": "C:\\Users\\pct106\\.nuget\\packages\\",
-      "outputPath": "c:\\Projects\\PizzaShopMain\\BAL\\obj\\",
+      "outputPath": "C:\\Projects\\PizzaShopMain\\BAL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\pct106\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -6257,8 +6257,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "c:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj": {
-              "projectPath": "c:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj"
+            "C:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj": {
+              "projectPath": "C:\\Projects\\PizzaShopMain\\DAL\\DAL.csproj"
             }
           }
         }

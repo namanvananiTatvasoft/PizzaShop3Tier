@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rznDCUDuIFjABaNG+LnAQXVxJi/R9ceqEgFIIbpvJ26r1pXubDOW0vlYJVTV/bNfWFCDwPMT4i3FhTinAIAdnA==",
+  "dgSpecHash": "FD3c7fxKICkIGYIxLSk8aXrTNun0TLwLs4R5WfeyCf4C/Ew3egY4lCtGYVGqmXA2yM5GBSMLMIEDD3lfrbAy0A==",
   "success": true,
-  "projectFilePath": "c:\\Projects\\PizzaShopMain\\PizzaShop\\PizzaShop.csproj",
+  "projectFilePath": "C:\\Projects\\PizzaShopMain\\PizzaShop\\PizzaShop.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pct106\\.nuget\\packages\\bouncycastle.cryptography\\2.5.0\\bouncycastle.cryptography.2.5.0.nupkg.sha512",
     "C:\\Users\\pct106\\.nuget\\packages\\mailkit\\4.10.0\\mailkit.4.10.0.nupkg.sha512",
@@ -38,6 +38,7 @@
     "C:\\Users\\pct106\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\pct106\\.nuget\\packages\\mimekit\\4.10.0\\mimekit.4.10.0.nupkg.sha512",
     "C:\\Users\\pct106\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
+    "C:\\Users\\pct106\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\pct106\\.nuget\\packages\\npgsql\\7.0.4\\npgsql.7.0.4.nupkg.sha512",
     "C:\\Users\\pct106\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.4\\npgsql.entityframeworkcore.postgresql.7.0.4.nupkg.sha512",
     "C:\\Users\\pct106\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql.design\\1.1.0\\npgsql.entityframeworkcore.postgresql.design.1.1.0.nupkg.sha512",

@@ -5,6 +5,7 @@ using DAL.Models;
 using DAL.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
+using Newtonsoft.Json;
 
 namespace PizzaShop.Controllers;
 
@@ -102,6 +103,14 @@ public class MenuController : BaseDashboardController
     [HttpPost("MenuListItemAdd")]
     public IActionResult MenuListItemAdd(AddItemModel model)
     {
+        string modifiersJson = Request.Form["modGroupList"];
+
+        // deserialize the modifiersjson
+        if (!string.IsNullOrEmpty(modifiersJson))
+        {
+            model.modGroupList = JsonConvert.DeserializeObject<List<IdMinMax>>(modifiersJson);
+        }
+
         string msg;
         bool response;
 
@@ -122,7 +131,7 @@ public class MenuController : BaseDashboardController
     [HttpGet("ItemDetailsForEdit")]
     public IActionResult ItemDetailsForEdit(int Itemid)
     {
-        Item item = _menuServices.getItem(Itemid);
+        AddItemModel item = _menuServices.getItem(Itemid);
         return Json(item);
     }
 
@@ -285,5 +294,22 @@ public class MenuController : BaseDashboardController
         (message, status) = _menuServices.editModifier(model);
         
         return Json( new { success = status, messages = message});
+    }
+
+    [HttpPost("MenuListModifierDelete")]
+    public IActionResult MenuListModifierDelete(int modifierItemId, int modifierGroupId)
+    {
+        _menuServices.deleteModItemGroupMap(modifierItemId, modifierGroupId);
+        return RedirectToAction("MenuModifiersListTable", new {categoryId=modifierGroupId});
+    }
+
+    [HttpGet("AddModGroupDetails")]
+    public IActionResult AddModGroupDetails(int modGroupId)
+    {
+        // ModGroupDetails model = new ModGroupDetails();
+        // model.Id = modGroupId;
+
+        ModGroupDetails model = _menuServices.getModGroupDetails(modGroupId);
+        return PartialView("_PartialModGroupDetails", model);
     }
 }

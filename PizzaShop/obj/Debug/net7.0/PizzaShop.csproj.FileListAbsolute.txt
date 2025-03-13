@@ -62,3 +62,4 @@ c:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\Microsoft.Extensions.Option
 c:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
 c:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\System.Text.Encodings.Web.dll
 c:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\runtimes\browser\lib\net7.0\System.Text.Encodings.Web.dll
+c:\Projects\PizzaShopMain\PizzaShop\bin\Debug\net7.0\Newtonsoft.Json.dll
